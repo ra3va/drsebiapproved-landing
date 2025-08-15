@@ -32,7 +32,7 @@ function ShopifyAnalyticsInner() {
       window.ShopifyAnalytics.record('Viewed Page', {
         pageType: 'landing',
         path: pathname,
-        search: searchParams.toString(),
+        search: searchParams?.toString() || '',
       });
     }
   }, [pathname, searchParams]);
