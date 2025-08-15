@@ -9,15 +9,17 @@ import dynamic from 'next/dynamic';
 import type { MDXRemoteProps } from "next-mdx-remote";
 import { BlogPost } from "@/lib/blog";
 import Header from "@/components/Header";
-import React, { createContext, useContext } from "react";
-
-const ParagraphContext = createContext(false);
+import GutHealthLeadMagnet from "@/components/GutHealthLeadMagnet";
+import React from "react";
 
 // Dynamically import MDXRemote with SSR disabled
 const MDXRemoteNoSSR = dynamic(() => import('next-mdx-remote').then(mod => mod.MDXRemote), { ssr: false });
 
 // Custom components for MDX
 const components = {
+  // Lead magnet component
+  LeadMagnet: () => <GutHealthLeadMagnet />,
+  
   img: ({ className, alt, ...props }: any) => (
     <Image
       className={`${className || ''} rounded-lg`}
@@ -166,6 +168,11 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             {/* Content */}
             <div className="prose prose-lg max-w-none bg-white rounded-xl shadow-sm border border-accent/10 p-6 sm:p-8 md:p-12">
               <MDXRemoteNoSSR {...post.content} components={components} />
+              
+              {/* Lead magnet positioned after content intro */}
+              <div className="not-prose my-8">
+                <GutHealthLeadMagnet />
+              </div>
             </div>
 
             {/* CTA Section */}

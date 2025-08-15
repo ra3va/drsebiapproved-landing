@@ -98,7 +98,34 @@ Required environment variables:
 NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
 NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=your-token
 NEXT_PUBLIC_PRODUCT_ID=your-product-id
+
+# Brevo Email Marketing API
+BREVO_API_KEY=your-brevo-api-key
 ```
+
+## Brevo API Integration
+
+### Credentials
+- **API Key**: Stored in `.env.local` (not committed to repo)
+- **MCP API Token**: `eyJhcGlfa2V5IjoieGtleXNpYi04MWM4MmNlYzM5NjQ3Mzk0OGUxMjUxYzBlZDdjNWNkYTU0MGM0ZGM1MWJmMDAxOWJkNjlkMDE4YTlkOTA4Yzg5NS1EYTVlQUNUQk9FOVRhaWhyIfQ==`
+- **Verified Sender**: info@drsebiapproved.com ✅
+- **Domain Authentication**: drsebiapproved.com ✅ (DKIM + DMARC configured)
+
+### Testing Configuration
+- **Test Email**: kingthriva@gmail.com (Ra's email for all testing)
+
+### Free Account Capabilities
+- **100,000 contacts** (vs Mailchimp's 500)
+- **300 emails/day** (9,000/month vs Mailchimp's 1,000/month)
+- **Full API access** with marketing automation
+- **Rate limits**: 100 requests/hour general, 10 req/sec for contacts
+- **Transactional emails** included for automated PDF delivery
+
+### Lead Magnet Integration
+- Email capture via `/api/contacts` endpoint
+- Automated welcome series with gut health guide PDF
+- Contact segmentation by source (blog, quiz, etc.)
+- Webhook triggers for immediate PDF delivery
 
 ## Development Notes
 
@@ -124,3 +151,113 @@ NEXT_PUBLIC_PRODUCT_ID=your-product-id
 - Hosted on Render.com with custom domain (drsebiapproved.com)
 - Static assets optimized through Next.js build process
 - Environment variables managed through hosting platform
+
+## Session Memory and Context Awareness
+
+**Claude can access previous session context to maintain continuity across conversations.**
+
+### Session History Access
+- **Sessions Directory**: `/sessions/` contains detailed logs of all previous work
+- **Timestamp Command**: Use `date` terminal command to get current timestamp for context
+- **Session Files**: Named with format `YYYY-MM-DD_HH-MM-SS_topic-description.md`
+
+### Context Retrieval Process
+1. **Check Current Time**: Run `date` command to understand temporal context
+2. **List Recent Sessions**: Use `LS /Users/rathriva/Documents/parasite-cleanse-landing/sessions` to see available logs
+3. **Read Relevant Sessions**: Focus on sessions from the last 7-14 days or topic-specific sessions
+4. **Extract Key Context**: Previous decisions, ongoing projects, technical implementations, business context
+
+### When to Check Sessions
+- **"Start new session" command**: AUTOMATICALLY check 2-3 most recent sessions when user says "start new session"
+- **New conversation start**: Always check recent sessions for continuity
+- **Project context needed**: When user references previous work or decisions
+- **Technical continuity**: When building on previous implementations
+- **Business strategy**: When making strategic decisions that need historical context
+- **Problem solving**: When troubleshooting issues that may have been addressed before
+
+### Session Startup Protocol
+**When user says "start new session":**
+1. **Get Current Timestamp**: Run `date` command
+2. **List Recent Sessions**: Use `LS` to show available session files  
+3. **Read 2-3 Most Recent**: Focus on sessions from last 48-72 hours
+4. **Extract Key Context**: Ongoing projects, recent decisions, technical state
+5. **Provide Context Summary**: Brief overview of recent work and current status
+
+## Session Logging Protocol
+
+**When user says "end this session" or similar, Claude must immediately log the session.**
+
+### Session Logging Steps
+1. **Get Timestamp**: Run `date` command to get current timestamp
+2. **Create Sessions Directory**: Ensure `/Users/rathriva/Documents/parasite-cleanse-landing/sessions` exists
+3. **Create Session Log**: Write comprehensive session summary to new file
+
+### Session File Naming Convention
+```
+/Users/rathriva/Documents/parasite-cleanse-landing/sessions/YYYY-MM-DD_HH-MM-SS_topic-description.md
+```
+
+### Session Log Structure
+```markdown
+# [Session Topic] Session
+**Date**: [Full timestamp from date command]
+**Duration**: [Estimated session length]
+**Focus**: [Primary objective/topic]
+**Logged by**: Claude
+
+## Session Summary
+### Primary Objectives Completed ✅
+[List major accomplishments]
+
+## Key Issues Resolved
+[Technical problems solved]
+
+## Technical Implementation
+[Code changes, architecture decisions]
+
+## Files Modified/Created
+### Committed to Production
+[Files pushed to GitHub/production]
+
+### Local Development Only
+[Local-only files for security]
+
+## Testing Results
+[Verification of functionality]
+
+## Business Impact
+[Effect on project goals]
+
+## Technical Capabilities Unlocked
+[New features/capabilities enabled]
+
+## Next Steps & Recommendations
+[Future actions and suggestions]
+
+## Session Outcome
+[Final status and results]
+
+---
+*End of Session: [timestamp]*
+```
+
+### Session Logging Triggers
+- User explicitly says: "end this session", "end session", "log this session"
+- User asks to "wrap up", "finish up", or "close out"
+- User says "goodbye", "done for now", or similar session-ending phrases
+
+### Critical Session Logging Requirements
+- **ALWAYS get fresh timestamp** with `date` command
+- **Create sessions directory** if it doesn't exist
+- **Document all major changes** especially code modifications
+- **Note security implications** (what's committed vs local)
+- **Include business context** and impact
+- **List next steps** for continuity
+- **Use descriptive filename** that captures session essence
+
+### Example Session Topics for Filenames
+- `shopify-integration-setup` - E-commerce configuration work
+- `blog-content-creation` - Adding new MDX blog posts
+- `ui-component-development` - Building new interface components
+- `deployment-configuration` - Docker and hosting setup
+- `analytics-implementation` - Tracking and conversion optimization

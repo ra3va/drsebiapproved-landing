@@ -7,6 +7,7 @@ import ShopifyAnalytics from '@/components/ShopifyAnalytics'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NODE_ENV === 'production' ? 'https://drsebiapproved.com' : 'http://localhost:3000'),
   title: "ParaCleanse Elite | Dr. Sebi's Original Two-Phase Total Parasite Cleansing System",
   description: "Experience Dr. Sebi's authentic two-phase parasite cleanse. Break down biofilms and eliminate parasites with our powerful, natural formula.",
 };
@@ -71,6 +72,22 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+
+        {/* Brevo Behavioral Tracking */}
+        <Script src="https://cdn.brevo.com/js/sdk-loader.js" async />
+        <Script id="brevo-tracker" strategy="afterInteractive">
+          {`
+            // Version: 2.0
+            window.Brevo = window.Brevo || [];
+            Brevo.push([
+                "init",
+                {
+                client_key: "fe6w1ww57kreu47ho3uax9h2",
+                // Optional: Add other initialization options, see documentation
+                }
+            ]);
+          `}
+        </Script>
       </head>
       <body className={inter.className}>
         <ShopifyAnalytics />
