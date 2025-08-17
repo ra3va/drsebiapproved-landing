@@ -9,9 +9,10 @@ import Image from "next/image";
 
 interface GutHealthLeadMagnetProps {
   className?: string;
+  onClose?: () => void;
 }
 
-export default function GutHealthLeadMagnet({ className = "" }: GutHealthLeadMagnetProps) {
+export default function GutHealthLeadMagnet({ className = "", onClose }: GutHealthLeadMagnetProps) {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -74,7 +75,10 @@ export default function GutHealthLeadMagnet({ className = "" }: GutHealthLeadMag
       <CardContent className="p-0">
         <div className="relative">
           <button
-            onClick={() => setIsDismissed(true)}
+            onClick={() => {
+              setIsDismissed(true);
+              onClose?.();
+            }}
             className="absolute top-4 right-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-all duration-200 shadow-sm"
             aria-label="Dismiss"
           >
