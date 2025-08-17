@@ -71,19 +71,28 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
   }
 
   return (
-    <Card className={`my-8 overflow-hidden border-2 border-[#00A6E6]/20 bg-gradient-to-r from-green-50 to-blue-50 ${className}`}>
-      <CardContent className="p-0">
-        <div className="relative">
-          <button
-            onClick={() => {
-              setIsDismissed(true);
-              onClose?.();
-            }}
-            className="absolute top-4 right-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-all duration-200 shadow-sm"
-            aria-label="Dismiss"
-          >
-            <X className="w-4 h-4 text-gray-600" />
-          </button>
+    <div 
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          setIsDismissed(true);
+          onClose?.();
+        }
+      }}
+    >
+      <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto border-2 border-primary/20 bg-gradient-to-r from-green-50 to-blue-50 shadow-2xl">
+        <CardContent className="p-0">
+          <div className="relative">
+            <button
+              onClick={() => {
+                setIsDismissed(true);
+                onClose?.();
+              }}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-white transition-all duration-200 shadow-lg"
+              aria-label="Close Modal"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
           
           <div className="flex flex-col md:flex-row items-center">
             {/* Image Section */}
@@ -91,7 +100,7 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
               <div className="relative aspect-[4/5] max-w-xs mx-auto">
                 <Image
                   src="/3066a71b-75c7-4a5c-876a-3d7c080cde01.jpeg"
-                  alt="When Your Gut Isn't Yours Anymore - Free Guide"
+                  alt="The Hidden Parasite Crisis - Free Guide"
                   fill
                   className="object-contain rounded-lg"
                   priority={false}
@@ -109,11 +118,11 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
                   </div>
                   
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-                    Get Your Free Gut Health Guide
+                    Get "The Hidden Parasite Crisis" Guide FREE
                   </h3>
                   
                   <p className="text-gray-600 text-lg leading-relaxed">
-                    Discover the natural path to remove parasites and restore your digestive health with this comprehensive guide based on Dr. Sebi's proven methods.
+                    <strong>Dr. Sebi's Complete Guide to Eliminate Silent Invaders and Reclaim Your Health.</strong> Discover why millions suffer from unexplained symptoms and the 2-phase protocol that actually works.
                   </p>
 
                   <div className="pt-2">
@@ -173,11 +182,14 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">Check Your Email{firstName && `, ${firstName}`}!</h3>
                   <p className="text-gray-600 max-w-md mx-auto">
-                    We've sent your free gut health guide to <strong>{email}</strong>. 
-                    Check your inbox (and spam folder) for the download link.
+                    We've sent "The Hidden Parasite Crisis" guide to <strong>{email}</strong>. 
+                    Check your inbox (and spam folder) to discover the truth about parasites and Dr. Sebi's elimination protocol.
                   </p>
                   <Button
-                    onClick={() => setIsDismissed(true)}
+                    onClick={() => {
+                      setIsDismissed(true);
+                      onClose?.();
+                    }}
                     variant="outline"
                     className="mt-4"
                   >
@@ -190,5 +202,6 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 }

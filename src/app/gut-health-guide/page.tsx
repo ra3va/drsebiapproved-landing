@@ -37,21 +37,22 @@ export default function GutHealthGuidePage() {
                 </div>
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-6 leading-tight">
-                  Get Your Free
-                  <span className="text-primary block">Gut Health Guide</span>
+                  The Hidden
+                  <span className="text-red-600 block">Parasite Crisis</span>
+                  <span className="text-primary block">Free Guide</span>
                 </h1>
 
                 <p className="text-xl text-muted-foreground mb-8 max-w-[540px] leading-relaxed">
-                  Discover the natural path to remove parasites and restore your digestive health with this comprehensive guide based on <strong>Dr. Sebi's proven methods.</strong>
+                  <strong>Dr. Sebi's Complete Guide to Eliminate Silent Invaders and Reclaim Your Health.</strong> Why millions suffer from unexplained fatigue, brain fog, and digestive issues - and the natural 2-phase solution that actually works.
                 </p>
 
                 {/* Benefits List */}
                 <div className="grid gap-4 mb-8 w-full max-w-[540px]">
                   {[
-                    "Identify the 7 warning signs of parasitic infection",
-                    "Learn Dr. Sebi's two-phase cleansing approach", 
-                    "Discover biofilm-disrupting natural compounds",
-                    "Get a complete 14-day protocol timeline"
+                    "Identify the 7 hidden signs of parasite infection",
+                    "Learn why most parasite cleanses fail completely", 
+                    "Discover Dr. Sebi's biofilm-breaking protocol",
+                    "Get the complete 2-phase elimination system"
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -92,7 +93,7 @@ export default function GutHealthGuidePage() {
                   <div className="relative bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-300">
                     <Image
                       src="/3066a71b-75c7-4a5c-876a-3d7c080cde01.jpeg"
-                      alt="When Your Gut Isn't Yours Anymore - Free Guide"
+                      alt="The Hidden Parasite Crisis - Free Guide"
                       width={400}
                       height={500}
                       className="w-[300px] h-auto object-contain rounded-lg shadow-lg"
@@ -118,10 +119,10 @@ export default function GutHealthGuidePage() {
           <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What You'll Discover in This Guide
+                What You'll Learn About Hidden Parasites
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                This comprehensive 30-page guide contains everything you need to understand and address parasitic infections naturally.
+                This comprehensive 30-page guide exposes the parasite crisis affecting millions and reveals Dr. Sebi's proven elimination protocol.
               </p>
             </div>
 
@@ -178,13 +179,13 @@ export default function GutHealthGuidePage() {
           <div className="container px-4 md:px-6 max-w-[900px] mx-auto text-center">
             <div className="bg-white border-2 border-red-200 rounded-2xl p-8 shadow-lg">
               <h3 className="text-2xl md:text-3xl font-bold text-red-900 mb-4">
-                ⚠️ Don't Let Parasites Multiply Another Day
+                ⚠️ The Hidden Parasite Crisis Is Real
               </h3>
               <p className="text-red-700 mb-6 text-lg leading-relaxed">
-                Right now, parasites are feeding off your nutrients, releasing toxins, and multiplying inside your body. Every day you wait is another day they get stronger and harder to eliminate. <strong>The longer parasites remain, the more damage they cause to your digestive system, energy levels, and overall health.</strong>
+                Right now, millions of people are suffering from unexplained fatigue, brain fog, and digestive issues without knowing the real cause: <strong>hidden parasite infections.</strong> These silent invaders are stealing your nutrients, poisoning your system, and multiplying daily. <strong>The longer they remain undetected, the more damage they cause to your gut, brain, and energy levels.</strong>
               </p>
               <p className="text-red-800 font-semibold mb-8">
-                This guide gives you the knowledge to take action TODAY - and it's completely free.
+                Stop guessing what's wrong - get the truth about parasites and the solution that actually works.
               </p>
               <Button 
                 size="lg" 
@@ -263,10 +264,10 @@ export default function GutHealthGuidePage() {
         <section className="w-full py-20 bg-gradient-to-b from-accent/10 to-white">
           <div className="container px-4 md:px-6 max-w-[800px] mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Take Control of Your Gut Health?
+              Ready to Eliminate Hidden Parasites For Good?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Download your free guide now and discover the natural path to eliminating parasites and restoring your digestive health. No strings attached - just valuable information that could change your life.
+              Download your free guide now and discover the truth about the hidden parasite crisis affecting millions. Learn Dr. Sebi's proven 2-phase protocol that breaks biofilms and eliminates parasites naturally. No strings attached - just life-changing information.
             </p>
             
             <Button 
@@ -295,9 +296,9 @@ export default function GutHealthGuidePage() {
 
             {/* Additional value proposition */}
             <div className="mt-12 bg-white border-2 border-primary/10 rounded-2xl p-8">
-              <h3 className="text-xl font-semibold mb-4">Why This Guide is Completely Free</h3>
+              <h3 className="text-xl font-semibold mb-4">Why We're Exposing the Parasite Crisis for Free</h3>
               <p className="text-muted-foreground leading-relaxed">
-                We believe everyone deserves access to natural healing knowledge. This guide represents decades of research into Dr. Sebi's methods, and we're sharing it freely because your health transformation is more important than profit. Once you experience the power of natural cleansing, you'll understand why we're passionate about continuing Dr. Sebi's legacy.
+                The hidden parasite crisis is affecting millions who don't even know they're infected. This guide represents decades of Dr. Sebi's research into natural parasite elimination, and we're sharing it freely because too many people are suffering needlessly. Once you understand how parasites are secretly stealing your health, you'll see why exposing this truth is more important than profit.
               </p>
             </div>
           </div>
