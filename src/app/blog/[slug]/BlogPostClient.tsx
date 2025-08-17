@@ -2,14 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Tag, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from 'next/dynamic';
 import type { MDXRemoteProps } from "next-mdx-remote";
 import { BlogPost } from "@/lib/blog";
 import Header from "@/components/Header";
-import GutHealthLeadMagnet from "@/components/GutHealthLeadMagnet";
+import HiddenParasiteCTA from "@/components/HiddenParasiteCTA";
 import React from "react";
 
 // Dynamically import MDXRemote with SSR disabled
@@ -17,8 +17,10 @@ const MDXRemoteNoSSR = dynamic(() => import('next-mdx-remote').then(mod => mod.M
 
 // Custom components for MDX
 const components = {
-  // Lead magnet component
-  LeadMagnet: () => <GutHealthLeadMagnet />,
+  // Lead magnet component - now points to hidden parasite crisis
+  LeadMagnet: () => <HiddenParasiteCTA variant="compact" />,
+  // Hidden parasite CTA variants
+  HiddenParasiteCTA: ({ variant }: { variant?: 'default' | 'compact' | 'inline' }) => <HiddenParasiteCTA variant={variant} />,
   
   img: ({ className, alt, ...props }: any) => (
     <Image
@@ -169,30 +171,31 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             <div className="prose prose-lg max-w-none bg-white rounded-xl shadow-sm border border-accent/10 p-6 sm:p-8 md:p-12">
               <MDXRemoteNoSSR {...post.content} components={components} />
               
-              {/* Lead magnet positioned after content intro */}
+              {/* Hidden Parasite Crisis CTA positioned after content intro */}
               <div className="not-prose my-8">
-                <GutHealthLeadMagnet />
+                <HiddenParasiteCTA variant="default" />
               </div>
             </div>
 
-            {/* CTA Section */}
-            <div className="mt-12 bg-white rounded-3xl shadow-sm border border-accent/10 overflow-hidden">
+            {/* Bottom CTA Section - Hidden Parasite Crisis Focus */}
+            <div className="mt-12 bg-gradient-to-r from-red-50 to-orange-50 rounded-3xl shadow-sm border-2 border-red-200 overflow-hidden">
               <div className="relative px-8 py-12 md:p-12">
                 <div className="relative max-w-3xl mx-auto text-center space-y-6">
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">Ready to Begin Your Transformation?</h3>
-                  <p className="text-xl text-gray-600">Experience the power of Dr. Sebi's original formulations with our comprehensive ParaCleanse Elite package. Break through biofilm barriers and achieve lasting cellular health.</p>
+                  <h3 className="text-3xl md:text-4xl font-bold text-red-900">Ready to Uncover the Hidden Parasite Crisis?</h3>
+                  <p className="text-xl text-red-700">Don't let parasites continue stealing your health. Get Dr. Sebi's complete elimination guide and discover the truth about hidden infections affecting millions.</p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                     <Link 
-                      href="/#elite-package"
-                      className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-[#00A6E6] rounded-full hover:bg-[#0095D1] transition-all duration-200"
+                      href="/hidden-parasite-crisis"
+                      className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition-all duration-200"
                     >
-                      Get the Elite Package
+                      <Download className="w-5 h-5 mr-2" />
+                      Get Free Parasite Guide
                     </Link>
                     <Link 
-                      href="/quiz"
-                      className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-[#00A6E6] bg-white border-2 border-[#00A6E6] rounded-full hover:bg-blue-50 transition-all duration-200"
+                      href="/#elite-package"
+                      className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-red-600 bg-white border-2 border-red-600 rounded-full hover:bg-red-50 transition-all duration-200"
                     >
-                      Take our Quiz
+                      Shop ParaCleanse Elite
                     </Link>
                   </div>
                 </div>
