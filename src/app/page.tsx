@@ -899,6 +899,16 @@ export default function Home() {
                     Success Stories
                   </Link>
                 </li>
+                <li>
+                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/maya">
+                    Maya Formula
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/seamoss">
+                    Sea Moss
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
