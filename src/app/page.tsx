@@ -2,109 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, Leaf, Shield, Zap, Star, ArrowRight, Menu } from 'lucide-react'
+import { CheckCircle, Leaf, Shield, Zap, Star, ArrowRight, Menu, Heart, Brain, Droplets, Award, Wind } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
-import { initiateCheckout } from '@/utils/shopify';
-import { useState } from 'react';
 import Header from "@/components/Header";
-
-interface BuyButtonProps {
-  variant?: 'default' | 'hero';
-}
-
-const BuyButton = ({ variant = 'default' }: BuyButtonProps) => {
-  const [quantity, setQuantity] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleBuyNow = async () => {
-    try {
-      setIsLoading(true);
-      
-      // Track GA4 begin_checkout event
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'begin_checkout', {
-          currency: 'USD',
-          value: 89.99,
-          items: [{
-            item_id: process.env.NEXT_PUBLIC_PRODUCT_ID,
-            item_name: 'ParaCleanse Elite Package',
-            category: 'Health Supplements',
-            quantity: quantity,
-            price: 89.99
-          }]
-        });
-      }
-      
-      const checkoutUrl = await initiateCheckout(process.env.NEXT_PUBLIC_PRODUCT_ID!, quantity);
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      console.error('Error during checkout:', error);
-      setIsLoading(false);
-    }
-  };
-
-  const scrollToPackage = () => {
-    // Account for the fixed header height (approximately 80px)
-    const packageSection = document.querySelector('.paracleanse-package');
-    if (packageSection) {
-      const headerOffset = 80;
-      const elementPosition = packageSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  return variant === "hero" ? (
-    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto mb-6">
-      <Button 
-        size="lg" 
-        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
-        onClick={scrollToPackage}
-      >
-        Start Your Transformation
-      </Button>
-      <Link href="/quiz">
-        <Button 
-          size="lg" 
-          variant="outline" 
-          className="rounded-full px-8 py-6 text-lg hover:bg-primary/5 border-primary text-primary"
-        >
-          Take Quiz
-        </Button>
-      </Link>
-    </div>
-  ) : (
-    <div className="flex items-center gap-4">
-      <div className="flex items-center border rounded-lg">
-        <button 
-          onClick={() => setQuantity(Math.max(1, quantity - 1))}
-          className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-l-lg"
-        >
-          -
-        </button>
-        <span className="px-4 py-2 text-gray-800">{quantity}</span>
-        <button 
-          onClick={() => setQuantity(quantity + 1)}
-          className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-r-lg"
-        >
-          +
-        </button>
-      </div>
-      <Button 
-        onClick={handleBuyNow} 
-        disabled={isLoading}
-        className="rounded-full bg-primary text-white"
-      >
-        {isLoading ? 'Processing...' : 'Claim Your Package Now'}
-      </Button>
-    </div>
-  );
-};
 
 export default function Home() {
   return (
@@ -114,518 +15,338 @@ export default function Home() {
       <div className="h-[5.5rem]"></div>
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-b from-white to-accent/10 pt-12 md:pt-16 pb-12">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-white to-accent/10 pt-16 pb-12">
           {/* Background elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
             <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
-            <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
           </div>
           
-          <div className="container relative mx-auto px-4 max-w-[1440px]">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mt-6 md:mt-8">
-              {/* Text Content - Left Side */}
-              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                <div className="inline-flex items-center rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary mb-4">
-                  <span className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    Dr. Sebi's Original Formula
-                  </span>
-                </div>
-                
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-4 leading-tight max-w-[600px]">
-                  Reclaim Your Health with Nature's Most Powerful Cleanse
-                </h1>
-
-                {/* Product Images - Mobile Only */}
-                <div className="lg:hidden w-full mb-6">
-                  <div className="relative flex justify-center items-center gap-4">
-                    {/* ParaWash */}
-                    <div className="relative group">
-                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-sm font-medium px-4 py-1 rounded-full shadow-lg">
-                        Phase 1: Biofilm Disruptor
-                      </div>
-                      <Image
-                        src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
-                        alt="ParaWash Biofilm Disruptor"
-                        width={960}
-                        height={960}
-                        className="w-[250px] sm:w-[300px] h-auto object-contain -rotate-3 hover:scale-105 transition-transform duration-300"
-                        priority
-                      />
-                    </div>
-
-                    {/* Connecting arrow */}
-                    <div className="flex flex-col items-center justify-center px-2">
-                      <ArrowRight className="w-10 h-10 text-primary" />
-                      <span className="text-sm text-primary font-medium mt-1">Then</span>
-                    </div>
-
-                    {/* Intracellular Cleanse */}
-                    <div className="relative group">
-                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-sm font-medium px-4 py-1 rounded-full shadow-lg">
-                        Phase 2: Deep Cleanse
-                      </div>
-                      <Image
-                        src="/images/cellular.png"
-                        alt="Intracellular Body Cleanse"
-                        width={960}
-                        height={960}
-                        className="w-[250px] sm:w-[300px] h-auto object-contain rotate-3 hover:scale-105 transition-transform duration-300"
-                        priority
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-[540px] leading-relaxed">
-                  Experience our powerful two-phase cleanse: ParaWash first dissolves biofilms with our powerful anti-parasite formula, then our intracellular cleanse sweeps parasites away. Dr. Sebi's authentic formula for complete parasite elimination.
-                </p>
-
-                <BuyButton variant="hero" />
-
-                <div className="grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-[540px] border rounded-xl p-4 sm:p-6 bg-card/50 backdrop-blur-sm">
-                  <div className="flex flex-col items-center lg:items-start">
-                    <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">50K+</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Satisfied Customers</div>
-                  </div>
-                  <div className="flex flex-col items-center lg:items-start">
-                    <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">30+</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Years of Legacy</div>
-                  </div>
-                  <div className="flex flex-col items-center lg:items-start">
-                    <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">100%</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Natural Ingredients</div>
-                  </div>
-                </div>
+          <div className="container relative mx-auto px-4 max-w-[1200px]">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center rounded-lg bg-primary/10 px-4 py-2 text-sm text-primary mb-6">
+                <Leaf className="w-4 h-4 mr-2" />
+                <span>DR. SEBI'S AUTHENTIC FORMULAS</span>
               </div>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-6 leading-tight">
+                Transform Your Health with
+                <span className="text-primary block">Dr. Sebi's Natural</span>
+                <span className="text-green-600 block">Healing Solutions</span>
+              </h1>
 
-              {/* Product Images - Desktop Only */}
-              <div className="hidden lg:flex w-full justify-center items-center">
-                <div className="relative flex justify-center items-center gap-4 lg:gap-6">
-                  {/* ParaWash */}
-                  <div className="relative group">
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-sm font-medium px-4 py-1 rounded-full shadow-lg">
-                      Phase 1: Biofilm Disruptor
-                    </div>
-                    <Image
-                      src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
-                      alt="ParaWash Biofilm Disruptor"
-                      width={960}
-                      height={960}
-                      className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] h-auto object-contain -rotate-3 hover:scale-105 transition-transform duration-300"
-                      priority
-                    />
-                  </div>
+              <p className="text-xl text-muted-foreground mb-12 max-w-[700px] mx-auto leading-relaxed">
+                Discover authentic Dr. Sebi approved products for complete body wellness. From parasite cleansing to mineral supplementation, experience the power of nature's most effective healing compounds.
+              </p>
 
-                  {/* Connecting arrow */}
-                  <div className="flex flex-col items-center justify-center px-2 lg:px-4">
-                    <ArrowRight className="w-10 h-10 lg:w-14 lg:h-14 text-primary" />
-                    <span className="text-sm lg:text-base text-primary font-medium mt-1">Then</span>
-                  </div>
-
-                  {/* Intracellular Cleanse */}
-                  <div className="relative group">
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-sm font-medium px-4 py-1 rounded-full shadow-lg">
-                      Phase 2: Deep Cleanse
-                    </div>
-                    <Image
-                      src="/images/cellular.png"
-                      alt="Intracellular Body Cleanse"
-                      width={960}
-                      height={960}
-                      className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] h-auto object-contain rotate-3 hover:scale-105 transition-transform duration-300"
-                      priority
-                    />
-                  </div>
+              <div className="grid grid-cols-3 gap-6 max-w-[600px] mx-auto border rounded-xl p-6 bg-card/50 backdrop-blur-sm">
+                <div className="flex flex-col items-center">
+                  <div className="text-3xl font-bold text-primary mb-1">30+</div>
+                  <div className="text-sm text-muted-foreground">Years Legacy</div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="text-3xl font-bold text-primary mb-1">100%</div>
+                  <div className="text-sm text-muted-foreground">Natural</div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="text-3xl font-bold text-primary mb-1">50K+</div>
+                  <div className="text-sm text-muted-foreground">Customers</div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="symptoms" className="w-full py-24 bg-white">
-          <div className="container px-4 md:px-6">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <span className="text-red-600 font-medium">⚠️ WARNING SIGNS</span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 text-red-900">Are Hidden Parasites Stealing Your Life Away?</h2>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                <strong>Every day you wait, parasites multiply and spread deeper</strong> into your system. These silent invaders are robbing you of energy, clouding your mind, and slowly destroying your health from the inside out. <span className="text-red-600 font-semibold">If you're experiencing any of these symptoms, you could be hosting millions of these parasites right now...</span>
+        {/* Featured Products Section */}
+        <section className="w-full py-20 bg-white">
+          <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Our Complete Dr. Sebi Product Line
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Each product is crafted following Dr. Sebi's proven methodologies, using only the finest natural ingredients for optimal health transformation.
               </p>
             </div>
-            <div className="grid gap-8 md:grid-cols-3">
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+              {/* ParaCleanse Elite */}
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                <div className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  BESTSELLER
+                </div>
+                <CardHeader className="text-center">
+                  <div className="w-full h-48 flex items-center justify-center mb-4 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
+                    <div className="relative">
+                      <Image
+                        src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
+                        alt="ParaCleanse Elite Two-Phase System"
+                        width={200}
+                        height={200}
+                        className="w-32 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl mb-2">ParaCleanse Elite</CardTitle>
+                  <p className="text-primary font-medium">Two-Phase Parasite Cleansing System</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Dr. Sebi's complete parasite elimination system. Breaks down biofilms and eliminates parasites with our powerful two-phase protocol.
+                  </p>
+                  <div className="space-y-2 mb-6">
+                    {[
+                      "Phase 1: Biofilm disruption",
+                      "Phase 2: Deep parasite elimination", 
+                      "Complete 14-day protocol",
+                      "Natural & powerful formula"
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">$89.99</p>
+                      <p className="text-sm text-muted-foreground">Complete 2-phase system</p>
+                    </div>
+                  </div>
+                  <Link href="/paracleanse">
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Maya Formula */}
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  DR. SEBI'S GREATEST
+                </div>
+                <CardHeader className="text-center">
+                  <div className="w-full h-48 flex items-center justify-center mb-4 bg-gradient-to-br from-red-500/5 to-primary/5 rounded-lg">
+                    <div className="relative">
+                      <Image
+                        src="/maya.png"
+                        alt="Dr. Sebi's Maya 26 Herb Formula"
+                        width={200}
+                        height={200}
+                        className="w-32 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl mb-2">Maya Formula</CardTitle>
+                  <p className="text-red-600 font-medium">26 Herb Iron-Rich Formula</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Dr. Sebi's greatest creation for blood, brain, and nervous system support. Enhanced iron-rich nourishment from 26 powerful herbs.
+                  </p>
+                  <div className="space-y-2 mb-6">
+                    {[
+                      "Blood purification & iron support",
+                      "Brain & nervous system health",
+                      "26 wildcrafted herbs",
+                      "Made fresh in Honduras"
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <Heart className="h-4 w-4 text-red-600 flex-shrink-0" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">$59.99</p>
+                      <p className="text-sm text-red-600">Save 40% | Was $99.99</p>
+                    </div>
+                  </div>
+                  <Link href="/maya">
+                    <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Sea Moss */}
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                <div className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  92 MINERALS
+                </div>
+                <CardHeader className="text-center">
+                  <div className="w-full h-48 flex items-center justify-center mb-4 bg-gradient-to-br from-blue-500/5 to-teal-500/5 rounded-lg">
+                    <div className="relative">
+                      <Image
+                        src="/seamoss.png"
+                        alt="Dr. Sebi's Honduran Sea Moss"
+                        width={200}
+                        height={200}
+                        className="w-32 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl mb-2">Sea Moss Capsules</CardTitle>
+                  <p className="text-blue-600 font-medium">Nature's Multi-Vitamin</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Honduran wildcrafted Sea Moss with 92 essential minerals. Supports thyroid function, immune health, and digestive wellness.
+                  </p>
+                  <div className="space-y-2 mb-6">
+                    {[
+                      "92 of 102 essential minerals",
+                      "Thyroid & immune support",
+                      "Digestive health boost",
+                      "Wildcrafted from Honduras"
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <Droplets className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">$49.99</p>
+                      <p className="text-sm text-blue-600">Save 17% | Was $60.00</p>
+                    </div>
+                  </div>
+                  <Link href="/seamoss">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Mucus Cleanser */}
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                <div className="absolute top-4 right-4 bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  RESPIRATORY SUPPORT
+                </div>
+                <CardHeader className="text-center">
+                  <div className="w-full h-48 flex items-center justify-center mb-4 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 rounded-lg">
+                    <div className="relative">
+                      <Image
+                        src="/mucus.png"
+                        alt="Dr. Sebi's Mucus Cleanser"
+                        width={200}
+                        height={200}
+                        className="w-32 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl mb-2">Mucus Cleanser</CardTitle>
+                  <p className="text-cyan-600 font-medium">Respiratory & Cellular Cleansing</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Dr. Sebi's powerful blend eliminates excess mucus and cleanses at the cellular level. Made with cascara, mullein root, and African bird pepper.
+                  </p>
+                  <div className="space-y-2 mb-6">
+                    {[
+                      "Eliminates excess mucus naturally",
+                      "Supports respiratory health",
+                      "Cellular cleansing & detox",
+                      "Handmade for potency"
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <Wind className="h-4 w-4 text-cyan-600 flex-shrink-0" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">$59.99</p>
+                      <p className="text-sm text-cyan-600">Save 20% | Was $75.00</p>
+                    </div>
+                  </div>
+                  <Link href="/mucus-cleanser">
+                    <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white">
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="text-center mt-12">
+              <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-8 max-w-2xl mx-auto">
+                <h3 className="text-2xl font-bold mb-4">Start Your Healing Journey Today</h3>
+                <p className="text-muted-foreground mb-6">
+                  Experience the transformative power of Dr. Sebi's natural healing protocols. Each product is designed to work synergistically for complete body wellness.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link href="/quiz">
+                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
+                      Take Our Health Quiz
+                    </Button>
+                  </Link>
+                  <Link href="/hidden-parasite-crisis">
+                    <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
+                      Free Health Guide
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Dr. Sebi Products Section */}
+        <section className="w-full py-20 bg-gradient-to-b from-accent/10 to-white">
+          <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Why Choose Dr. Sebi's Natural Healing Products?
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Each product is crafted following Dr. Sebi's proven methodologies, using only wildcrafted herbs and natural compounds for optimal health transformation.
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {[
-                { 
-                  icon: <Zap className="h-8 w-8 text-red-500" />, 
-                  title: "Crushing Fatigue That Won't Go Away", 
-                  desc: "No matter how much you sleep, you wake up exhausted. Parasites are literally feeding off your nutrients 24/7, leaving you drained and lifeless. Every day feels like you're running on empty." 
+                {
+                  icon: <Award className="h-8 w-8 text-primary" />,
+                  title: "Authentic Formulas",
+                  description: "Original Dr. Sebi recipes made with wildcrafted herbs from Honduras and other pristine locations."
                 },
-                { 
-                  icon: <Shield className="h-8 w-8 text-red-500" />, 
-                  title: "Gut-Wrenching Digestive Torture", 
-                  desc: "Constant bloating makes you look pregnant. Painful gas that embarrasses you in public. Unpredictable bathroom emergencies that control your life. Parasites are destroying your digestive system from within." 
+                {
+                  icon: <Leaf className="h-8 w-8 text-green-600" />,
+                  title: "100% Natural",
+                  description: "Pure, potent plant-based ingredients with no artificial additives or synthetic compounds."
                 },
-                { 
-                  icon: <CheckCircle className="h-8 w-8 text-red-500" />, 
-                  title: "Mind-Numbing Brain Fog", 
-                  desc: "You can't think clearly anymore. Simple decisions feel impossible. You forget important things constantly. Parasitic toxins are literally poisoning your brain, making you feel like a shadow of your former self." 
+                {
+                  icon: <Shield className="h-8 w-8 text-blue-600" />,
+                  title: "Quality Assured",
+                  description: "Each batch is carefully prepared to preserve freshness and ensure consistent potency."
                 },
+                {
+                  icon: <Heart className="h-8 w-8 text-red-600" />,
+                  title: "Proven Results",
+                  description: "Thousands of satisfied customers experiencing improved health and vitality naturally."
+                }
               ].map((item, i) => (
-                <Card key={i} className="relative overflow-hidden border-2 hover:border-primary transition-colors">
-                  <CardHeader>
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-bl-full"></div>
-                    <div className="text-primary mb-4">{item.icon}</div>
-                    <CardTitle className="text-xl mb-2">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{item.desc}</p>
+                <Card key={i} className="text-center border-2 hover:border-primary transition-all duration-300 group">
+                  <CardContent className="p-6">
+                    <div className="text-primary mb-4 flex justify-center">{item.icon}</div>
+                    <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
+                    <p className="text-muted-foreground text-sm">{item.description}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
-            
-            {/* Urgency CTA after symptoms */}
-            <div className="max-w-2xl mx-auto mt-16 text-center">
-              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-red-900 mb-4">
-                  Don't Let Parasites Rob Another Day of Your Life
-                </h3>
-                <p className="text-red-700 mb-6 text-lg">
-                  Right now, while you're reading this, parasites are multiplying inside you. Every hour you delay treatment, they're getting stronger and harder to eliminate. The longer you wait, the more damage they cause to your body, your energy, and your quality of life.
-                </p>
-                <p className="text-red-800 font-semibold mb-8">
-                  Stop suffering in silence. Take back control of your health TODAY.
-                </p>
-                <Button 
-                  size="lg" 
-                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg font-semibold shadow-lg animate-pulse"
-                  onClick={() => document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Get Your Life Back Now - 55% Off Today Only
-                </Button>
-              </div>
-            </div>
           </div>
         </section>
 
-        <section id="solution" className="w-full py-24 bg-gradient-to-b from-white to-accent/20">
-          <div className="container px-4 md:px-6">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <span className="text-primary font-medium">The Solution</span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-                A Complete Cleansing System Backed by 30+ Years of Success
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Dr. Sebi's comprehensive approach combines traditional wisdom with proven natural ingredients to create the most effective cleansing system available.
-              </p>
-            </div>
-            
-            <div className="grid gap-12 lg:grid-cols-2 items-start">
-              <div className="order-2 lg:order-1">
-                <div className="space-y-12">
-                  <div className="relative">
-                    <div className="absolute -left-4 top-0 h-full w-1 bg-primary/20 rounded-full">
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary"></div>
-                    </div>
-                    <div className="pl-6">
-                      <h3 className="text-2xl font-bold mb-4">Phase 1: ParaWash Biofilm Disruptor</h3>
-                      <p className="text-muted-foreground mb-6">
-                        The critical first phase uses ParaWash to break down protective biofilms, exposing parasites and making them vulnerable:
-                      </p>
-                      <ul className="space-y-4">
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                          <div>
-                            <span className="font-medium block mb-1">Biofilm Dissolution</span>
-                            <span className="text-muted-foreground">Dysphania ambrosioides actively breaks down the protective shields that parasites hide behind</span>
-                          </div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                          <div>
-                            <span className="font-medium block mb-1">Paralyzing Action</span>
-                            <span className="text-muted-foreground">Powerful compounds immobilize parasites, preventing them from maintaining their grip</span>
-                          </div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                          <div>
-                            <span className="font-medium block mb-1">Maximum Potency Formula</span>
-                            <span className="text-muted-foreground">Precisely balanced blend ensures optimal biofilm disruption</span>
-                          </div>
-                        </li>
-                      </ul>
-                      <div className="mt-6 p-4 bg-primary/5 rounded-lg">
-                        <p className="text-sm font-medium text-primary">Key Ingredients</p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          • Dysphania ambrosioides (Primary active compound)<br />
-                          • Wormwood (Artemisia absinthium)<br />
-                          • Black Walnut Hull<br />
-                          • Dr. Sebi Approved Proprietary Blend
-                        </p>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="relative">
-                    <div className="absolute -left-4 top-0 h-full w-1 bg-primary/20 rounded-full">
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary"></div>
-                    </div>
-                    <div className="pl-6">
-                      <h3 className="text-2xl font-bold mb-4">Phase 2: Intracellular Body Cleanse</h3>
-                      <p className="text-muted-foreground mb-6">
-                        Once biofilms are disrupted, our powerful intracellular cleanse sweeps away parasites and restores cellular health:
-                      </p>
-                      <ul className="space-y-4">
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                          <div>
-                            <span className="font-medium block mb-1">Deep Cellular Cleansing</span>
-                            <span className="text-muted-foreground">Penetrates cells to eliminate parasites and their toxins at the source</span>
-                          </div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                          <div>
-                            <span className="font-medium block mb-1">Complete Elimination</span>
-                            <span className="text-muted-foreground">Ensures thorough removal of weakened parasites and their waste products</span>
-                          </div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                          <div>
-                            <span className="font-medium block mb-1">Cellular Restoration</span>
-                            <span className="text-muted-foreground">Supports cell regeneration and optimal function after cleansing</span>
-                          </div>
-                        </li>
-                      </ul>
-                      <div className="mt-6 p-4 bg-primary/5 rounded-lg">
-                        <p className="text-sm font-medium text-primary">Key Ingredients</p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          • Cascara Sagrada (Deep cleansing)<br />
-                          • Rhammus Purshiana (Cellular support)<br />
-                          • Brickellia Grandiflora (Restoration)<br />
-                          • Dr. Sebi's Proprietary Blend
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="order-1 lg:order-2 lg:sticky lg:top-24">
-                <Card className="paracleanse-package max-w-lg mx-auto">
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-2xl font-bold">ParaCleanse Elite Package</h3>
-                        <div className="space-y-1 mt-2">
-                          <div className="text-sm text-muted-foreground">
-                            Regular Price: <span className="line-through">$199.98</span>
-                          </div>
-                          <div className="text-3xl font-bold text-primary">
-                            Today Only: $89.99
-                          </div>
-                          <div className="inline-flex items-center bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
-                            YOU SAVE: $110.99 (55% OFF)
-                          </div>
-                        </div>
-                      </div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4 mb-8">
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="font-medium">Total Body Cleanse Formula</span>
-                          <p className="text-sm text-muted-foreground">Complete 2-week intensive cleansing protocol</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="font-medium">Advanced Parasite Cleanse</span>
-                          <p className="text-sm text-muted-foreground">Two powerful phases for maximum effectiveness</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="font-medium">Complete Guide & Support</span>
-                          <p className="text-sm text-muted-foreground">Step-by-step instructions for optimal results</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="font-medium">110% Dr. Sebi Approved</span>
-                          <p className="text-sm text-muted-foreground">Authentic formula made in Honduras</p>
-                        </div>
-                      </div>
-                    </div>
-                    <BuyButton />
-                    <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                      <Shield className="h-4 w-4" />
-                      <span>Authentic Dr. Sebi Formula - Made in Honduras</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="timeline" className="w-full py-24 bg-white">
-          <div className="container px-4 md:px-6">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <span className="text-primary font-medium">Treatment Timeline</span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-                Your 14-Day Intensive Cleanse Journey
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Our scientifically designed two-phase protocol maximizes effectiveness through targeted cleansing stages.
-              </p>
-            </div>
-
-            <div className="grid gap-12 lg:grid-cols-2">
-              {/* Phase 1 */}
-              <div className="relative bg-accent/5 rounded-3xl p-8">
-                <div className="absolute -top-6 left-8 bg-primary text-white text-sm font-medium px-6 py-2 rounded-full shadow-lg">
-                  Phase 1: Days 1-7
-                </div>
-                <div className="mt-4">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Biofilm Dissolution Phase</h3>
-                  <div className="flex flex-col md:flex-row gap-8 items-start">
-                    <div className="flex-1">
-                      <p className="text-muted-foreground mb-6">
-                        The initial phase focuses on breaking down protective biofilms where parasites hide, preparing for deep cleansing.
-                      </p>
-                      <ul className="space-y-3">
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>Targets stubborn biofilm barriers</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>Gentle yet effective cleansing begins</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>Prepares body for deep cleansing</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="w-32 md:w-48">
-                      <Image
-                        src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
-                        alt="ParaWash Biofilm Disruptor"
-                        width={200}
-                        height={200}
-                        className="w-full h-auto object-contain hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </div>
-                  <div className="mt-8 space-y-6">
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                      <h4 className="font-semibold mb-2 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white text-sm">1</span>
-                        Days 1-3
-                      </h4>
-                      <p className="text-muted-foreground">
-                        Initial adjustment as biofilm breakdown begins. You may experience mild detox symptoms as your body starts the cleansing process.
-                      </p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                      <h4 className="font-semibold mb-2 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white text-sm">2</span>
-                        Days 4-7
-                      </h4>
-                      <p className="text-muted-foreground">
-                        Biofilms dissolve and initial parasitic die-off begins. Energy levels may fluctuate as body adjusts to cleansing.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Phase 2 */}
-              <div className="relative bg-accent/5 rounded-3xl p-8">
-                <div className="absolute -top-6 left-8 bg-primary text-white text-sm font-medium px-6 py-2 rounded-full shadow-lg">
-                  Phase 2: Days 8-14
-                </div>
-                <div className="mt-4">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Maximum Strength Elimination</h3>
-                  <div className="flex flex-col md:flex-row gap-8 items-start">
-                    <div className="flex-1">
-                      <p className="text-muted-foreground mb-6">
-                        With barriers removed, this intensive phase delivers maximum-strength herbs to eliminate parasites and restore gut health.
-                      </p>
-                      <ul className="space-y-3">
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>Powerful parasite elimination</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>Deep cellular detoxification</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>Intensive gut restoration</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="w-32 md:w-48">
-                      <Image
-                        src="/images/cellular.png"
-                        alt="Intracellular Body Cleanse"
-                        width={200}
-                        height={200}
-                        className="w-full h-auto object-contain hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </div>
-                  <div className="mt-8 space-y-6">
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                      <h4 className="font-semibold mb-2 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white text-sm">3</span>
-                        Days 8-11
-                      </h4>
-                      <p className="text-muted-foreground">
-                        Maximum strength herbs begin their work. Expect significant changes in elimination patterns and increased energy.
-                      </p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                      <h4 className="font-semibold mb-2 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white text-sm">4</span>
-                        Days 12-14
-                      </h4>
-                      <p className="text-muted-foreground">
-                        Final elimination phase with deep restoration. Experience improved clarity, energy, and digestive function.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Important Note - Now spans full width */}
-              <div className="lg:col-span-2 mt-8">
-                <div className="bg-white border-2 border-primary/10 rounded-2xl p-8">
-                  <div className="flex items-start gap-4">
-                    <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-2">Important Note</h4>
-                      <p className="text-muted-foreground">
-                        This is an intensive cleanse protocol. Listen to your body and stay well hydrated. Some may experience stronger detox symptoms, while others might have milder reactions.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <section id="testimonials" className="w-full py-24 bg-white">
           <div className="container px-4 md:px-6">
@@ -633,13 +354,13 @@ export default function Home() {
               <span className="text-primary font-medium">Success Stories</span>
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">Life-Changing Results</h2>
               <p className="text-lg text-muted-foreground">
-                Join thousands who have transformed their health with Dr. Sebi's authentic cleansing system.
+                Join thousands who have transformed their health with Dr. Sebi's authentic natural healing products.
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
               {[
                 {
-                  quote: "The two-phase approach made all the difference. I could actually feel the biofilm breaking down, and by week 2, I had more energy than ever!",
+                  quote: "Dr. Sebi's products have completely changed my life. My energy levels are incredible and I feel healthier than I have in years!",
                   author: "Sarah Johnson",
                   title: "Verified Customer",
                   rating: 5,
@@ -647,7 +368,7 @@ export default function Home() {
                   location: "Dallas, TX"
                 },
                 {
-                  quote: "After trying so many cleanses, this is the only one that actually worked. The ParaWash really does dissolve biofilms - I saw the evidence!",
+                  quote: "After trying everything, Dr. Sebi's natural formulas finally gave me the results I was looking for. The quality is amazing.",
                   author: "Michael Chen",
                   title: "Verified Customer",
                   rating: 5,
@@ -655,7 +376,7 @@ export default function Home() {
                   location: "San Francisco, CA"
                 },
                 {
-                  quote: "I was skeptical at first, but the results speak for themselves. My digestion has improved dramatically, and my energy levels are through the roof.",
+                  quote: "I love having access to authentic Dr. Sebi products. My overall health and vitality have improved tremendously since I started.",
                   author: "Emma Rodriguez",
                   title: "Verified Customer",
                   rating: 5,
@@ -830,15 +551,20 @@ export default function Home() {
                 Transform Your Health Today
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Join thousands who have already discovered the power of Dr. Sebi's authentic cleansing system. Your path to optimal health begins here.
+                Join thousands who have already discovered the power of Dr. Sebi's authentic natural healing products. Your path to optimal health begins here.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg">
-                  Order Your Package Now
-                </Button>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Shield className="h-5 w-5" />
-                  <span>110% Dr. Sebi Approved</span>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link href="/quiz">
+                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg">
+                      Take Our Health Quiz
+                    </Button>
+                  </Link>
+                  <Link href="/hidden-parasite-crisis">
+                    <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5 rounded-full px-8 py-6 text-lg">
+                      Free Health Guide
+                    </Button>
+                  </Link>
                 </div>
               </div>
               <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -846,21 +572,21 @@ export default function Home() {
                   <Shield className="h-8 w-8 text-primary mb-4" />
                   <h3 className="font-semibold mb-2">100% Authentic</h3>
                   <p className="text-sm text-muted-foreground text-center">
-                    Original Dr. Sebi formula made in Honduras
+                    Original Dr. Sebi formulas made with wildcrafted herbs
                   </p>
                 </div>
                 <div className="flex flex-col items-center p-6 bg-accent/5 rounded-2xl">
                   <Leaf className="h-8 w-8 text-primary mb-4" />
                   <h3 className="font-semibold mb-2">Natural Ingredients</h3>
                   <p className="text-sm text-muted-foreground text-center">
-                    Pure, potent herbs and compounds
+                    Pure, potent plant-based compounds
                   </p>
                 </div>
                 <div className="flex flex-col items-center p-6 bg-accent/5 rounded-2xl">
-                  <Zap className="h-8 w-8 text-primary mb-4" />
-                  <h3 className="font-semibold mb-2">Fast Results</h3>
+                  <Heart className="h-8 w-8 text-primary mb-4" />
+                  <h3 className="font-semibold mb-2">Proven Results</h3>
                   <p className="text-sm text-muted-foreground text-center">
-                    See improvements in just weeks
+                    Thousands of satisfied customers worldwide
                   </p>
                 </div>
               </div>
@@ -885,18 +611,18 @@ export default function Home() {
               <h3 className="font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#symptoms">
-                    Why Cleanse
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#solution">
-                    Our Solution
-                  </Link>
-                </li>
-                <li>
                   <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#testimonials">
                     Success Stories
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/blog">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/paracleanse">
+                    ParaCleanse Elite
                   </Link>
                 </li>
                 <li>
@@ -907,6 +633,16 @@ export default function Home() {
                 <li>
                   <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/seamoss">
                     Sea Moss
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/mucus-cleanser">
+                    Mucus Cleanser
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/quiz">
+                    Health Quiz
                   </Link>
                 </li>
               </ul>

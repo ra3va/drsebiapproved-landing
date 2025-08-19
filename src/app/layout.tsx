@@ -8,8 +8,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NODE_ENV === 'production' ? 'https://drsebiapproved.com' : 'http://localhost:3000'),
-  title: "ParaCleanse Elite | Dr. Sebi's Original Two-Phase Total Parasite Cleansing System",
-  description: "Experience Dr. Sebi's authentic two-phase parasite cleanse. Break down biofilms and eliminate parasites with our powerful, natural formula.",
+  title: "Dr. Sebi Approved | Authentic Natural Healing Products & Supplements",
+  description: "Discover authentic Dr. Sebi approved products including Maya formula, Sea Moss capsules, and parasite cleansing systems. Natural healing solutions based on Dr. Sebi's proven methodologies.",
 };
 
 export default function RootLayout({
