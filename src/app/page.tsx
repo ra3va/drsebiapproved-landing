@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, Leaf, Shield, Zap, Star, ArrowRight, Menu, Heart, Brain, Droplets, Award, Wind } from 'lucide-react'
+import { CheckCircle, Leaf, Shield, Zap, Star, ArrowRight, Menu, Heart, Brain, Droplets, Award, Wind, Download, Users } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/Header";
@@ -275,6 +275,95 @@ export default function Home() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Hidden Parasite Crisis Free Guide Section */}
+            <section className="w-full py-16 mt-12 bg-gradient-to-br from-red-50 via-white to-primary/5 rounded-3xl border-2 border-red-100">
+              <div className="container px-4 max-w-[1000px] mx-auto">
+                <div className="grid lg:grid-cols-2 gap-8 items-center">
+                  {/* Left Content */}
+                  <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <div className="inline-flex items-center rounded-lg bg-red-500/10 px-4 py-2 text-sm text-red-600 mb-4 font-semibold">
+                      <Download className="w-4 h-4 mr-2" />
+                      <span>FREE INSTANT DOWNLOAD</span>
+                    </div>
+                    
+                    <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4 leading-tight">
+                      The Hidden
+                      <span className="text-red-600 block">Parasite Crisis</span>
+                      <span className="text-primary block">Free Guide</span>
+                    </h3>
+
+                    <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                      <strong>Dr. Sebi's Complete Guide to Eliminate Silent Invaders.</strong> Why millions suffer from unexplained fatigue, brain fog, and digestive issues.
+                    </p>
+
+                    {/* Benefits List */}
+                    <div className="grid gap-3 mb-6 w-full">
+                      {[
+                        "Identify the 7 hidden signs of parasite infection",
+                        "Learn why most parasite cleanses fail completely", 
+                        "Discover Dr. Sebi's biofilm-breaking protocol",
+                        "Get the complete 2-phase elimination system"
+                      ].map((benefit, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-sm text-left">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Link href="/hidden-parasite-crisis">
+                      <Button 
+                        size="lg" 
+                        className="bg-red-600 hover:bg-red-700 text-white rounded-full px-8 py-4 text-lg shadow-lg shadow-red-600/25 hover:translate-y-[1px] transition-all mb-4"
+                      >
+                        <Download className="w-5 h-5 mr-2" />
+                        Download Your Free Guide Now
+                      </Button>
+                    </Link>
+
+                    {/* Social Proof */}
+                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4" />
+                        <span>10,000+ Downloads</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Star className="w-4 h-4 fill-red-600 text-red-600" />
+                        <span>4.9/5 Rating</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Content - Book Cover */}
+                  <div className="flex justify-center lg:justify-end">
+                    <div className="relative group">
+                      {/* Glow effect */}
+                      <div className="absolute inset-0 bg-red-500/10 rounded-2xl blur-2xl scale-110 group-hover:scale-125 transition-transform duration-500" />
+                      
+                      {/* Book cover */}
+                      <div className="relative bg-white rounded-2xl shadow-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                        <Image
+                          src="/3066a71b-75c7-4a5c-876a-3d7c080cde01.jpeg"
+                          alt="The Hidden Parasite Crisis - Free Guide"
+                          width={300}
+                          height={375}
+                          className="w-[240px] h-auto object-contain rounded-lg shadow-lg"
+                        />
+                        
+                        {/* Floating elements */}
+                        <div className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                          FREE
+                        </div>
+                        <div className="absolute -bottom-3 -left-3 bg-primary text-white text-xs font-medium px-2 py-1 rounded-full">
+                          PDF Download
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <div className="text-center mt-12">
               <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-8 max-w-2xl mx-auto">
