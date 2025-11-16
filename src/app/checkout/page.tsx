@@ -113,6 +113,7 @@ function CheckoutContent() {
               price={product.price}
               variationId={product.variationId}
               productImage={product.image}
+              productId={product.id}
               onSuccess={() => {
                 // Redirect to success page
                 window.location.href = '/checkout/success'

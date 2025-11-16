@@ -2,9 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { sourceId, amount, productName, variationId, customerDetails, couponCode } = await request.json()
+    const { sourceId, amount, cartItems, shippingCost, customerDetails, couponCode } = await request.json()
 
     const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || 'LW8ZH194BZGKH'
+
+    // Build order note with all cart items
+    const itemsList = cartItems.map((item: any) => 
+      `${item.name} (Qty: ${item.quantity})`
+    ).join(', ')
+    
+    const orderNote = `Order: ${itemsList} | Customer: ${customerDetails?.name || 'Guest'}`
 
     // Prepare payment request with all customer details
     const paymentRequest: any = {
@@ -15,7 +22,7 @@ export async function POST(request: NextRequest) {
         currency: 'USD'
       },
       location_id: locationId,
-      note: `${productName} - Order for ${customerDetails?.name || 'Customer'}`
+      note: orderNote
     }
 
     // Add customer email (required for receipts)
@@ -43,6 +50,13 @@ export async function POST(request: NextRequest) {
       paymentRequest.note += ` | Phone: ${customerDetails.phone}`
     }
 
+    // Add shipping cost to note
+    if (shippingCost > 0) {
+      paymentRequest.note += ` | Shipping: $${(shippingCost / 100).toFixed(2)}`
+    } else {
+      paymentRequest.note += ` | Shipping: FREE`
+    }
+
     // Add coupon code to note if used
     if (couponCode) {
       paymentRequest.note += ` | Coupon: ${couponCode}`
@@ -66,7 +80,7 @@ export async function POST(request: NextRequest) {
       console.log('✅ Payment successful:', {
         paymentId: data.payment.id,
         amount: `$${(amount / 100).toFixed(2)}`,
-        product: productName,
+        items: cartItems.length,
         customer: customerDetails?.email || 'Guest',
         shippingAddress: customerDetails?.address ? 
           `${customerDetails.address.addressLine1}, ${customerDetails.address.locality}, ${customerDetails.address.administrativeDistrictLevel1} ${customerDetails.address.postalCode}` : 
@@ -80,9 +94,14 @@ export async function POST(request: NextRequest) {
         email: customerDetails?.email,
         phone: customerDetails?.phone,
         shippingAddress: customerDetails?.address,
-        productName,
-        variationId,
-        amount: `$${(amount / 100).toFixed(2)}`,
+        cartItems: cartItems.map((item: any) => ({
+          name: item.name,
+          variationId: item.variationId,
+          quantity: item.quantity,
+          price: `$${(item.price / 100).toFixed(2)}`
+        })),
+        shippingCost: shippingCost > 0 ? `$${(shippingCost / 100).toFixed(2)}` : 'FREE',
+        totalAmount: `$${(amount / 100).toFixed(2)}`,
         couponCode: couponCode || 'None'
       })
 

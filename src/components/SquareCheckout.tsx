@@ -3,11 +3,21 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react'
 
+interface CartItem {
+  id: string
+  name: string
+  price: number
+  variationId: string
+  quantity: number
+  image?: string
+}
+
 interface SquareCheckoutProps {
   productName: string
   price: number // in cents
   variationId: string
   productImage?: string
+  productId: string
   onSuccess?: () => void
 }
 
@@ -22,11 +32,24 @@ export default function SquareCheckout({
   price,
   variationId,
   productImage,
+  productId,
   onSuccess
 }: SquareCheckoutProps) {
+  // Cart state - support multiple items
+  const [cartItems, setCartItems] = useState<CartItem[]>([
+    {
+      id: productId,
+      name: productName,
+      price: price,
+      variationId: variationId,
+      quantity: 1,
+      image: productImage
+    }
+  ])
+  
   // Multi-step state
   const [currentStep, setCurrentStep] = useState(1)
-  const [summaryExpanded, setSummaryExpanded] = useState(false) // Collapsed by default
+  const [summaryExpanded, setSummaryExpanded] = useState(false)
   
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -55,6 +78,44 @@ export default function SquareCheckout({
     { number: 2, title: 'Shipping', label: 'Shipping Address' },
     { number: 3, title: 'Payment', label: 'Payment & Review' }
   ]
+
+  // Calculate totals
+  const SHIPPING_COST = 395 // $3.95 in cents
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+  const shippingCost = totalQuantity >= 2 ? 0 : SHIPPING_COST
+  const totalBeforeDiscount = subtotal + shippingCost
+  const finalTotal = totalBeforeDiscount - discount
+
+  // Update quantity for main product
+  const updateQuantity = (newQuantity: number) => {
+    if (newQuantity < 1) return
+    setCartItems(prev => prev.map(item => 
+      item.id === productId 
+        ? { ...item, quantity: newQuantity }
+        : item
+    ))
+  }
+
+  // Add upsell product to cart
+  const addUpsellProduct = (product: { id: string, name: string, price: number, variationId: string, image?: string }) => {
+    setCartItems(prev => {
+      const existing = prev.find(item => item.id === product.id)
+      if (existing) {
+        return prev.map(item => 
+          item.id === product.id 
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      }
+      return [...prev, { ...product, quantity: 1 }]
+    })
+  }
+
+  // Remove item from cart
+  const removeFromCart = (itemId: string) => {
+    setCartItems(prev => prev.filter(item => item.id !== itemId))
+  }
 
   // Scroll to top when step changes
   useEffect(() => {
@@ -198,7 +259,7 @@ export default function SquareCheckout({
       const response = await fetch('/api/square/verify-coupon', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: couponCode, price })
+        body: JSON.stringify({ code: couponCode, price: subtotal })
       })
 
       const data = await response.json()
@@ -228,17 +289,20 @@ export default function SquareCheckout({
       const result = await cardToUse.tokenize()
 
       if (result.status === 'OK') {
-        const finalAmount = price - discount
-
-        // Send payment to backend
+        // Send payment to backend with cart items
         const response = await fetch('/api/square/process-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             sourceId: result.token,
-            amount: finalAmount,
-            productName,
-            variationId,
+            amount: finalTotal,
+            cartItems: cartItems.map(item => ({
+              name: item.name,
+              variationId: item.variationId,
+              quantity: item.quantity,
+              price: item.price
+            })),
+            shippingCost,
             couponCode: couponCode || undefined,
             customerDetails: {
               email,
@@ -281,14 +345,16 @@ export default function SquareCheckout({
           className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between shadow-sm hover:bg-gray-50 transition-colors"
         >
           <div className="flex-1 text-left">
-            <p className="text-xs text-gray-500 mb-0.5">{productName}</p>
+            <p className="text-xs text-gray-500 mb-0.5">
+              {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
+            </p>
             <div className="flex items-center gap-2">
               <p className="text-lg font-bold text-gray-900">
-                ${((price - discount) / 100).toFixed(2)}
+                ${(finalTotal / 100).toFixed(2)}
               </p>
-              {discount > 0 && (
+              {shippingCost === 0 && totalQuantity >= 2 && (
                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                  -${(discount / 100).toFixed(2)}
+                  FREE Shipping
                 </span>
               )}
             </div>
@@ -305,28 +371,41 @@ export default function SquareCheckout({
         
         {summaryExpanded && (
           <div className="mt-2 bg-white border border-gray-200 rounded-lg p-4 shadow-sm animate-in slide-in-from-top-2 duration-200">
-            {/* Product with Image */}
-            <div className="flex gap-3 mb-4 pb-4 border-b border-gray-200">
-              {productImage && (
-                <div className="relative w-16 h-16 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">
-                  <img
-                    src={productImage}
-                    alt={productName}
-                    className="w-full h-full object-contain p-1"
-                  />
+            {/* Cart Items */}
+            <div className="mb-4 pb-4 border-b border-gray-200 space-y-3">
+              {cartItems.map((item) => (
+                <div key={item.id} className="flex gap-3">
+                  {item.image && (
+                    <div className="relative w-16 h-16 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-contain p-1"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-900 text-sm">{item.name}</h3>
+                    <p className="text-xs text-gray-600 mt-0.5">
+                      Qty: {item.quantity} × ${(item.price / 100).toFixed(2)}
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 mt-1">
+                      ${((item.price * item.quantity) / 100).toFixed(2)}
+                    </p>
+                  </div>
+                  {cartItems.length > 1 && (
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-red-600 hover:text-red-700 text-xs"
+                    >
+                      Remove
+                    </button>
+                  )}
                 </div>
-              )}
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 text-sm">{productName}</h3>
-                <p className="text-xs text-gray-600 mt-0.5">
-                  {productName === 'ParaCleanse Elite' && 'Two-Phase Parasite Cleansing System'}
-                  {productName === 'Maya Formula' && '26 Herb Iron-Rich Formula'}
-                  {productName === 'Sea Moss Capsules' && 'Honduran Wildcrafted Sea Moss'}
-                  {productName === 'Mucus Cleanser' && 'Respiratory & Cellular Cleansing'}
-                </p>
-              </div>
+              ))}
             </div>
-            {/* What's Included */}
+            {/* What's Included - Only show for main product */}
+            {cartItems.length === 1 && (
             <div className="mb-4 pb-4 border-b border-gray-200">
               <h4 className="text-xs font-semibold text-gray-700 mb-2">What's Included:</h4>
               <ul className="space-y-1.5">
@@ -412,12 +491,26 @@ export default function SquareCheckout({
                 )}
               </ul>
             </div>
+            )}
             
             {/* Price Breakdown */}
             <div className="space-y-2 text-sm">
               <div className="flex justify-between text-gray-600">
                 <span>Subtotal</span>
-                <span>${(price / 100).toFixed(2)}</span>
+                <span>${(subtotal / 100).toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                {shippingCost === 0 ? (
+                  <>
+                    <span className="text-green-600">Shipping</span>
+                    <span className="font-medium text-green-600">FREE</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-gray-600">Shipping</span>
+                    <span className="text-gray-600">${(shippingCost / 100).toFixed(2)}</span>
+                  </>
+                )}
               </div>
               {discount > 0 && (
                 <div className="flex justify-between text-green-600">
@@ -425,13 +518,9 @@ export default function SquareCheckout({
                   <span>-${(discount / 100).toFixed(2)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-green-600">
-                <span>Shipping</span>
-                <span className="font-medium">FREE</span>
-              </div>
               <div className="flex justify-between text-base font-bold text-gray-900 pt-2 border-t">
                 <span>Total</span>
-                <span>${((price - discount) / 100).toFixed(2)}</span>
+                <span>${(finalTotal / 100).toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -470,6 +559,99 @@ export default function SquareCheckout({
           ))}
         </div>
       </div>
+
+      {/* Quantity Selector & Upsell */}
+      {currentStep === 1 && (
+        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-3 shadow-sm">
+          {/* Quantity Selector for Main Product */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-gray-900">Quantity</span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => updateQuantity(cartItems[0].quantity - 1)}
+                disabled={cartItems[0].quantity <= 1}
+                className="w-8 h-8 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                -
+              </button>
+              <span className="text-base font-semibold w-8 text-center">{cartItems[0].quantity}</span>
+              <button
+                onClick={() => updateQuantity(cartItems[0].quantity + 1)}
+                className="w-8 h-8 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Free Shipping Incentive */}
+          {totalQuantity < 2 && (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <p className="text-xs font-semibold text-amber-900 mb-2">
+                🚚 Add 1 more item for FREE shipping (Save $3.95!)
+              </p>
+              <div className="space-y-2">
+                {/* Upsell Products */}
+                {productId !== 'maya' && (
+                  <button
+                    onClick={() => addUpsellProduct({
+                      id: 'maya',
+                      name: 'Maya Formula',
+                      price: 5999,
+                      variationId: 'TWJMT4CUFNFNQKG3S5EQRPLO',
+                      image: '/maya.png'
+                    })}
+                    className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
+                  >
+                    <span className="text-xs font-medium text-gray-900">+ Add Maya Formula</span>
+                    <span className="text-xs font-semibold text-primary">$59.99</span>
+                  </button>
+                )}
+                {productId !== 'seamoss' && (
+                  <button
+                    onClick={() => addUpsellProduct({
+                      id: 'seamoss',
+                      name: 'Sea Moss Capsules',
+                      price: 4999,
+                      variationId: 'YGDG42LYJKWH75NNW6HPWP5M',
+                      image: '/seamoss.png'
+                    })}
+                    className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
+                  >
+                    <span className="text-xs font-medium text-gray-900">+ Add Sea Moss</span>
+                    <span className="text-xs font-semibold text-primary">$49.99</span>
+                  </button>
+                )}
+                {productId !== 'mucus-cleanser' && (
+                  <button
+                    onClick={() => addUpsellProduct({
+                      id: 'mucus-cleanser',
+                      name: 'Mucus Cleanser',
+                      price: 5999,
+                      variationId: '6JARPI34BXU27SS36ZFSEJQP',
+                      image: '/mucus.png'
+                    })}
+                    className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
+                  >
+                    <span className="text-xs font-medium text-gray-900">+ Add Mucus Cleanser</span>
+                    <span className="text-xs font-semibold text-primary">$59.99</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Free Shipping Achieved */}
+          {totalQuantity >= 2 && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+              <p className="text-xs font-semibold text-green-900 flex items-center gap-2">
+                <span>✓</span>
+                <span>You've unlocked FREE shipping!</span>
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Form Container */}
       <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-lg">
@@ -601,8 +783,21 @@ export default function SquareCheckout({
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
               <div className="space-y-1.5 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${(price / 100).toFixed(2)}</span>
+                  <span className="text-gray-600">Subtotal ({totalQuantity} {totalQuantity === 1 ? 'item' : 'items'})</span>
+                  <span className="font-medium">${(subtotal / 100).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  {shippingCost === 0 ? (
+                    <>
+                      <span className="text-green-600">Shipping</span>
+                      <span className="font-medium text-green-600">FREE</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-gray-600">Shipping</span>
+                      <span className="font-medium">${(shippingCost / 100).toFixed(2)}</span>
+                    </>
+                  )}
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-green-600">
@@ -610,13 +805,9 @@ export default function SquareCheckout({
                     <span className="font-medium">-${(discount / 100).toFixed(2)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-green-600">
-                  <span>Shipping</span>
-                  <span className="font-medium">FREE</span>
-                </div>
                 <div className="flex justify-between text-base font-bold text-gray-900 pt-1.5 border-t border-gray-300">
                   <span>Total</span>
-                  <span>${((price - discount) / 100).toFixed(2)}</span>
+                  <span>${(finalTotal / 100).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -706,7 +897,7 @@ export default function SquareCheckout({
                   : 'bg-green-600 hover:bg-green-700 text-white'
               }`}
             >
-              {isLoading ? 'Processing...' : `Complete Order • $${((price - discount) / 100).toFixed(2)}`}
+              {isLoading ? 'Processing...' : `Complete Order • $${(finalTotal / 100).toFixed(2)}`}
             </button>
           )}
         </div>
