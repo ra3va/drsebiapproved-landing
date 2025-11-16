@@ -104,10 +104,10 @@ function CheckoutContent() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 lg:py-12">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 lg:py-12">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12">
           {/* Left Column - Checkout Form */}
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 min-w-0">
             <SquareCheckout
               productName={product.name}
               price={product.price}
@@ -120,7 +120,7 @@ function CheckoutContent() {
           </div>
 
           {/* Right Column - Order Summary */}
-          <div className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2 min-w-0">
             <div className="lg:sticky lg:top-24">
               {/* Order Summary Card */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm mb-4 sm:mb-6">

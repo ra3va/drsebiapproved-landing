@@ -215,8 +215,8 @@ export default function SquareCheckout({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-lg">
-      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-lg max-w-full overflow-hidden">
+      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 break-words">
         {productName}
       </h3>
       <p className="text-2xl sm:text-3xl font-bold text-primary mb-4 sm:mb-6">
@@ -228,7 +228,7 @@ export default function SquareCheckout({
         <h4 className="font-semibold text-gray-900 text-sm sm:text-base">Contact Information</h4>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Email Address *
           </label>
           <input
@@ -236,13 +236,13 @@ export default function SquareCheckout({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Full Name *
           </label>
           <input
@@ -250,13 +250,13 @@ export default function SquareCheckout({
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="John Doe"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Phone Number
           </label>
           <input
@@ -264,7 +264,7 @@ export default function SquareCheckout({
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="(555) 123-4567"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
           />
         </div>
       </div>
@@ -274,7 +274,7 @@ export default function SquareCheckout({
         <h4 className="font-semibold text-gray-900 text-sm sm:text-base">Shipping Address</h4>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Street Address *
           </label>
           <input
@@ -282,14 +282,14 @@ export default function SquareCheckout({
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="123 Main St"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
             required
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
               City *
             </label>
             <input
@@ -297,12 +297,12 @@ export default function SquareCheckout({
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder="New York"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
               State *
             </label>
             <input
@@ -310,14 +310,14 @@ export default function SquareCheckout({
               value={state}
               onChange={(e) => setState(e.target.value)}
               placeholder="NY"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
               required
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             ZIP Code *
           </label>
           <input
@@ -325,7 +325,7 @@ export default function SquareCheckout({
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
             placeholder="10001"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
             required
           />
         </div>
@@ -334,7 +334,7 @@ export default function SquareCheckout({
       {/* Payment Information */}
       <div className="mb-4 sm:mb-6">
         <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Payment Information</h4>
-        <div id="card-container" className="mb-3 sm:mb-4"></div>
+        <div id="card-container" className="mb-3 sm:mb-4 max-w-full overflow-hidden"></div>
       </div>
 
       {/* Coupon Code */}
@@ -348,12 +348,12 @@ export default function SquareCheckout({
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
             placeholder="Enter code"
-            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="flex-1 min-w-0 px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
           />
           <button
             onClick={verifyCoupon}
             disabled={verifyingCoupon || !couponCode.trim()}
-            className={`px-6 py-2.5 rounded-lg font-semibold transition-all ${
+            className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap ${
               verifyingCoupon || !couponCode.trim()
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-primary hover:bg-primary/90 text-white'
