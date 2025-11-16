@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Circle Border -->
+  <circle cx="256" cy="256" r="240" fill="#FFFFFF"/>
+  <circle cx="256" cy="256" r="240" stroke="#2D5016" stroke-width="32"/>
+  
+  <!-- Inner Badge Circle -->
+  <circle cx="256" cy="256" r="200" fill="#F8FAF5"/>
+  
+  <!-- Herb/Leaf Design -->
+  <!-- Main stem -->
+  <path d="M256 180 L256 340" stroke="#4A7C2C" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Left leaves -->
+  <path d="M256 220 Q200 200 180 240 Q190 260 256 250" fill="#4A7C2C"/>
+  <path d="M256 270 Q210 260 195 295 Q205 310 256 300" fill="#4A7C2C"/>
+  
+  <!-- Right leaves -->
+  <path d="M256 220 Q312 200 332 240 Q322 260 256 250" fill="#5A9C3C"/>
+  <path d="M256 270 Q302 260 317 295 Q307 310 256 300" fill="#5A9C3C"/>
+  
+  <!-- Top leaf (center) -->
+  <path d="M256 180 Q230 160 220 190 Q235 210 256 200 Q277 210 292 190 Q282 160 256 180" fill="#6AB04C"/>
+  
+  <!-- Gold accent dots (berries/seeds) -->
+  <circle cx="200" cy="230" r="8" fill="#D4AF37"/>
+  <circle cx="312" cy="230" r="8" fill="#D4AF37"/>
+  <circle cx="215" cy="285" r="8" fill="#D4AF37"/>
+  <circle cx="297" cy="285" r="8" fill="#D4AF37"/>
+  
+  <!-- Subtle inner circle for depth -->
+  <circle cx="256" cy="256" r="200" stroke="#2D5016" stroke-width="4" opacity="0.3"/>
+</svg>

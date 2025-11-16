@@ -10,6 +10,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NODE_ENV === 'production' ? 'https://drsebiapproved.com' : 'http://localhost:3000'),
   title: "Dr. Sebi Approved | Authentic Natural Healing Products & Supplements",
   description: "Discover authentic Dr. Sebi approved products including Maya formula, Sea Moss capsules, and parasite cleansing systems. Natural healing solutions based on Dr. Sebi's proven methodologies.",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.svg', type: 'image/svg+xml', sizes: '512x512' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.svg', type: 'image/svg+xml', sizes: '180x180' }
+    ]
+  }
 };
 
 export default function RootLayout({

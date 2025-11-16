@@ -1,0 +1,29 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Optimized for app icons and PWA -->
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="#2D5016"/>
+  
+  <!-- Inner White Circle -->
+  <circle cx="256" cy="256" r="220" fill="#FFFFFF"/>
+  
+  <!-- Herb/Leaf Design -->
+  <!-- Main stem -->
+  <path d="M256 160 L256 360" stroke="#2D5016" stroke-width="16" stroke-linecap="round"/>
+  
+  <!-- Left leaves -->
+  <path d="M256 210 Q190 185 165 235 Q180 260 256 245" fill="#4A7C2C"/>
+  <path d="M256 280 Q200 265 180 310 Q195 330 256 315" fill="#4A7C2C"/>
+  
+  <!-- Right leaves -->
+  <path d="M256 210 Q322 185 347 235 Q332 260 256 245" fill="#5A9C3C"/>
+  <path d="M256 280 Q312 265 332 310 Q317 330 256 315" fill="#5A9C3C"/>
+  
+  <!-- Top leaf (center) -->
+  <path d="M256 160 Q225 135 210 175 Q230 200 256 185 Q282 200 302 175 Q287 135 256 160" fill="#6AB04C"/>
+  
+  <!-- Gold accent dots -->
+  <circle cx="190" cy="225" r="10" fill="#D4AF37"/>
+  <circle cx="322" cy="225" r="10" fill="#D4AF37"/>
+  <circle cx="200" cy="295" r="10" fill="#D4AF37"/>
+  <circle cx="312" cy="295" r="10" fill="#D4AF37"/>
+</svg>
