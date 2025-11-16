@@ -616,6 +616,33 @@ export default function SquareCheckout({
         </div>
       </div>
 
+      {/* Social Proof Banner - Step 1 Only */}
+      {currentStep === 1 && (
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-3 mb-3 shadow-sm">
+          <div className="flex items-center gap-2 text-xs">
+            <div className="flex -space-x-2">
+              <div className="w-6 h-6 rounded-full bg-green-600 border-2 border-white flex items-center justify-center text-white text-[10px] font-bold">
+                ✓
+              </div>
+              <div className="w-6 h-6 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center text-white text-[10px] font-bold">
+                ✓
+              </div>
+              <div className="w-6 h-6 rounded-full bg-purple-600 border-2 border-white flex items-center justify-center text-white text-[10px] font-bold">
+                ✓
+              </div>
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-gray-900">
+                <span className="text-green-600">23 people</span> are viewing this right now
+              </p>
+              <p className="text-gray-600 text-[10px]">
+                Join 1,200+ customers who've transformed their health
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Quantity Selector & Upsell */}
       {currentStep === 1 && (
         <div className="bg-white border border-gray-200 rounded-lg p-4 mb-3 shadow-sm">
@@ -906,13 +933,62 @@ export default function SquareCheckout({
                 Card Information *
               </label>
               <div id="card-container" className="border border-gray-300 rounded-lg p-3"></div>
+              
+              {/* Payment Method Icons */}
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
+                  <span>We accept:</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {/* Visa */}
+                  <div className="w-8 h-5 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
+                      <rect width="48" height="32" rx="4" fill="white"/>
+                      <path d="M20.5 11h-3.2l-2 10h3.2l2-10zm8.4 6.5l1.7-4.7 1 4.7h-2.7zm3.6 3.5h3l-2.6-10h-2.7c-.6 0-1.1.4-1.3.9l-4.6 9.1h3.4l.7-1.9h4.1v1.9zm-9.3-7.1c0-2.6-3.6-2.8-3.6-4 0-.4.4-.8 1.2-.9.4 0 1.5-.1 2.8.5l.5-2.3c-.7-.2-1.6-.5-2.7-.5-2.9 0-4.9 1.5-4.9 3.7 0 1.6 1.4 2.5 2.5 3 1.1.6 1.5.9 1.5 1.4 0 .8-.9 1.1-1.8 1.1-1.5 0-2.3-.2-3.5-.8l-.5 2.4c.8.4 2.3.7 3.8.7 3.1 0 5.1-1.5 5.1-3.8z" fill="#1434CB"/>
+                    </svg>
+                  </div>
+                  {/* Mastercard */}
+                  <div className="w-8 h-5 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
+                      <rect width="48" height="32" rx="4" fill="white"/>
+                      <circle cx="18" cy="16" r="7" fill="#EB001B"/>
+                      <circle cx="30" cy="16" r="7" fill="#F79E1B"/>
+                      <path d="M24 11.5c-1.3 1.2-2 2.9-2 4.5s.7 3.3 2 4.5c1.3-1.2 2-2.9 2-4.5s-.7-3.3-2-4.5z" fill="#FF5F00"/>
+                    </svg>
+                  </div>
+                  {/* Amex */}
+                  <div className="w-8 h-5 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
+                      <rect width="48" height="32" rx="4" fill="#006FCF"/>
+                      <path d="M15 13h-2.5l-.6 1.5-.6-1.5H8.8l1.5 3.5-1.5 3.5h2.5l.6-1.5.6 1.5h2.5l-1.5-3.5L15 13zm4.5 0h-3v7h3v-2h2v-1.5h-2v-1h2V14h-2v-1zm7 0h-4v7h4v-1.5h-2v-1h2v-1.5h-2v-1h2V13zm5 0l-1 2.5-1-2.5h-2.5l2 3.5-2 3.5h2.5l1-2.5 1 2.5H34l-2-3.5 2-3.5h-2.5z" fill="white"/>
+                    </svg>
+                  </div>
+                  {/* Discover */}
+                  <div className="w-8 h-5 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
+                      <rect width="48" height="32" rx="4" fill="#FF6000"/>
+                      <circle cx="38" cy="16" r="8" fill="#F79E1B"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Proof */}
+            <div className="bg-blue-50 border border-blue-100 rounded-lg p-3">
+              <div className="flex items-center gap-2 text-xs text-blue-900">
+                <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                </svg>
+                <span className="font-medium">Join 1,200+ happy customers who trust Dr. Sebi's formulas</span>
+              </div>
             </div>
 
             {/* Trust Badges - Minimal */}
             <div className="flex items-center justify-center gap-3 text-[10px] text-gray-500 py-1">
-              <span>🔒 Secure</span>
+              <span>🔒 256-bit SSL Encrypted</span>
               <span>•</span>
-              <span>✓ 30-Day Guarantee</span>
+              <span>✓ 30-Day Money Back</span>
             </div>
           </div>
         )}
@@ -944,17 +1020,28 @@ export default function SquareCheckout({
               Continue to {steps[currentStep].title}
             </button>
           ) : (
-            <button
-              onClick={handlePayment}
-              disabled={isLoading || !cardInitialized}
-              className={`flex-1 py-3.5 rounded-lg font-semibold transition-all text-base shadow-lg ${
-                isLoading || !cardInitialized
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-green-600 hover:bg-green-700 text-white'
-              }`}
-            >
-              {isLoading ? 'Processing...' : `Complete Order • $${(finalTotal / 100).toFixed(2)}`}
-            </button>
+            <>
+              {/* Guarantee Badge Above Button */}
+              <div className="flex-1">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-2 mb-2 flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  <span className="text-xs font-semibold text-green-900">Protected by 30-Day Money Back Guarantee</span>
+                </div>
+                <button
+                  onClick={handlePayment}
+                  disabled={isLoading || !cardInitialized}
+                  className={`w-full py-3.5 rounded-lg font-semibold transition-all text-base shadow-lg ${
+                    isLoading || !cardInitialized
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
+                >
+                  {isLoading ? 'Processing...' : `Complete Order • $${(finalTotal / 100).toFixed(2)}`}
+                </button>
+              </div>
+            </>
           )}
         </div>
 
