@@ -215,17 +215,17 @@ export default function SquareCheckout({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg">
-      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-lg">
+      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
         {productName}
       </h3>
-      <p className="text-3xl font-bold text-primary mb-6">
+      <p className="text-2xl sm:text-3xl font-bold text-primary mb-4 sm:mb-6">
         ${(price / 100).toFixed(2)}
       </p>
 
       {/* Customer Information */}
-      <div className="space-y-4 mb-6">
-        <h4 className="font-semibold text-gray-900">Contact Information</h4>
+      <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+        <h4 className="font-semibold text-gray-900 text-sm sm:text-base">Contact Information</h4>
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -270,8 +270,8 @@ export default function SquareCheckout({
       </div>
 
       {/* Shipping Address */}
-      <div className="space-y-4 mb-6">
-        <h4 className="font-semibold text-gray-900">Shipping Address</h4>
+      <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+        <h4 className="font-semibold text-gray-900 text-sm sm:text-base">Shipping Address</h4>
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -332,14 +332,14 @@ export default function SquareCheckout({
       </div>
 
       {/* Payment Information */}
-      <div className="mb-6">
-        <h4 className="font-semibold text-gray-900 mb-4">Payment Information</h4>
-        <div id="card-container" className="mb-4"></div>
+      <div className="mb-4 sm:mb-6">
+        <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Payment Information</h4>
+        <div id="card-container" className="mb-3 sm:mb-4"></div>
       </div>
 
       {/* Coupon Code */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="mb-4 sm:mb-6">
+        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
           Coupon Code (Optional)
         </label>
         <div className="flex gap-2">
@@ -371,16 +371,16 @@ export default function SquareCheckout({
 
       {/* Price Summary */}
       {discount > 0 && (
-        <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-          <div className="flex justify-between text-sm text-gray-600 mb-1">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <div className="flex justify-between text-xs sm:text-sm text-gray-600 mb-1">
             <span>Subtotal:</span>
             <span>${(price / 100).toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm text-green-600 mb-1">
+          <div className="flex justify-between text-xs sm:text-sm text-green-600 mb-1">
             <span>Discount:</span>
             <span>-${(discount / 100).toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-200">
+          <div className="flex justify-between text-base sm:text-lg font-bold text-gray-900 pt-2 border-t border-gray-200">
             <span>Total:</span>
             <span>${((price - discount) / 100).toFixed(2)}</span>
           </div>
@@ -388,7 +388,7 @@ export default function SquareCheckout({
       )}
 
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs sm:text-sm">
           {error}
         </div>
       )}
@@ -396,7 +396,7 @@ export default function SquareCheckout({
       <button
         onClick={handlePayment}
         disabled={isLoading || !cardInitialized}
-        className={`w-full py-4 rounded-lg font-semibold transition-all text-lg ${
+        className={`w-full py-3 sm:py-4 rounded-lg font-semibold transition-all text-base sm:text-lg ${
           isLoading || !cardInitialized
             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
             : 'bg-primary hover:bg-primary/90 text-white shadow-lg'
@@ -405,7 +405,7 @@ export default function SquareCheckout({
         {isLoading ? 'Processing...' : `Complete Purchase - $${((price - discount) / 100).toFixed(2)}`}
       </button>
 
-      <p className="mt-4 text-xs text-center text-gray-500">
+      <p className="mt-3 sm:mt-4 text-xs text-center text-gray-500">
         🔒 Secure payment powered by Square
       </p>
     </div>

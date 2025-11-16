@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
     // Add customer email (required for receipts)
     if (customerDetails?.email) {
       paymentRequest.buyer_email_address = customerDetails.email
+      // Square will automatically send receipt to this email
     }
 
     // Add shipping address to Square payment
