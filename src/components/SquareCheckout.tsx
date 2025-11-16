@@ -653,14 +653,14 @@ export default function SquareCheckout({
                     onClick={() => addUpsellProduct({
                       id: 'maya',
                       name: 'Maya Formula',
-                      price: 5999,
+                      price: 4499,
                       variationId: 'TWJMT4CUFNFNQKG3S5EQRPLO',
                       image: '/maya.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
                   >
                     <span className="text-xs font-medium text-gray-900">+ Add Maya Formula</span>
-                    <span className="text-xs font-semibold text-primary">$59.99</span>
+                    <span className="text-xs font-semibold text-primary">$44.99</span>
                   </button>
                 )}
                 {productId !== 'seamoss' && (
@@ -668,14 +668,14 @@ export default function SquareCheckout({
                     onClick={() => addUpsellProduct({
                       id: 'seamoss',
                       name: 'Sea Moss Capsules',
-                      price: 4999,
+                      price: 3199,
                       variationId: 'YGDG42LYJKWH75NNW6HPWP5M',
                       image: '/seamoss.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
                   >
                     <span className="text-xs font-medium text-gray-900">+ Add Sea Moss</span>
-                    <span className="text-xs font-semibold text-primary">$49.99</span>
+                    <span className="text-xs font-semibold text-primary">$31.99</span>
                   </button>
                 )}
                 {productId !== 'mucus-cleanser' && (
@@ -683,14 +683,14 @@ export default function SquareCheckout({
                     onClick={() => addUpsellProduct({
                       id: 'mucus-cleanser',
                       name: 'Mucus Cleanser',
-                      price: 5999,
+                      price: 3199,
                       variationId: '6JARPI34BXU27SS36ZFSEJQP',
                       image: '/mucus.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
                   >
                     <span className="text-xs font-medium text-gray-900">+ Add Mucus Cleanser</span>
-                    <span className="text-xs font-semibold text-primary">$59.99</span>
+                    <span className="text-xs font-semibold text-primary">$31.99</span>
                   </button>
                 )}
               </div>

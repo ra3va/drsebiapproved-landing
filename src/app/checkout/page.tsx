@@ -12,7 +12,7 @@ const PRODUCTS = {
   'paracleanse': {
     id: 'paracleanse',
     name: 'ParaCleanse Elite',
-    price: 8999,
+    price: 5999,
     variationId: '5JV44RI47GC5IMYSENVXMV3D',
     image: '/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png',
     description: 'Two-Phase Parasite Cleansing System',
@@ -26,7 +26,7 @@ const PRODUCTS = {
   'maya': {
     id: 'maya',
     name: 'Maya Formula',
-    price: 5999,
+    price: 4499,
     variationId: 'TWJMT4CUFNFNQKG3S5EQRPLO',
     image: '/maya.png',
     description: '26 Herb Iron-Rich Formula',
@@ -40,7 +40,7 @@ const PRODUCTS = {
   'seamoss': {
     id: 'seamoss',
     name: 'Sea Moss Capsules',
-    price: 4999,
+    price: 3199,
     variationId: 'YGDG42LYJKWH75NNW6HPWP5M',
     image: '/seamoss.png',
     description: 'Honduran Wildcrafted Sea Moss',
@@ -54,7 +54,7 @@ const PRODUCTS = {
   'mucus-cleanser': {
     id: 'mucus-cleanser',
     name: 'Mucus Cleanser',
-    price: 5999,
+    price: 3199,
     variationId: '6JARPI34BXU27SS36ZFSEJQP',
     image: '/mucus.png',
     description: 'Respiratory & Cellular Cleansing',
