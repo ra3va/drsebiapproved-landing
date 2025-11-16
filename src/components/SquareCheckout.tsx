@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
 interface SquareCheckoutProps {
   productName: string
@@ -42,37 +42,7 @@ export default function SquareCheckout({
   const [state, setState] = useState('')
   const [zipCode, setZipCode] = useState('')
 
-  useEffect(() => {
-    // Check if Square is already loaded
-    if (window.Square) {
-      initializeSquare()
-      return
-    }
-
-    // Check if script is already in the document
-    const existingScript = document.querySelector('script[src="https://web.squarecdn.com/v1/square.js"]')
-    if (existingScript) {
-      existingScript.addEventListener('load', initializeSquare)
-      return () => {
-        existingScript.removeEventListener('load', initializeSquare)
-      }
-    }
-
-    // Load Square script
-    const script = document.createElement('script')
-    script.src = 'https://web.squarecdn.com/v1/square.js'
-    script.async = true
-    script.onload = initializeSquare
-    document.body.appendChild(script)
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script)
-      }
-    }
-  }, [])
-
-  async function initializeSquare() {
+  const initializeSquare = useCallback(async () => {
     // Prevent multiple simultaneous initializations
     if (initializingRef.current) {
       console.log('Already initializing, skipping...')
@@ -122,7 +92,37 @@ export default function SquareCheckout({
     } finally {
       initializingRef.current = false
     }
-  }
+  }, [cardInitialized])
+
+  useEffect(() => {
+    // Check if Square is already loaded
+    if (window.Square) {
+      initializeSquare()
+      return
+    }
+
+    // Check if script is already in the document
+    const existingScript = document.querySelector('script[src="https://web.squarecdn.com/v1/square.js"]')
+    if (existingScript) {
+      existingScript.addEventListener('load', initializeSquare)
+      return () => {
+        existingScript.removeEventListener('load', initializeSquare)
+      }
+    }
+
+    // Load Square script
+    const script = document.createElement('script')
+    script.src = 'https://web.squarecdn.com/v1/square.js'
+    script.async = true
+    script.onload = initializeSquare
+    document.body.appendChild(script)
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script)
+      }
+    }
+  }, [initializeSquare])
 
   async function verifyCoupon() {
     if (!couponCode.trim()) return
