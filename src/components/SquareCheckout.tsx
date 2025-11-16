@@ -80,7 +80,7 @@ export default function SquareCheckout({
   ]
 
   // Calculate totals
-  const SHIPPING_COST = 395 // $3.95 in cents
+  const SHIPPING_COST = 595 // $5.95 in cents
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0)
   const shippingCost = totalQuantity >= 2 ? 0 : SHIPPING_COST
@@ -342,30 +342,86 @@ export default function SquareCheckout({
       <div className="mb-3">
         <button
           onClick={() => setSummaryExpanded(!summaryExpanded)}
-          className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between shadow-sm hover:bg-gray-50 transition-colors"
+          className="w-full bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:bg-gray-50 transition-colors"
         >
-          <div className="flex-1 text-left">
-            <p className="text-xs text-gray-500 mb-0.5">
-              {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
-            </p>
-            <div className="flex items-center gap-2">
-              <p className="text-lg font-bold text-gray-900">
-                ${(finalTotal / 100).toFixed(2)}
-              </p>
-              {shippingCost === 0 && totalQuantity >= 2 && (
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                  FREE Shipping
-                </span>
+          <div className="flex gap-3 items-start">
+            {/* Product Image(s) */}
+            <div className="flex-shrink-0">
+              {cartItems.length === 1 ? (
+                <div className="w-14 h-14 bg-gray-50 rounded-lg overflow-hidden">
+                  {cartItems[0].image && (
+                    <img
+                      src={cartItems[0].image}
+                      alt={cartItems[0].name}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  )}
+                </div>
+              ) : (
+                <div className="relative w-14 h-14">
+                  <div className="absolute top-0 left-0 w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border-2 border-white shadow-sm">
+                    {cartItems[0].image && (
+                      <img
+                        src={cartItems[0].image}
+                        alt={cartItems[0].name}
+                        className="w-full h-full object-contain p-0.5"
+                      />
+                    )}
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border-2 border-white shadow-sm">
+                    {cartItems[1]?.image && (
+                      <img
+                        src={cartItems[1].image}
+                        alt={cartItems[1].name}
+                        className="w-full h-full object-contain p-0.5"
+                      />
+                    )}
+                  </div>
+                </div>
               )}
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500">Details</span>
-            {summaryExpanded ? (
-              <ChevronUp className="w-4 h-4 text-gray-600" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-gray-600" />
-            )}
+
+            {/* Order Info */}
+            <div className="flex-1 min-w-0 text-left">
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <p className="text-sm font-semibold text-gray-900 truncate">
+                  {cartItems.length === 1 
+                    ? cartItems[0].name 
+                    : `${cartItems.length} Products`
+                  }
+                </p>
+                <span className="text-xs text-gray-500 whitespace-nowrap">Show details</span>
+              </div>
+              
+              <div className="space-y-0.5 text-xs text-gray-600">
+                <div className="flex justify-between">
+                  <span>Subtotal ({totalQuantity} {totalQuantity === 1 ? 'item' : 'items'})</span>
+                  <span>${(subtotal / 100).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Shipping</span>
+                  {shippingCost === 0 ? (
+                    <span className="text-green-600 font-medium">FREE</span>
+                  ) : (
+                    <span>${(shippingCost / 100).toFixed(2)}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200">
+                <span className="text-sm font-semibold text-gray-900">Total</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-gray-900">
+                    ${(finalTotal / 100).toFixed(2)}
+                  </span>
+                  {summaryExpanded ? (
+                    <ChevronUp className="w-4 h-4 text-gray-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </button>
         
@@ -588,7 +644,7 @@ export default function SquareCheckout({
           {totalQuantity < 2 && (
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
               <p className="text-xs font-semibold text-amber-900 mb-2">
-                🚚 Add 1 more item for FREE shipping (Save $3.95!)
+                🚚 Add 1 more item for FREE shipping (Save $5.95!)
               </p>
               <div className="space-y-2">
                 {/* Upsell Products */}
