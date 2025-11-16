@@ -148,14 +148,15 @@ export default function MayaPage() {
                   <p className="text-sm text-muted-foreground">8 fl oz | Made fresh in Honduras</p>
                 </div>
 
-                <Button 
-                  size="lg" 
-                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all mb-6 w-full max-w-[540px]"
-                  onClick={() => window.open('https://drsebiwebsite.com/collections/frontpage/products/maya', '_blank')}
-                >
-                  <ArrowRight className="w-5 h-5 mr-2" />
-                  Order Maya Formula Now
-                </Button>
+                <Link href="/checkout?product=maya" className="w-full max-w-[540px]">
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-primary hover:bg-primary/90 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
+                  >
+                    <ArrowRight className="w-5 h-5 mr-2" />
+                    Proceed to Secure Checkout
+                  </Button>
+                </Link>
 
                 {/* Social Proof */}
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">

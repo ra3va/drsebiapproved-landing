@@ -148,14 +148,15 @@ export default function MucusCleanserPage() {
                   <p className="text-sm text-muted-foreground">30 Capsules | Handmade to preserve potency</p>
                 </div>
 
-                <Button 
-                  size="lg" 
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-cyan-600/25 hover:translate-y-[1px] transition-all mb-6 w-full max-w-[540px]"
-                  onClick={() => window.open('https://drsebiwebsite.com/collections/frontpage/products/mucus-cleanser', '_blank')}
-                >
-                  <ArrowRight className="w-5 h-5 mr-2" />
-                  Order Mucus Cleanser Now
-                </Button>
+                <Link href="/checkout?product=mucus-cleanser" className="w-full max-w-[540px]">
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-cyan-600/25 hover:translate-y-[1px] transition-all"
+                  >
+                    <ArrowRight className="w-5 h-5 mr-2" />
+                    Proceed to Secure Checkout
+                  </Button>
+                </Link>
 
                 {/* Social Proof */}
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">

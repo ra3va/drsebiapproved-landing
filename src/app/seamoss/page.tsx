@@ -148,14 +148,15 @@ export default function SeaMossPage() {
                   <p className="text-sm text-muted-foreground">40 Capsules | 1-3 capsules daily</p>
                 </div>
 
-                <Button 
-                  size="lg" 
-                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-blue-600/25 hover:translate-y-[1px] transition-all mb-6 w-full max-w-[540px]"
-                  onClick={() => window.open('https://drsebiwebsite.com/collections/frontpage/products/seamoss', '_blank')}
-                >
-                  <ArrowRight className="w-5 h-5 mr-2" />
-                  Order Sea Moss Now
-                </Button>
+                <Link href="/checkout?product=seamoss" className="w-full max-w-[540px]">
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-blue-600/25 hover:translate-y-[1px] transition-all"
+                  >
+                    <ArrowRight className="w-5 h-5 mr-2" />
+                    Proceed to Secure Checkout
+                  </Button>
+                </Link>
 
                 {/* Social Proof */}
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">
