@@ -1,26 +1,39 @@
-# ParaCleanse Elite - Dr. Sebi's Original Two-Phase Parasite Cleansing System
+# Dr. Sebi Approved - Health & Wellness E-Commerce Platform
 
-A Next.js-based landing page for Dr. Sebi's ParaCleanse Elite product, integrated with Shopify for e-commerce functionality.
+A Next.js-based e-commerce platform for Dr. Sebi's authentic health products, featuring an optimized mobile-first checkout experience integrated with Square for payment processing.
 
-## Tech Stack
+## 🌟 Products
 
-- **Frontend**: Next.js 14.1.0
-- **Styling**: Tailwind CSS
-- **E-commerce**: Shopify Storefront API
+- **ParaCleanse Elite** - Two-Phase Parasite Cleansing System ($59.99)
+- **Maya Formula** - 26 Herb Iron-Rich Formula ($44.99)
+- **Sea Moss Capsules** - Honduran Wildcrafted Sea Moss ($31.99)
+- **Mucus Cleanser** - Respiratory & Cellular Cleansing ($31.99)
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 14.1.0 with App Router
+- **Runtime**: React 18 + TypeScript 5
+- **Styling**: Tailwind CSS 3.4.1
+- **Payment Processing**: Square Web Payments SDK
+- **E-commerce Backend**: Square Catalog & Orders API
 - **Deployment**: Docker + Render.com
-- **Analytics**: Shopify Analytics
+- **Content**: MDX for blog posts
 
-## Environment Variables
+## 📦 Environment Variables
 
 Create a `.env.local` file with the following variables:
 
 ```env
-NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=your-storefront-token
-NEXT_PUBLIC_PRODUCT_ID=your-product-id
+# Square Configuration
+NEXT_PUBLIC_SQUARE_APPLICATION_ID=your-square-app-id
+NEXT_PUBLIC_SQUARE_LOCATION_ID=your-location-id
+SQUARE_ACCESS_TOKEN=your-square-access-token
+
+# Optional: Email Service (Brevo)
+BREVO_API_KEY=your-brevo-api-key
 ```
 
-## Local Development
+## 🚀 Local Development
 
 1. Install dependencies:
 ```bash
@@ -34,7 +47,113 @@ npm run dev
 
 3. Open [http://localhost:3000](http://localhost:3000)
 
-## Deployment Process
+4. Build for production:
+```bash
+npm run build
+npm run start
+```
+
+## 🏗 Project Structure
+
+```
+src/
+├── app/                          # Next.js App Router
+│   ├── api/                      # API routes
+│   │   └── square/              # Square payment endpoints
+│   ├── blog/                    # Blog functionality
+│   ├── checkout/                # Checkout pages
+│   │   ├── page.tsx            # Main checkout
+│   │   └── success/            # Order confirmation
+│   ├── paracleanse/            # Product pages
+│   ├── maya/
+│   ├── seamoss/
+│   └── mucus-cleanser/
+├── components/                  # React components
+│   ├── ui/                     # UI component library
+│   └── SquareCheckout.tsx      # Main checkout component
+├── lib/                        # Utility libraries
+│   ├── blog.ts                # Blog post management
+│   └── utils.ts               # General utilities
+└── utils/                      # Business logic
+    └── shopify.ts             # Legacy (to be removed)
+
+content/
+└── blog/                       # MDX blog posts
+
+scripts/
+├── create-test-coupon.js      # Square coupon creation
+└── update-square-prices.js    # Bulk price updates
+
+public/
+├── images/                    # Product images
+└── [assets]                   # Static assets
+```
+
+## 💳 Checkout Features
+
+### Mobile-First Design
+- 3-step checkout flow (Contact → Shipping → Payment)
+- Compact progress indicator
+- Collapsible order summary with product images
+- First input field visible immediately (no scrolling)
+
+### Conversion Optimization
+- Quantity selector for easy multi-product purchases
+- Pre-checkout upsells with complementary products
+- Free shipping incentive ($5.95 → FREE for 2+ items)
+- Real-time cart updates and total calculation
+
+### Trust & Security
+- Payment method icons (Visa, Mastercard, Amex, Discover)
+- Social proof ("1,200+ happy customers")
+- 30-Day money-back guarantee badge
+- 256-bit SSL encryption messaging
+- Square secure payment processing
+
+### Square Integration
+- Proper Orders API with individual line items
+- Inventory tracking per product
+- Customer data capture (email, phone, address)
+- Shipping address in fulfillment details
+- Coupon code support
+
+## 🛒 Shipping Strategy
+
+- **1 item**: $5.95 flat rate
+- **2+ items**: FREE shipping
+- Encourages multi-product purchases
+- Increases average order value (AOV)
+
+## 📊 Square Configuration
+
+### Product Variation IDs
+```javascript
+{
+  'paracleanse': '5JV44RI47GC5IMYSENVXMV3D',
+  'maya': 'TWJMT4CUFNFNQKG3S5EQRPLO',
+  'seamoss': 'YGDG42LYJKWH75NNW6HPWP5M',
+  'mucus-cleanser': '6JARPI34BXU27SS36ZFSEJQP'
+}
+```
+
+### Test Coupon
+- **Code**: TEST99
+- **Discount**: 99% off (for testing)
+- **Square ID**: PAAUNOPINBLM2RDQFOEQAJNJ
+
+## 🔧 Useful Scripts
+
+### Update Product Prices
+```bash
+node scripts/update-square-prices.js
+```
+
+### Create Test Coupon
+```bash
+node scripts/create-test-coupon.js
+```
+
+## 🐳 Deployment Process
 
 ### Building and Pushing Docker Image
 
@@ -52,72 +171,169 @@ docker push ra3va/parasite-cleanse-landing:latest
 
 1. Log into [Render Dashboard](https://dashboard.render.com)
 2. Select the web service
-3. Under "Settings", ensure these environment variables are set:
-   - `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`
-   - `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN`
-   - `NEXT_PUBLIC_PRODUCT_ID`
-4. Deploy using the Docker image: `docker.io/ra3va/parasite-cleanse-landing:latest`
+3. Ensure environment variables are set:
+   - `NEXT_PUBLIC_SQUARE_APPLICATION_ID`
+   - `NEXT_PUBLIC_SQUARE_LOCATION_ID`
+   - `SQUARE_ACCESS_TOKEN`
+4. Deploy using Docker image: `docker.io/ra3va/parasite-cleanse-landing:latest`
 
-## Making Updates
+## 🔄 Making Updates
 
 1. Make code changes locally
 2. Test using `npm run dev`
-3. Build and push new Docker image:
+3. Build and test production build:
+```bash
+npm run build
+npm run start
+```
+4. Build and push new Docker image:
 ```bash
 docker build -t ra3va/parasite-cleanse-landing:latest .
 docker push ra3va/parasite-cleanse-landing:latest
 ```
-4. Render will automatically deploy the new version
+5. Render will automatically deploy the new version
 
-## Project Structure
+## 🌐 Domain Configuration
 
+- **Primary Domain**: drsebiapproved.com
+- **Production URL**: https://drsebiapproved-landing.onrender.com
+
+### DNS Configuration
+- A Record: Points to 216.24.57.1
+- CNAME www: Points to parasite-cleanse-landing-latest.onrender.com
+
+## 📈 Analytics & Tracking
+
+### Square Dashboard
+- Access order details and line items
+- Track inventory per product
+- View customer information
+- Monitor sales analytics
+- Manage fulfillment
+
+### Recommended Analytics Setup
+- Google Analytics 4 (to be implemented)
+- Facebook Pixel (to be implemented)
+- Conversion tracking for checkout steps
+
+## 🧪 Testing
+
+### Test Payment Flow
+1. Use TEST99 coupon for 99% discount
+2. Test with real credit card (charges ~$0.60-$0.90)
+3. Verify order appears in Square Dashboard
+4. Check customer email receipt
+5. Confirm shipping address captured
+
+### Test Scenarios
+- Single product purchase
+- Multiple products (free shipping)
+- Quantity selector (2+ of same product)
+- Upsell additions
+- Coupon code application
+- Mobile responsiveness
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Payment Form Not Loading:**
+- Check Square credentials in `.env.local`
+- Verify Square SDK script loads (check browser console)
+- Disable ad blockers
+
+**Order Not Appearing in Square:**
+- Check API logs in Render.com
+- Verify location ID is correct
+- Ensure Square access token has proper permissions
+
+**Shipping Not Calculating:**
+- Check cart items array structure
+- Verify quantity values are numbers
+- Review shipping logic in SquareCheckout.tsx
+
+### Debug Mode
+Check server logs in Render.com for detailed payment processing logs:
+- Order creation details
+- Payment processing status
+- Customer data capture
+- Error messages
+
+## 📝 Content Management
+
+### Blog Posts
+- Located in `content/blog/`
+- Written in MDX format
+- Front matter for metadata
+- Automatic reading time calculation
+- Syntax highlighting for code blocks
+
+### Adding New Blog Post
+1. Create new `.mdx` file in `content/blog/`
+2. Add front matter:
+```mdx
+---
+title: "Your Post Title"
+date: "2025-11-16"
+excerpt: "Brief description"
+author: "Author Name"
+image: "/images/blog-image.jpg"
+---
 ```
-src/
-├── app/                    # Next.js app router pages
-├── components/            # React components
-├── utils/                 # Utility functions
-│   └── shopify.ts        # Shopify API integration
-└── styles/               # Global styles
-```
+3. Write content using Markdown + JSX
+4. Images go in `public/images/`
 
-## Key Features
+## 🔐 Security
 
-- Responsive design
-- Shopify integration for e-commerce
-- Analytics tracking
-- SEO optimization
-- Custom domain support
+- Square Web Payments SDK for PCI compliance
+- No credit card data stored on server
+- HTTPS enforced on all pages
+- Environment variables for sensitive data
+- Server-side API calls for Square access token
 
-## Domain Configuration
+## 🚧 Future Enhancements
 
-The site is configured to use custom domains:
-- Primary domain: drsebiapproved.com
-- DNS Configuration:
-  - A Record: Points to 216.24.57.1
-  - CNAME www: Points to parasite-cleanse-landing-latest.onrender.com
+### High Priority
+- [ ] Exit-intent popup with discount offer
+- [ ] Abandoned cart email recovery
+- [ ] Apple Pay / Google Pay integration
+- [ ] Estimated delivery date display
 
-## Analytics
+### Medium Priority
+- [ ] Post-purchase upsell page
+- [ ] Customer account system
+- [ ] Order tracking page
+- [ ] Product reviews and ratings
 
-Shopify analytics are integrated and can be accessed through:
-1. Shopify Admin Panel → Analytics
-2. Reports → Behavior section
+### Low Priority
+- [ ] Live purchase notifications
+- [ ] Inventory-based urgency messaging
+- [ ] Loyalty program
+- [ ] Subscription options
 
-Data typically takes 24-48 hours to appear in the dashboard.
+## 📞 Support
 
-## Maintenance
-
-### Regular Tasks
-- Monitor Shopify analytics
-- Update product information as needed
-- Check for dependency updates
-
-### Troubleshooting
-- Check Docker build logs for errors
-- Verify environment variables in Render.com
-- Monitor Render.com deployment logs
-
-## Support
-
-For technical support or questions:
+**Technical Support:**
 - Email: info@drsebiwebsite.com
 - Address: 990 Hwy. 287 N, Suite 106 #157, Mansfield, Texas 76063
+
+**Square Support:**
+- Dashboard: https://squareup.com/dashboard
+- Developer Docs: https://developer.squareup.com
+
+## 📄 License
+
+Proprietary - All rights reserved
+
+## 🙏 Acknowledgments
+
+- Dr. Sebi's legacy and formulas
+- Square for payment processing
+- Next.js team for the framework
+- Tailwind CSS for styling utilities
+
+---
+
+**Last Updated:** November 16, 2025
+**Version:** 2.0.0 (Square Integration)
+**Status:** Production Ready ✅
