@@ -110,7 +110,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-2xl font-bold text-foreground">$89.99</p>
+                      <p className="text-2xl font-bold text-foreground">$59.99</p>
                       <p className="text-sm text-muted-foreground">Complete 2-phase system</p>
                     </div>
                   </div>
@@ -161,8 +161,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-2xl font-bold text-foreground">$59.99</p>
-                      <p className="text-sm text-red-600">Save 40% | Was $99.99</p>
+                      <p className="text-2xl font-bold text-foreground">$44.99</p>
+                      <p className="text-sm text-red-600">Save 25% | Was $59.99</p>
                     </div>
                   </div>
                   <Link href="/maya">
@@ -212,8 +212,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-2xl font-bold text-foreground">$49.99</p>
-                      <p className="text-sm text-blue-600">Save 17% | Was $60.00</p>
+                      <p className="text-2xl font-bold text-foreground">$31.99</p>
+                      <p className="text-sm text-blue-600">Save 36% | Was $49.99</p>
                     </div>
                   </div>
                   <Link href="/seamoss">
@@ -263,8 +263,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-2xl font-bold text-foreground">$59.99</p>
-                      <p className="text-sm text-cyan-600">Save 20% | Was $75.00</p>
+                      <p className="text-2xl font-bold text-foreground">$31.99</p>
+                      <p className="text-sm text-cyan-600">Save 47% | Was $59.99</p>
                     </div>
                   </div>
                   <Link href="/mucus-cleanser">

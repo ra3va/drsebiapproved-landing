@@ -138,8 +138,8 @@ export default function MayaPage() {
                 <div className="bg-white border-2 border-primary/20 rounded-2xl p-6 mb-8 w-full max-w-[540px]">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-3xl font-bold text-foreground">$59.99</p>
-                      <p className="text-lg text-muted-foreground line-through">$99.99</p>
+                      <p className="text-3xl font-bold text-foreground">$44.99</p>
+                      <p className="text-lg text-muted-foreground line-through">$59.99</p>
                     </div>
                     <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold">
                       SAVE 40%
@@ -517,8 +517,8 @@ export default function MayaPage() {
             <div className="bg-white border-2 border-primary/20 rounded-2xl p-8 mb-8 max-w-md mx-auto">
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-foreground">$59.99</p>
-                  <p className="text-lg text-muted-foreground line-through">$99.99</p>
+                  <p className="text-3xl font-bold text-foreground">$44.99</p>
+                  <p className="text-lg text-muted-foreground line-through">$59.99</p>
                 </div>
                 <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold">
                   SAVE 40%

@@ -417,7 +417,7 @@ export default function ParaCleansePage() {
                             Regular Price: <span className="line-through">$199.98</span>
                           </div>
                           <div className="text-3xl font-bold text-primary">
-                            Today Only: $89.99
+                            Today Only: $59.99
                           </div>
                           <div className="inline-flex items-center bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
                             YOU SAVE: $110.99 (55% OFF)
