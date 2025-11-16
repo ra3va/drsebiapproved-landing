@@ -105,13 +105,14 @@ function CheckoutContent() {
       </header>
 
       <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 lg:py-12">
-        <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12">
-          {/* Left Column - Checkout Form */}
-          <div className="order-2 lg:order-1 min-w-0">
+        <div className="lg:grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12">
+          {/* Checkout Form - Full width on mobile, left column on desktop */}
+          <div className="lg:order-1 min-w-0">
             <SquareCheckout
               productName={product.name}
               price={product.price}
               variationId={product.variationId}
+              productImage={product.image}
               onSuccess={() => {
                 // Redirect to success page
                 window.location.href = '/checkout/success'
@@ -119,8 +120,8 @@ function CheckoutContent() {
             />
           </div>
 
-          {/* Right Column - Order Summary */}
-          <div className="order-1 lg:order-2 min-w-0">
+          {/* Right Column - Order Summary (Desktop Only) */}
+          <div className="order-1 lg:order-2 min-w-0 hidden lg:block">
             <div className="lg:sticky lg:top-24">
               {/* Order Summary Card */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm mb-4 sm:mb-6">
@@ -173,47 +174,22 @@ function CheckoutContent() {
                 </div>
               </div>
 
-              {/* Trust Badges */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Why Shop With Us?</h3>
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="font-medium text-gray-900 text-xs sm:text-sm">30-Day Money Back Guarantee</h4>
-                      <p className="text-xs text-gray-600 mt-0.5 sm:mt-1">Not satisfied? Get a full refund, no questions asked.</p>
-                    </div>
+              {/* Minimal Trust Badges - Desktop Only */}
+              <div className="hidden lg:block bg-gray-50 rounded-lg border border-gray-200 p-4">
+                <div className="space-y-2.5 text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-green-600 flex-shrink-0" />
+                    <span>30-Day Money Back Guarantee</span>
                   </div>
-                  
-                  <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="font-medium text-gray-900 text-xs sm:text-sm">Secure Payment</h4>
-                      <p className="text-xs text-gray-600 mt-0.5 sm:mt-1">Your payment information is encrypted and secure.</p>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                    <span>Secure Encrypted Payment</span>
                   </div>
-                  
-                  <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="font-medium text-gray-900 text-xs sm:text-sm">100% Authentic</h4>
-                      <p className="text-xs text-gray-600 mt-0.5 sm:mt-1">Original Dr. Sebi formulas, made in Honduras.</p>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-purple-600 flex-shrink-0" />
+                    <span>100% Authentic Dr. Sebi Formulas</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Customer Support */}
-              <div className="mt-4 sm:mt-6 text-center">
-                <p className="text-xs sm:text-sm text-gray-600">
-                  Need help? <a href="mailto:support@drsebiapproved.com" className="text-primary hover:underline font-medium">Contact Support</a>
-                </p>
               </div>
             </div>
           </div>
