@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react'
+import { supabase } from '@/lib/supabase/client'
 
 interface CartItem {
   id: string
@@ -73,11 +74,48 @@ export default function SquareCheckout({
   const [state, setState] = useState('')
   const [zipCode, setZipCode] = useState('')
 
+  // User profile state
+  const [userProfile, setUserProfile] = useState<any>(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   const steps = [
     { number: 1, title: 'Contact', label: 'Contact Info' },
     { number: 2, title: 'Shipping', label: 'Shipping Address' },
     { number: 3, title: 'Payment', label: 'Payment & Review' }
   ]
+
+  // Fetch user profile if logged in
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (user) {
+        setIsLoggedIn(true)
+
+        // Fetch profile from Supabase
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single()
+
+        if (profile) {
+          setUserProfile(profile)
+
+          // Pre-fill form with profile data
+          setEmail(profile.email || user.email || '')
+          setFullName(profile.full_name || '')
+          setPhone(profile.phone || '')
+          setAddress(profile.address || '')
+          setCity(profile.city || '')
+          setState(profile.state || '')
+          setZipCode(profile.zip_code || '')
+        }
+      }
+    }
+
+    fetchUserProfile()
+  }, [])
 
   // Calculate totals
   const SHIPPING_COST = 595 // $5.95 in cents
@@ -395,6 +433,28 @@ export default function SquareCheckout({
           // Clear cart abandonment flag
           localStorage.removeItem('cartAbandoned')
 
+          // Sync order to Supabase if user is logged in
+          if (isLoggedIn && data.squareOrderId) {
+            try {
+              await fetch('/api/sync/square-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  squareOrderId: data.squareOrderId
+                })
+              })
+            } catch (error) {
+              console.error('Failed to sync order to Supabase:', error)
+              // Don't block success - order is already placed
+            }
+          }
+
+          // If user is not logged in but provided email, offer to create account
+          if (!isLoggedIn && email) {
+            // Store email in localStorage to offer account creation on success page
+            localStorage.setItem('checkoutEmail', email)
+          }
+
           onSuccess?.()
         } else {
           setError(data.error || 'Payment failed')
@@ -693,8 +753,31 @@ export default function SquareCheckout({
         </div>
       </div>
 
-      {/* Social Proof Banner - Step 1 Only */}
-      {currentStep === 1 && (
+      {/* Loyalty Points Banner - Logged In Users */}
+      {isLoggedIn && userProfile && currentStep === 1 && (
+        <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-3 mb-3 shadow-sm text-white">
+          <div className="flex items-center gap-2 text-xs">
+            <div className="text-2xl">🎉</div>
+            <div className="flex-1">
+              <p className="font-semibold">
+                Welcome back, {userProfile.full_name || 'Valued Customer'}!
+              </p>
+              <p className="text-[10px] opacity-90">
+                You'll earn {Math.floor(finalTotal / 100)} loyalty points with this purchase! (Current balance: {userProfile.loyalty_points || 0} points)
+              </p>
+            </div>
+            <a
+              href="/portal"
+              className="px-3 py-1.5 bg-white text-green-600 rounded-md text-[10px] font-semibold hover:bg-gray-100"
+            >
+              View Portal
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Social Proof Banner - Step 1 Only (Guest Users) */}
+      {!isLoggedIn && currentStep === 1 && (
         <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-3 mb-3 shadow-sm">
           <div className="flex items-center gap-2 text-xs">
             <div className="flex -space-x-2">
@@ -713,7 +796,7 @@ export default function SquareCheckout({
                 <span className="text-green-600">23 people</span> are viewing this right now
               </p>
               <p className="text-gray-600 text-[10px]">
-                Join 1,200+ customers who've transformed their health
+                Join 1,200+ customers who've transformed their health • <a href="/portal/register" className="underline font-medium">Create account</a> to earn loyalty points!
               </p>
             </div>
           </div>
