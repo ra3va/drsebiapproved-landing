@@ -11,7 +11,7 @@ The primary goal of the project is to provide a comprehensive landing page that 
 - **Styling:** Tailwind CSS with shadcn/ui components
 - **E-commerce:** Shopify Storefront API
 - **Content:** Local MDX files for the blog (`/content/blog`)
-- **Deployment:** Docker
+- **Deployment:** GitHub + Render.com (automatic deployments)
 
 # Building and Running
 

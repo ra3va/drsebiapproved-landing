@@ -45,6 +45,7 @@ export default function RootLayout({
         </Script>
         
         <Script
+          id="shopify-config"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
@@ -71,6 +72,7 @@ export default function RootLayout({
           `}
         </Script>
         <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             height="1"
             width="1"

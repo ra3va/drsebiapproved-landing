@@ -350,6 +350,7 @@ export default function SquareCheckout({
               {cartItems.length === 1 ? (
                 <div className="w-14 h-14 bg-gray-50 rounded-lg overflow-hidden">
                   {cartItems[0].image && (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={cartItems[0].image}
                       alt={cartItems[0].name}
@@ -361,6 +362,7 @@ export default function SquareCheckout({
                 <div className="relative w-14 h-14">
                   <div className="absolute top-0 left-0 w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border-2 border-white shadow-sm">
                     {cartItems[0].image && (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={cartItems[0].image}
                         alt={cartItems[0].name}
@@ -370,6 +372,7 @@ export default function SquareCheckout({
                   </div>
                   <div className="absolute bottom-0 right-0 w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border-2 border-white shadow-sm">
                     {cartItems[1]?.image && (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={cartItems[1].image}
                         alt={cartItems[1].name}
@@ -433,6 +436,7 @@ export default function SquareCheckout({
                 <div key={item.id} className="flex gap-3">
                   {item.image && (
                     <div className="relative w-16 h-16 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.image}
                         alt={item.name}

@@ -16,7 +16,7 @@ A Next.js-based e-commerce platform for Dr. Sebi's authentic health products, fe
 - **Styling**: Tailwind CSS 3.4.1
 - **Payment Processing**: Square Web Payments SDK
 - **E-commerce Backend**: Square Catalog & Orders API
-- **Deployment**: Docker + Render.com
+- **Deployment**: GitHub + Render.com (automatic deployments)
 - **Content**: MDX for blog posts
 
 ## 📦 Environment Variables
@@ -153,45 +153,52 @@ node scripts/update-square-prices.js
 node scripts/create-test-coupon.js
 ```
 
-## 🐳 Deployment Process
+## 🚀 Deployment Process
 
-### Building and Pushing Docker Image
+### GitHub Integration with Render.com
 
-1. Build the Docker image:
+The project uses automatic deployments triggered by GitHub pushes:
+
+1. **Make Changes Locally**
 ```bash
-docker build -t ra3va/parasite-cleanse-landing:latest .
+# Make your code changes
+npm run dev  # Test locally
+npm run build  # Verify production build
 ```
 
-2. Push to Docker Hub:
+2. **Commit and Push to GitHub**
 ```bash
-docker push ra3va/parasite-cleanse-landing:latest
+git add .
+git commit -m "Your descriptive commit message"
+git push origin main
 ```
 
-### Deploying to Render.com
+3. **Automatic Deployment**
+   - Render.com automatically detects the push
+   - Builds the Next.js application
+   - Deploys to production
+   - Usually completes in 2-3 minutes
 
-1. Log into [Render Dashboard](https://dashboard.render.com)
-2. Select the web service
-3. Ensure environment variables are set:
-   - `NEXT_PUBLIC_SQUARE_APPLICATION_ID`
-   - `NEXT_PUBLIC_SQUARE_LOCATION_ID`
-   - `SQUARE_ACCESS_TOKEN`
-4. Deploy using Docker image: `docker.io/ra3va/parasite-cleanse-landing:latest`
+### Render.com Configuration
 
-## 🔄 Making Updates
+**Environment Variables** (set in Render Dashboard):
+- `NEXT_PUBLIC_SQUARE_APPLICATION_ID`
+- `NEXT_PUBLIC_SQUARE_LOCATION_ID`
+- `SQUARE_ACCESS_TOKEN`
+- `BREVO_API_KEY` (optional)
 
-1. Make code changes locally
-2. Test using `npm run dev`
-3. Build and test production build:
-```bash
-npm run build
-npm run start
+**Build Settings:**
+- Build Command: `npm install && npm run build`
+- Start Command: `npm run start`
+- Node Version: 18.x or higher
+
+### Deployment Workflow
+
 ```
-4. Build and push new Docker image:
-```bash
-docker build -t ra3va/parasite-cleanse-landing:latest .
-docker push ra3va/parasite-cleanse-landing:latest
+Local Changes → Git Push → GitHub → Render.com → Production
+     ↓              ↓          ↓          ↓            ↓
+   Edit Code    Commit    Webhook    Build      Live Site
 ```
-5. Render will automatically deploy the new version
 
 ## 🌐 Domain Configuration
 
@@ -199,8 +206,9 @@ docker push ra3va/parasite-cleanse-landing:latest
 - **Production URL**: https://drsebiapproved-landing.onrender.com
 
 ### DNS Configuration
-- A Record: Points to 216.24.57.1
-- CNAME www: Points to parasite-cleanse-landing-latest.onrender.com
+- Managed through Render.com custom domain settings
+- Automatic SSL certificate provisioning
+- HTTPS enforced by default
 
 ## 📈 Analytics & Tracking
 

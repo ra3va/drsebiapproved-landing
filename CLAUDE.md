@@ -16,12 +16,12 @@ npm run start        # Start production server
 npm run lint         # Run ESLint checks
 ```
 
-### Docker Deployment (depreacate we use github)
+### Deployment
 ```bash
-docker build -t parasite-cleanse .
-docker run -p 3000:3000 parasite-cleanse
-# Or use docker-compose for development
-docker-compose -f docker-compose.dev.yml up
+git add .
+git commit -m "Your commit message"
+git push origin main
+# Render.com automatically deploys from GitHub
 ```
 
 ## Architecture & Tech Stack
@@ -144,10 +144,10 @@ BREVO_API_KEY=your-brevo-api-key
 - Coupon validation and analytics integration
 
 ### Deployment
-- Containerized with Docker for consistent deployments
+- GitHub integration with Render.com for automatic deployments
 - Hosted on Render.com with custom domain (drsebiapproved.com)
 - Static assets optimized through Next.js build process
-- Environment variables managed through hosting platform
+- Environment variables managed through Render.com dashboard
 
 ## Session Memory and Context Awareness
 
@@ -256,5 +256,5 @@ BREVO_API_KEY=your-brevo-api-key
 - `shopify-integration-setup` - E-commerce configuration work
 - `blog-content-creation` - Adding new MDX blog posts
 - `ui-component-development` - Building new interface components
-- `deployment-configuration` - Docker and hosting setup
+- `deployment-configuration` - GitHub and Render.com setup
 - `analytics-implementation` - Tracking and conversion optimization

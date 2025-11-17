@@ -36,8 +36,8 @@
 - **Autoprefixer** - CSS vendor prefixes
 
 ## Deployment
-- **Docker** - Containerization
-- **Render.com** - Hosting platform
+- **GitHub** - Version control and deployment trigger
+- **Render.com** - Hosting platform with automatic deployments
 
 ## Common Commands
 
@@ -49,10 +49,11 @@ npm run start        # Start production server
 npm run lint         # Run ESLint
 ```
 
-### Docker Deployment
+### Deployment
 ```bash
-docker build -t ra3va/parasite-cleanse-landing:latest .
-docker push ra3va/parasite-cleanse-landing:latest
+git add .
+git commit -m "Your changes"
+git push origin main  # Triggers automatic deployment on Render.com
 ```
 
 ## Environment Variables
