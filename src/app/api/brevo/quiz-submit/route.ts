@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         RECOMMENDED_PRODUCT: recommendedProduct,
         PRIMARY_PROBLEM: primaryProblem || '',
         QUIZ_DATE: new Date().toISOString().split('T')[0],
-        QUIZ_COMPLETED: true
+        QUIZ_COMPLETED: 'true'
       },
       listIds: [list.id],
       updateEnabled: true

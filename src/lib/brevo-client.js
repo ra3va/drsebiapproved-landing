@@ -81,7 +81,23 @@ export class BrevoClient {
 
     try {
       const response = await fetch(url, config);
-      const data = await response.json();
+      const responseText = await response.text();
+
+      // Handle empty responses (common for 201/204 success codes)
+      if (!responseText || responseText.trim() === '') {
+        if (!response.ok) {
+          throw new BrevoAPIError(response.status, { message: 'Empty error response from Brevo' });
+        }
+        // Return success indicator for empty successful responses
+        return { success: true, status: response.status };
+      }
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        throw new Error(`Brevo returned invalid JSON: ${responseText.substring(0, 200)}`);
+      }
 
       if (!response.ok) {
         throw new BrevoAPIError(response.status, data);

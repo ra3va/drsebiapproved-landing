@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     // Create/get all customer lists
     console.log(`Creating/finding customer lists: ${customerListNames.join(', ')}`);
     const lists = await Promise.all(
-      customerListNames.map(name => brevoClient.findOrCreateList(name))
+      customerListNames.map((name: string) => brevoClient.findOrCreateList(name))
     );
 
     // Update contact with purchase data
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
         LAST_PURCHASE_VALUE: orderValue,
         LAST_PURCHASE_DATE: new Date().toISOString().split('T')[0],
         ORDER_ID: orderId,
-        IS_BUNDLE_BUYER: isBundle,
+        IS_BUNDLE_BUYER: isBundle ? 'true' : 'false',
         CUSTOMER_STATUS: 'active',
         PRODUCTS_OWNED: productSlugs.join(','),
         SHIPPING_CITY: shippingAddress?.locality || '',

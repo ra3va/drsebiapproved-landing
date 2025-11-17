@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     // Update contact with cart abandonment data
     await brevoClient.updateContact(email, {
       attributes: {
-        CART_ABANDONED: true,
+        CART_ABANDONED: 'true',
         CART_VALUE: cartValue,
         CART_PRODUCTS: productNames.join(','),
         CART_ABANDONED_DATE: new Date().toISOString(),

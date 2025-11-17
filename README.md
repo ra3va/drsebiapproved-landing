@@ -1,6 +1,6 @@
 # Dr. Sebi Approved - Health & Wellness E-Commerce Platform
 
-A Next.js-based e-commerce platform for Dr. Sebi's authentic health products, featuring an optimized mobile-first checkout experience integrated with Square for payment processing.
+A Next.js-based e-commerce platform for Dr. Sebi's authentic health products, featuring an optimized mobile-first checkout experience integrated with Square for payment processing and Brevo for intelligent email marketing automation.
 
 ## 🌟 Products
 
@@ -16,8 +16,10 @@ A Next.js-based e-commerce platform for Dr. Sebi's authentic health products, fe
 - **Styling**: Tailwind CSS 3.4.1
 - **Payment Processing**: Square Web Payments SDK
 - **E-commerce Backend**: Square Catalog & Orders API
+- **Email Marketing**: Brevo API (automated campaigns, behavioral tracking)
 - **Deployment**: GitHub + Render.com (automatic deployments)
 - **Content**: MDX for blog posts
+- **Analytics**: Brevo behavioral tracking, Square dashboard
 
 ## 📦 Environment Variables
 
@@ -29,7 +31,7 @@ NEXT_PUBLIC_SQUARE_APPLICATION_ID=your-square-app-id
 NEXT_PUBLIC_SQUARE_LOCATION_ID=your-location-id
 SQUARE_ACCESS_TOKEN=your-square-access-token
 
-# Optional: Email Service (Brevo)
+# Brevo Email Marketing (Required)
 BREVO_API_KEY=your-brevo-api-key
 ```
 
@@ -59,26 +61,38 @@ npm run start
 src/
 ├── app/                          # Next.js App Router
 │   ├── api/                      # API routes
+│   │   ├── brevo/               # Brevo email marketing endpoints
+│   │   │   ├── cart-abandoned/  # Cart abandonment tracking
+│   │   │   ├── purchase-complete/ # Purchase tracking
+│   │   │   ├── quiz-submit/     # Quiz submission & segmentation
+│   │   │   └── track-problem/   # Problem navigation tracking
 │   │   └── square/              # Square payment endpoints
 │   ├── blog/                    # Blog functionality
 │   ├── checkout/                # Checkout pages
 │   │   ├── page.tsx            # Main checkout
 │   │   └── success/            # Order confirmation
+│   ├── quiz/                    # Health assessment quiz
 │   ├── paracleanse/            # Product pages
 │   ├── maya/
 │   ├── seamoss/
 │   └── mucus-cleanser/
 ├── components/                  # React components
 │   ├── ui/                     # UI component library
+│   ├── ProblemNavigation.tsx   # Problem-based product navigation
 │   └── SquareCheckout.tsx      # Main checkout component
+├── hooks/                       # Custom React hooks
+│   └── useProductTracking.ts   # Behavioral tracking hook
 ├── lib/                        # Utility libraries
 │   ├── blog.ts                # Blog post management
+│   ├── brevo-client.js        # Brevo API client
 │   └── utils.ts               # General utilities
-└── utils/                      # Business logic
-    └── shopify.ts             # Legacy (to be removed)
 
 content/
 └── blog/                       # MDX blog posts
+
+docs/
+├── brevo-tracking-guide.md     # Brevo tracking documentation
+└── square-checkout-integration-details.md
 
 scripts/
 ├── create-test-coupon.js      # Square coupon creation
@@ -212,6 +226,17 @@ Local Changes → Git Push → GitHub → Render.com → Production
 
 ## 📈 Analytics & Tracking
 
+### Brevo Email Marketing & Behavioral Tracking
+- **Automated Segmentation**: Contacts sorted by quiz results, product interest, and purchase behavior
+- **Quiz Integration**: Symptom-based product recommendations with email capture
+- **Cart Abandonment**: Automatic recovery sequences triggered when users leave checkout
+- **Purchase Tracking**: Customers added to product-specific lists for targeted follow-ups
+- **Problem Navigation**: Track which health concerns visitors click on homepage
+- **10 Contact Lists**: Prospect lists (ParaCleanse, Maya, Sea Moss, Mucus Cleanser, Quiz Takers) + Customer lists (per product + Bundle Buyers)
+- **25 Custom Attributes**: Quiz scores, severity levels, purchase history, cart data, shipping info
+
+See `docs/brevo-tracking-guide.md` for complete tracking documentation.
+
 ### Square Dashboard
 - Access order details and line items
 - Track inventory per product
@@ -219,10 +244,13 @@ Local Changes → Git Push → GitHub → Render.com → Production
 - Monitor sales analytics
 - Manage fulfillment
 
-### Recommended Analytics Setup
-- Google Analytics 4 (to be implemented)
-- Facebook Pixel (to be implemented)
-- Conversion tracking for checkout steps
+### Behavioral Events Tracked
+- Quiz starts and completions
+- Problem card selections on homepage
+- Product page views and engagement time
+- CTA clicks and add-to-cart events
+- Cart abandonment
+- Purchase completion
 
 ## 🧪 Testing
 
@@ -299,11 +327,23 @@ image: "/images/blog-image.jpg"
 - Environment variables for sensitive data
 - Server-side API calls for Square access token
 
+## ✅ Recent Major Updates
+
+### Brevo Multi-Product Hub Integration (November 2025)
+- ✅ **Multi-Product Navigation**: Problem-based product discovery on homepage
+- ✅ **Smart Quiz**: 10-question health assessment with email capture and product recommendations
+- ✅ **Automated Email Sequences**: Quiz nurture, cart abandonment recovery, post-purchase follow-ups
+- ✅ **Behavioral Tracking**: Complete visitor journey tracking with 9 event types
+- ✅ **Customer Segmentation**: 10 automated lists + 25 custom contact attributes
+- ✅ **API Integration**: 4 Brevo endpoints for real-time tracking and automation
+
+See `BREVO_MULTI_PRODUCT_INTEGRATION.md` for complete implementation details.
+
 ## 🚧 Future Enhancements
 
 ### High Priority
+- [ ] Build automation sequences in Brevo dashboard (quiz nurture, cart recovery, post-purchase)
 - [ ] Exit-intent popup with discount offer
-- [ ] Abandoned cart email recovery
 - [ ] Apple Pay / Google Pay integration
 - [ ] Estimated delivery date display
 
@@ -342,6 +382,6 @@ Proprietary - All rights reserved
 
 ---
 
-**Last Updated:** November 16, 2025
-**Version:** 2.0.0 (Square Integration)
+**Last Updated:** November 17, 2025
+**Version:** 3.0.0 (Square + Brevo Multi-Product Hub)
 **Status:** Production Ready ✅
