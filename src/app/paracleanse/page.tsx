@@ -7,16 +7,21 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from 'react';
 import Header from "@/components/Header";
+import { useProductTracking } from "@/hooks/useProductTracking";
 
 interface BuyButtonProps {
   variant?: 'default' | 'hero';
+  trackCTAClick: (location: string) => void;
 }
 
-const BuyButton = ({ variant = 'default' }: BuyButtonProps) => {
+const BuyButton = ({ variant = 'default', trackCTAClick }: BuyButtonProps) => {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleBuyNow = () => {
+  const handleBuyNow = (ctaLocation: string) => {
+    // Track Brevo CTA click
+    trackCTAClick(ctaLocation);
+
     // Track GA4 begin_checkout event
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'begin_checkout', {
@@ -30,7 +35,7 @@ const BuyButton = ({ variant = 'default' }: BuyButtonProps) => {
         }]
       });
     }
-    
+
     // Redirect to checkout page
     window.location.href = '/checkout?product=paracleanse';
   };
@@ -51,17 +56,17 @@ const BuyButton = ({ variant = 'default' }: BuyButtonProps) => {
 
   return variant === "hero" ? (
     <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto mb-6">
-      <Button 
-        size="lg" 
+      <Button
+        size="lg"
         className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
         onClick={scrollToPackage}
       >
         Start Your Transformation
       </Button>
       <Link href="/quiz">
-        <Button 
-          size="lg" 
-          variant="outline" 
+        <Button
+          size="lg"
+          variant="outline"
           className="rounded-full px-8 py-6 text-lg hover:bg-primary/5 border-primary text-primary"
         >
           Take Quiz
@@ -71,22 +76,22 @@ const BuyButton = ({ variant = 'default' }: BuyButtonProps) => {
   ) : (
     <div className="flex items-center gap-4">
       <div className="flex items-center border rounded-lg">
-        <button 
+        <button
           onClick={() => setQuantity(Math.max(1, quantity - 1))}
           className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-l-lg"
         >
           -
         </button>
         <span className="px-4 py-2 text-gray-800">{quantity}</span>
-        <button 
+        <button
           onClick={() => setQuantity(quantity + 1)}
           className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-r-lg"
         >
           +
         </button>
       </div>
-      <Button 
-        onClick={handleBuyNow} 
+      <Button
+        onClick={() => handleBuyNow('package-section')}
         disabled={isLoading}
         className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-md shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
       >
@@ -97,6 +102,13 @@ const BuyButton = ({ variant = 'default' }: BuyButtonProps) => {
 };
 
 export default function ParaCleansePage() {
+  // Initialize product tracking
+  const { trackCTAClick, trackAddToCart } = useProductTracking({
+    productName: 'ParaCleanse Elite',
+    productSlug: 'paracleanse',
+    price: 59.99
+  });
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
@@ -173,7 +185,7 @@ export default function ParaCleansePage() {
                   Experience our powerful two-phase cleanse: ParaWash first dissolves biofilms with our powerful anti-parasite formula, then our intracellular cleanse sweeps parasites away. Dr. Sebi's authentic formula for complete parasite elimination.
                 </p>
 
-                <BuyButton variant="hero" />
+                <BuyButton variant="hero" trackCTAClick={trackCTAClick} />
 
                 <div className="grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-[540px] border rounded-xl p-4 sm:p-6 bg-card/50 backdrop-blur-sm">
                   <div className="flex flex-col items-center lg:items-start">
@@ -288,10 +300,13 @@ export default function ParaCleansePage() {
                 <p className="text-red-800 font-semibold mb-8">
                   Stop suffering in silence. Take back control of your health TODAY.
                 </p>
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg font-semibold shadow-lg animate-pulse"
-                  onClick={() => document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => {
+                    trackCTAClick('symptoms-urgency-cta');
+                    document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Get Your Life Back Now - 55% Off Today Only
                 </Button>
@@ -475,11 +490,15 @@ export default function ParaCleansePage() {
                       </div>
 
                       <div className="pt-4">
-                        <Link href="/checkout?product=paracleanse">
-                          <Button className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg font-semibold shadow-lg">
-                            Proceed to Secure Checkout
-                          </Button>
-                        </Link>
+                        <Button
+                          className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg font-semibold shadow-lg"
+                          onClick={() => {
+                            trackCTAClick('sticky-package-cta');
+                            window.location.href = '/checkout?product=paracleanse';
+                          }}
+                        >
+                          Proceed to Secure Checkout
+                        </Button>
                         <div className="flex items-center justify-center gap-2 mt-3 text-xs text-muted-foreground">
                           <Shield className="h-4 w-4" />
                           <span>Secure Checkout • SSL Protected • 30-Day Guarantee</span>
@@ -577,10 +596,13 @@ export default function ParaCleansePage() {
                 <p className="text-muted-foreground mb-6">
                   Join thousands who have successfully eliminated parasites and reclaimed their health with Dr. Sebi's proven two-phase system.
                 </p>
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg"
-                  onClick={() => document.querySelector('.paracleanse-package')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => {
+                    trackCTAClick('timeline-cta');
+                    document.querySelector('.paracleanse-package')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Get Your ParaCleanse Elite Package
                 </Button>
@@ -601,10 +623,13 @@ export default function ParaCleansePage() {
                 Join thousands who have already discovered the power of Dr. Sebi's authentic cleansing system. Your path to optimal health begins here.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg"
-                  onClick={() => document.querySelector('.paracleanse-package')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => {
+                    trackCTAClick('final-cta');
+                    document.querySelector('.paracleanse-package')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Order Your Package Now
                 </Button>

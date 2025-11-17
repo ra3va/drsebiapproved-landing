@@ -7,9 +7,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from 'react';
 import Header from "@/components/Header";
+import { useProductTracking } from "@/hooks/useProductTracking";
 
 export default function MucusCleanserPage() {
   const [showModal, setShowModal] = useState(false);
+
+  // Initialize product tracking
+  const { trackCTAClick, trackAddToCart } = useProductTracking({
+    productName: 'Mucus Cleanser',
+    productSlug: 'mucus-cleanser',
+    price: 39.99
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -148,15 +156,17 @@ export default function MucusCleanserPage() {
                   <p className="text-sm text-muted-foreground">30 Capsules | Handmade to preserve potency</p>
                 </div>
 
-                <Link href="/checkout?product=mucus-cleanser" className="w-full max-w-[540px]">
-                  <Button 
-                    size="lg" 
-                    className="w-full bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-cyan-600/25 hover:translate-y-[1px] transition-all"
-                  >
-                    <ArrowRight className="w-5 h-5 mr-2" />
-                    Proceed to Secure Checkout
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="w-full max-w-[540px] bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-cyan-600/25 hover:translate-y-[1px] transition-all"
+                  onClick={() => {
+                    trackCTAClick('hero-checkout-cta');
+                    window.location.href = '/checkout?product=mucus-cleanser';
+                  }}
+                >
+                  <ArrowRight className="w-5 h-5 mr-2" />
+                  Proceed to Secure Checkout
+                </Button>
 
                 {/* Social Proof */}
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">

@@ -7,9 +7,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from 'react';
 import Header from "@/components/Header";
+import { useProductTracking } from "@/hooks/useProductTracking";
 
 export default function MayaPage() {
   const [showModal, setShowModal] = useState(false);
+
+  // Initialize product tracking
+  const { trackCTAClick, trackAddToCart } = useProductTracking({
+    productName: 'Maya Formula',
+    productSlug: 'maya',
+    price: 49.99
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -148,15 +156,17 @@ export default function MayaPage() {
                   <p className="text-sm text-muted-foreground">8 fl oz | Made fresh in Honduras</p>
                 </div>
 
-                <Link href="/checkout?product=maya" className="w-full max-w-[540px]">
-                  <Button 
-                    size="lg" 
-                    className="w-full bg-primary hover:bg-primary/90 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
-                  >
-                    <ArrowRight className="w-5 h-5 mr-2" />
-                    Proceed to Secure Checkout
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="w-full max-w-[540px] bg-primary hover:bg-primary/90 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
+                  onClick={() => {
+                    trackCTAClick('hero-checkout-cta');
+                    window.location.href = '/checkout?product=maya';
+                  }}
+                >
+                  <ArrowRight className="w-5 h-5 mr-2" />
+                  Proceed to Secure Checkout
+                </Button>
 
                 {/* Social Proof */}
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">
