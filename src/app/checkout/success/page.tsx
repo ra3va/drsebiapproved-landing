@@ -62,7 +62,8 @@ export default function CheckoutSuccessPage() {
           })),
           orderValue: orderData.finalTotal / 100,
           orderId: orderData.orderId,
-          shippingAddress: orderData.address
+          shippingAddress: orderData.address,
+          phone: orderData.phone || undefined  // NEW: Include phone for SMS marketing
         })
       })
       .then(res => res.json())

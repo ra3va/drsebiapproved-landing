@@ -9,7 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NODE_ENV === 'production' ? 'https://drsebiapproved.com' : 'http://localhost:3000'),
   title: "Dr. Sebi Approved | Authentic Natural Healing Products & Supplements",
-  description: "Discover authentic Dr. Sebi approved products including Maya formula, Sea Moss capsules, and parasite cleansing systems. Natural healing solutions based on Dr. Sebi's proven methodologies.",
+  description: "Shop authentic Dr. Sebi products: Maya 26-Herb Formula, Honduran Sea Moss, ParaCleanse Elite, and Mucus Cleanser. Wildcrafted herbs, proven results, 100% natural healing solutions.",
+  keywords: "Dr. Sebi products, Maya formula, Sea Moss capsules, parasite cleanse, mucus cleanser, natural healing, wildcrafted herbs, alkaline diet, iron supplements, holistic wellness",
   manifest: '/manifest.json',
   icons: {
     icon: [
@@ -19,6 +20,28 @@ export const metadata: Metadata = {
     apple: [
       { url: '/apple-touch-icon.svg', type: 'image/svg+xml', sizes: '180x180' }
     ]
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://drsebiapproved.com',
+    siteName: 'Dr. Sebi Approved',
+    title: 'Dr. Sebi Approved | Authentic Natural Healing Products',
+    description: 'Shop authentic Dr. Sebi products: Maya 26-Herb Formula, Honduran Sea Moss, ParaCleanse Elite, and Mucus Cleanser. Wildcrafted herbs, proven results, 100% natural.',
+    images: [
+      {
+        url: '/maya.png',
+        width: 1200,
+        height: 630,
+        alt: 'Dr. Sebi Approved Natural Healing Products',
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Dr. Sebi Approved | Authentic Natural Healing Products',
+    description: 'Shop authentic Dr. Sebi products: Maya 26-Herb Formula, Sea Moss, ParaCleanse Elite, and Mucus Cleanser. 100% natural healing.',
+    images: ['/maya.png'],
   }
 };
 

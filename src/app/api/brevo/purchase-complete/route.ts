@@ -1,6 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import brevoClient from '@/lib/brevo-client';
 
+// Format phone number to E.164 format (international format with country code)
+// Brevo requires: +[country code][number] (e.g., +12145551234)
+function formatPhoneForBrevo(phone: string): string | null {
+  if (!phone) return null;
+
+  // Remove all non-digit characters
+  const digits = phone.replace(/\D/g, '');
+
+  // If it's empty after cleaning, return null
+  if (!digits) return null;
+
+  // If it starts with 1 and has 11 digits (US/Canada with country code)
+  if (digits.length === 11 && digits[0] === '1') {
+    return `+${digits}`;
+  }
+
+  // If it has 10 digits (US/Canada without country code)
+  if (digits.length === 10) {
+    return `+1${digits}`;
+  }
+
+  // If it already has country code and is 11+ digits
+  if (digits.length >= 11) {
+    return `+${digits}`;
+  }
+
+  // Invalid format - return null to skip
+  console.log(`⚠️ Invalid phone format, skipping: ${phone}`);
+  return null;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -10,7 +41,8 @@ export async function POST(req: NextRequest) {
       productsPurchased,
       orderValue,
       orderId,
-      shippingAddress
+      shippingAddress,
+      phone
     } = await req.json();
 
     // Validate required fields
@@ -58,23 +90,36 @@ export async function POST(req: NextRequest) {
       customerListNames.map((name: string) => brevoClient.findOrCreateList(name))
     );
 
+    // Build attributes object
+    const attributes: Record<string, any> = {
+      FIRSTNAME: firstName || '',
+      LASTNAME: lastName || '',
+      LAST_PURCHASE_PRODUCT: primaryProduct,
+      LAST_PURCHASE_VALUE: orderValue,
+      LAST_PURCHASE_DATE: new Date().toISOString().split('T')[0],
+      ORDER_ID: orderId,
+      IS_BUNDLE_BUYER: isBundle ? 'true' : 'false',
+      CUSTOMER_STATUS: 'active',
+      PRODUCTS_OWNED: productSlugs.join(','),
+      SHIPPING_CITY: shippingAddress?.locality || '',
+      SHIPPING_STATE: shippingAddress?.administrativeDistrictLevel1 || '',
+      SHIPPING_ZIP: shippingAddress?.postalCode || '',
+      CHECKOUT_IN_PROGRESS: 'false',  // NEW: mark checkout complete
+      CART_ABANDONED: 'false'  // NEW: clear abandoned flag (they purchased!)
+    };
+
+    // Add SMS attribute only if phone is valid E.164 format
+    if (phone) {
+      const formattedPhone = formatPhoneForBrevo(phone);
+      if (formattedPhone) {
+        attributes.SMS = formattedPhone;
+      }
+    }
+
     // Update contact with purchase data
     await brevoClient.addContact({
       email,
-      attributes: {
-        FIRSTNAME: firstName || '',
-        LASTNAME: lastName || '',
-        LAST_PURCHASE_PRODUCT: primaryProduct,
-        LAST_PURCHASE_VALUE: orderValue,
-        LAST_PURCHASE_DATE: new Date().toISOString().split('T')[0],
-        ORDER_ID: orderId,
-        IS_BUNDLE_BUYER: isBundle ? 'true' : 'false',
-        CUSTOMER_STATUS: 'active',
-        PRODUCTS_OWNED: productSlugs.join(','),
-        SHIPPING_CITY: shippingAddress?.locality || '',
-        SHIPPING_STATE: shippingAddress?.administrativeDistrictLevel1 || '',
-        SHIPPING_ZIP: shippingAddress?.postalCode || ''
-      },
+      attributes,
       listIds: lists.map(l => l.id),
       updateEnabled: true
     });

@@ -7,7 +7,10 @@ export async function POST(req: NextRequest) {
       email,
       cartItems,
       cartValue,
-      checkoutUrl
+      checkoutUrl,
+      abandonmentStage,
+      checkoutStep,
+      intentLevel
     } = await req.json();
 
     if (!email) {
@@ -27,21 +30,30 @@ export async function POST(req: NextRequest) {
       return item.name;
     });
 
-    // Update contact with cart abandonment data
+    // Update contact with cart abandonment data (stage-aware)
     await brevoClient.updateContact(email, {
       attributes: {
         CART_ABANDONED: 'true',
         CART_VALUE: cartValue,
         CART_PRODUCTS: productNames.join(','),
         CART_ABANDONED_DATE: new Date().toISOString(),
-        CHECKOUT_URL: checkoutUrl || ''
+        CHECKOUT_URL: checkoutUrl || '',
+        CHECKOUT_ABANDONED_STAGE: abandonmentStage || 'step_1',  // NEW: step_1/step_2/step_3
+        CHECKOUT_STEP: `step_${checkoutStep || 1}`,  // NEW: step_1, step_2, or step_3
+        ABANDONMENT_INTENT_LEVEL: intentLevel || 'low',  // NEW: low/medium/high
+        CHECKOUT_IN_PROGRESS: 'false'  // NEW: mark as no longer in progress
       }
     });
 
-    console.log(`Cart abandonment tracked for ${email} - Value: $${cartValue} - Products: ${productNames.join(', ')}`);
+    console.log(`Cart abandonment tracked for ${email} - Stage: ${abandonmentStage} - Intent: ${intentLevel} - Value: $${cartValue}`);
 
-    // Your AI agent will trigger cart abandonment recovery sequence
-    // (typically 3 emails: 15min, 2hr, 24hr)
+    // Stage-aware recovery sequences can be triggered based on:
+    // - CHECKOUT_ABANDONED_STAGE: Different sequences per step
+    // - ABANDONMENT_INTENT_LEVEL: Adjust timing and urgency
+    // Example sequences:
+    // - step_1 (low intent): 4hr → 2day → 5day (educational)
+    // - step_2 (medium intent): 1hr → 6hr → 24hr (value-focused)
+    // - step_3 (high intent): 5min → 30min → 2hr (aggressive recovery)
 
     return NextResponse.json({
       success: true,

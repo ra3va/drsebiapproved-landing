@@ -73,6 +73,29 @@ export default function SquareCheckout({
   const [state, setState] = useState('')
   const [zipCode, setZipCode] = useState('')
 
+  // Format phone number as user types: (555) 123-4567
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digit characters
+    const phoneNumber = value.replace(/\D/g, '')
+
+    // Don't format if empty
+    if (!phoneNumber) return ''
+
+    // Format based on length
+    if (phoneNumber.length <= 3) {
+      return phoneNumber
+    } else if (phoneNumber.length <= 6) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`
+    } else {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`
+    }
+  }
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value)
+    setPhone(formatted)
+  }
+
   const steps = [
     { number: 1, title: 'Contact', label: 'Contact Info' },
     { number: 2, title: 'Shipping', label: 'Shipping Address' },
@@ -139,7 +162,19 @@ export default function SquareCheckout({
 
       localStorage.setItem('cartAbandoned', 'true')
 
-      // Send to Brevo API
+      // NEW: Determine abandonment stage and intent level
+      let abandonmentStage = 'step_1';
+      let intentLevel = 'low';
+
+      if (currentStep === 2) {
+        abandonmentStage = 'step_2';
+        intentLevel = 'medium';
+      } else if (currentStep === 3) {
+        abandonmentStage = 'step_3';
+        intentLevel = 'high';
+      }
+
+      // Send to Brevo API with stage-aware data
       fetch('/api/brevo/cart-abandoned', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -147,7 +182,10 @@ export default function SquareCheckout({
           email,
           cartItems,
           cartValue: finalTotal / 100,
-          checkoutUrl: window.location.href
+          checkoutUrl: window.location.href,
+          abandonmentStage,  // NEW: track which step they abandoned at
+          checkoutStep: currentStep,  // NEW: current step number
+          intentLevel  // NEW: low/medium/high for recovery strategy
         }),
         keepalive: true // Ensure request completes even as page unloads
       }).catch(err => console.error('Cart abandonment tracking failed:', err))
@@ -155,7 +193,7 @@ export default function SquareCheckout({
 
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [email, finalTotal, cartItems])
+  }, [email, finalTotal, cartItems, currentStep])
 
   const initializeSquare = useCallback(async () => {
     // Prevent multiple simultaneous initializations
@@ -271,7 +309,7 @@ export default function SquareCheckout({
     return true
   }
 
-  const goToNextStep = () => {
+  const goToNextStep = async () => {
     if (validateStep(currentStep)) {
       // Track email entered - user is now identifiable
       if (currentStep === 1 && email) {
@@ -283,9 +321,58 @@ export default function SquareCheckout({
             source: 'checkout'
           }]);
         }
+
+        // NEW: Create contact in Brevo database with Step 1 data
+        try {
+          const nameParts = fullName.trim().split(' ');
+          const firstName = nameParts[0] || '';
+          const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
+          await fetch('/api/brevo/checkout-started', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              firstName,
+              lastName,
+              phone: phone || undefined,
+              cartItems,
+              cartValue: finalTotal / 100,
+              checkoutStep: 'contact_info',
+              source: 'checkout'
+            })
+          });
+        } catch (error) {
+          console.error('Checkout tracking failed:', error);
+          // Don't block checkout flow
+        }
+
         // Track cart state for abandonment recovery
         localStorage.setItem('checkoutEmail', email)
         localStorage.setItem('checkoutCartValue', finalTotal.toString())
+      }
+
+      // NEW: Capture shipping data when Step 2 completes
+      if (currentStep === 2 && email) {
+        try {
+          await fetch('/api/brevo/checkout-shipping', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              shippingAddress: {
+                addressLine1: address,
+                locality: city,
+                administrativeDistrictLevel1: state,
+                postalCode: zipCode
+              },
+              checkoutStep: 'shipping_info'
+            })
+          });
+        } catch (error) {
+          console.error('Shipping tracking failed:', error);
+          // Don't block checkout flow
+        }
       }
 
       setCurrentStep(prev => Math.min(prev + 1, 3))
@@ -857,8 +944,9 @@ export default function SquareCheckout({
               <input
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handlePhoneChange}
                 placeholder="(555) 123-4567"
+                maxLength={14}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-base"
               />
             </div>
