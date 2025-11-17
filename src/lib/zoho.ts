@@ -88,9 +88,15 @@ export async function exchangeCodeForTokens(code: string) {
     // Calculate expiration timestamp (access tokens last 1 hour)
     const expiresAt = new Date(Date.now() + expires_in * 1000);
 
+    // Note: Zoho sometimes doesn't return refresh_token on subsequent authorizations
+    // This is normal - it only gives refresh token on first authorization
+    if (!refresh_token) {
+      console.warn('⚠️ No refresh token received. This may be a subsequent authorization.');
+    }
+
     return {
       accessToken: access_token,
-      refreshToken: refresh_token,
+      refreshToken: refresh_token || null,
       expiresAt,
       tokenType: token_type,
       scope: ZOHO_SCOPES,
@@ -142,7 +148,7 @@ export async function storeTokens(
   userEmail: string,
   tokens: {
     accessToken: string;
-    refreshToken: string;
+    refreshToken: string | null;
     expiresAt: Date;
     tokenType?: string;
     scope?: string;

@@ -18,18 +18,23 @@ export async function GET(request: NextRequest) {
     const error = searchParams.get('error');
     const state = searchParams.get('state');
 
+    // Use public domain for redirect, not internal Render address
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://drsebiapproved.com'
+      : 'http://localhost:3000';
+
     // Handle authorization errors
     if (error) {
       console.error('OAuth authorization error:', error);
       return NextResponse.redirect(
-        new URL(`/?error=oauth_denied&message=${error}`, request.url)
+        new URL(`/?error=oauth_denied&message=${error}`, baseUrl)
       );
     }
 
     // Validate authorization code
     if (!code) {
       return NextResponse.redirect(
-        new URL('/?error=missing_code&message=No authorization code received', request.url)
+        new URL('/?error=missing_code&message=No authorization code received', baseUrl)
       );
     }
 
@@ -47,13 +52,19 @@ export async function GET(request: NextRequest) {
 
     // Redirect to success page (you can create a campaign dashboard later)
     return NextResponse.redirect(
-      new URL('/?success=zoho_connected&message=Email system ready for campaign!', request.url)
+      new URL('/?success=zoho_connected&message=Email system ready for campaign!', baseUrl)
     );
 
   } catch (error: any) {
     console.error('OAuth callback error:', error);
+    
+    // Use public domain for redirect, not internal Render address
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://drsebiapproved.com'
+      : 'http://localhost:3000';
+    
     return NextResponse.redirect(
-      new URL(`/?error=oauth_failed&message=${encodeURIComponent(error.message)}`, request.url)
+      new URL(`/?error=oauth_failed&message=${encodeURIComponent(error.message)}`, baseUrl)
     );
   }
 }
