@@ -17,16 +17,34 @@ Comprehensive email campaign management for the Dr. Sebi Approved 8K customer wi
 - Clean up test/fake email addresses
 - Track email clicks and engagement
 
+## Environment Detection
+
+**CRITICAL**: Automatically detect whether to use localhost or production:
+
+- **Development**: `http://localhost:3000` (when dev server is running)
+- **Production**: `https://drsebiapproved.com` (for live campaign sends)
+
+**Auto-detection logic**:
+1. Check if port 3000 is active: `lsof -ti:3000`
+2. If active → use `http://localhost:3000`
+3. If not active → use `https://drsebiapproved.com`
+
+**User can override** by specifying:
+- "Send via localhost"
+- "Send via production"
+- "Use production URL"
+
 ## Core Capabilities
 
 ### 1. Send Test Email
 **When to use**: User asks to "send a test email" or "email kingthriva@gmail.com"
 
 **Process**:
-1. Ensure only real email addresses in database (no test@example.com)
-2. Add recipient to database if not exists
-3. Send via `/api/campaign/send-batch` endpoint
-4. Report success/failure
+1. Detect environment (localhost or production)
+2. Ensure only real email addresses in database (no test@example.com)
+3. Add recipient to database if not exists
+4. Send via `/api/campaign/send-batch` endpoint
+5. Report success/failure
 
 **Example request**:
 ```
@@ -37,12 +55,16 @@ Send a test email to kingthriva@gmail.com
 **When to use**: User asks to "send emails", "start campaign", or "send batch"
 
 **Process**:
-1. Check campaign status via `/api/campaign/status`
-2. Verify only real emails in pending queue (no @example.com)
-3. Send batch via POST to `/api/campaign/send-batch`
-4. Report results (sent count, failed count, remaining)
+1. Detect environment (localhost or production)
+2. Check campaign status via `/api/campaign/status`
+3. Verify only real emails in pending queue (no @example.com)
+4. Send batch via POST to `/api/campaign/send-batch`
+5. Report results (sent count, failed count, remaining)
 
-**API Endpoint**: `POST http://localhost:3000/api/campaign/send-batch`
+**API Endpoint**:
+- Development: `POST http://localhost:3000/api/campaign/send-batch`
+- Production: `POST https://drsebiapproved.com/api/campaign/send-batch`
+
 ```json
 {
   "batchSize": 50,
@@ -55,11 +77,15 @@ Send a test email to kingthriva@gmail.com
 **When to use**: User provides CSV file or asks to "upload customer list"
 
 **Process**:
-1. Read CSV file (format: `email,name` or just `email`)
-2. POST to `/api/campaign/upload-list`
-3. Report upload stats
+1. Detect environment (localhost or production)
+2. Read CSV file (format: `email,name` or just `email`)
+3. POST to `/api/campaign/upload-list`
+4. Report upload stats
 
-**API Endpoint**: `POST http://localhost:3000/api/campaign/upload-list`
+**API Endpoint**:
+- Development: `POST http://localhost:3000/api/campaign/upload-list`
+- Production: `POST https://drsebiapproved.com/api/campaign/upload-list`
+
 ```json
 {
   "csvData": "email1@example.com,Name 1\nemail2@example.com,Name 2",
@@ -70,7 +96,9 @@ Send a test email to kingthriva@gmail.com
 ### 4. Check Campaign Status
 **When to use**: User asks about "campaign status", "how many sent", or "progress"
 
-**API Endpoint**: `GET http://localhost:3000/api/campaign/status`
+**API Endpoint**:
+- Development: `GET http://localhost:3000/api/campaign/status`
+- Production: `GET https://drsebiapproved.com/api/campaign/status`
 
 Returns:
 - Total customers
@@ -114,23 +142,45 @@ Returns:
 
 ## API Routes Reference
 
+**Base URLs**:
+- Development: `http://localhost:3000`
+- Production: `https://drsebiapproved.com`
+
+Use `$BASE_URL` variable based on environment detection.
+
 ### Send Batch
 ```bash
+# Development
 curl -X POST http://localhost:3000/api/campaign/send-batch \
+  -H "Content-Type: application/json" \
+  -d '{"batchSize": 1, "delaySeconds": 0, "dryRun": false}'
+
+# Production
+curl -X POST https://drsebiapproved.com/api/campaign/send-batch \
   -H "Content-Type: application/json" \
   -d '{"batchSize": 1, "delaySeconds": 0, "dryRun": false}'
 ```
 
 ### Upload List
 ```bash
+# Development
 curl -X POST http://localhost:3000/api/campaign/upload-list \
+  -H "Content-Type: application/json" \
+  -d '{"csvData": "email@example.com,Name\n", "batchSize": 50}'
+
+# Production
+curl -X POST https://drsebiapproved.com/api/campaign/upload-list \
   -H "Content-Type: application/json" \
   -d '{"csvData": "email@example.com,Name\n", "batchSize": 50}'
 ```
 
 ### Check Status
 ```bash
+# Development
 curl http://localhost:3000/api/campaign/status
+
+# Production
+curl https://drsebiapproved.com/api/campaign/status
 ```
 
 ## Workflow Examples
@@ -234,6 +284,35 @@ After using this skill, the user should:
 4. ✅ Have campaign status updated
 5. ✅ Experience zero errors or friction
 
+## Environment Detection Helper
+
+Before every API call, detect the environment:
+
+```bash
+# Check if dev server is running
+if lsof -ti:3000 > /dev/null 2>&1; then
+  BASE_URL="http://localhost:3000"
+  ENV="Development"
+else
+  BASE_URL="https://drsebiapproved.com"
+  ENV="Production"
+fi
+
+echo "Using $ENV environment: $BASE_URL"
+```
+
+Then use `$BASE_URL` in all API calls.
+
+**When to force production**:
+- User explicitly says "production" or "live"
+- Scheduled cron jobs (always production)
+- User says "send to real customers" (implies production)
+
+**When to use localhost**:
+- Dev server is confirmed running
+- User says "test locally" or "localhost"
+- Development/debugging scenarios
+
 ## Best Practices
 
 1. **Always clean first**: Run cleanup-test-emails.js before any send
@@ -241,7 +320,33 @@ After using this skill, the user should:
 3. **Use dry runs**: Test with `"dryRun": true` before actual sends
 4. **Monitor status**: Check `/api/campaign/status` after batch sends
 5. **Protect spam rating**: Only send to real, verified email addresses
+6. **Auto-detect environment**: Check port 3000 before every operation
+7. **Confirm production sends**: Always confirm with user before production batch sends
+
+## Environment Examples
+
+### Example 1: Auto-detect and send
+```
+User: "Send a test email to kingthriva@gmail.com"
+
+Steps:
+1. Check if port 3000 is active
+2. If yes → use localhost, if no → use production
+3. Inform user: "Using Development environment (localhost:3000)"
+4. Send email
+```
+
+### Example 2: Force production
+```
+User: "Send 50 emails on production"
+
+Steps:
+1. Force BASE_URL=https://drsebiapproved.com
+2. Inform user: "Using Production environment (drsebiapproved.com)"
+3. Confirm: "Ready to send 50 real emails via production. Proceed?"
+4. After confirmation, send batch
+```
 
 ---
 
-**This skill makes email sending flawless and effortless for Ra's Dr. Sebi campaign.**
+**This skill makes email sending flawless and effortless for Ra's Dr. Sebi campaign across both development and production environments.**
