@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script'
-import ShopifyAnalytics from '@/components/ShopifyAnalytics'
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,7 +45,6 @@ export default function RootLayout({
         </Script>
         
         <Script
-          id="shopify-analytics"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
@@ -55,8 +54,6 @@ export default function RootLayout({
           }}
         />
         <Script
-          id="shopify-api"
-          src="https://cdn.shopify.com/shopifycloud/shopify/assets/storefront-api.js"
           strategy="afterInteractive"
         />
         <Script id="meta-pixel" strategy="afterInteractive">
@@ -100,7 +97,6 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={inter.className}>
-        <ShopifyAnalytics />
         {children}
       </body>
     </html>
