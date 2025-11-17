@@ -9,6 +9,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthorizationUrl, isZohoConfigured } from '@/lib/zoho';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Check if Zoho credentials are configured

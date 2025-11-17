@@ -10,6 +10,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { exchangeCodeForTokens, storeTokens, getDefaultUserEmail } from '@/lib/zoho';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Extract authorization code from query parameters
