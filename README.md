@@ -91,8 +91,15 @@ content/
 └── blog/                       # MDX blog posts
 
 docs/
-├── brevo-tracking-guide.md     # Brevo tracking documentation
-└── square-checkout-integration-details.md
+├── brevo/                      # Brevo email marketing docs
+│   ├── BREVO_MULTI_PRODUCT_INTEGRATION.md  # Complete integration guide
+│   ├── brevo-tracking-guide.md             # Behavioral tracking details
+│   └── brevo-api-wrapper.md                # API client documentation
+├── square/                     # Square payment docs
+│   ├── SQUARE_SETUP.md                     # Setup and configuration
+│   └── square-checkout-integration-details.md
+└── archive/                    # Legacy documentation
+    └── kit-api-*.md           # Old Kit.com integration files
 
 scripts/
 ├── create-test-coupon.js      # Square coupon creation
@@ -229,13 +236,14 @@ Local Changes → Git Push → GitHub → Render.com → Production
 ### Brevo Email Marketing & Behavioral Tracking
 - **Automated Segmentation**: Contacts sorted by quiz results, product interest, and purchase behavior
 - **Quiz Integration**: Symptom-based product recommendations with email capture
+- **Product Page Tracking**: Automatic tracking of page views, engagement time (>30s = highly engaged), and CTA click locations
 - **Cart Abandonment**: Automatic recovery sequences triggered when users leave checkout
 - **Purchase Tracking**: Customers added to product-specific lists for targeted follow-ups
 - **Problem Navigation**: Track which health concerns visitors click on homepage
 - **10 Contact Lists**: Prospect lists (ParaCleanse, Maya, Sea Moss, Mucus Cleanser, Quiz Takers) + Customer lists (per product + Bundle Buyers)
 - **25 Custom Attributes**: Quiz scores, severity levels, purchase history, cart data, shipping info
 
-See `docs/brevo-tracking-guide.md` for complete tracking documentation.
+See `docs/brevo/brevo-tracking-guide.md` and `docs/brevo/BREVO_MULTI_PRODUCT_INTEGRATION.md` for complete tracking documentation.
 
 ### Square Dashboard
 - Access order details and line items
@@ -244,13 +252,22 @@ See `docs/brevo-tracking-guide.md` for complete tracking documentation.
 - Monitor sales analytics
 - Manage fulfillment
 
-### Behavioral Events Tracked
-- Quiz starts and completions
-- Problem card selections on homepage
-- Product page views and engagement time
-- CTA clicks and add-to-cart events
-- Cart abandonment
-- Purchase completion
+### Behavioral Events Tracked (Complete Funnel)
+1. **Homepage**: Problem navigation clicks (track which health concerns visitors click)
+2. **Quiz**: Quiz starts, completions, scores, and product recommendations
+3. **Product Pages** (NEW):
+   - Automatic page view tracking on all 4 product pages
+   - Time on page measurement (engagement >30 seconds marked as "highly engaged")
+   - CTA click tracking with specific location identifiers (hero, urgency, package, timeline, final)
+   - Add-to-cart events
+4. **Checkout**: Cart abandonment tracking with product details and cart value
+5. **Purchase**: Completion tracking with customer data and product-specific list assignment
+
+**Product Pages with Tracking:**
+- `/paracleanse` - 5 tracked CTA locations
+- `/maya` - Hero CTA tracking
+- `/seamoss` - Hero CTA tracking
+- `/mucus-cleanser` - Hero CTA tracking
 
 ## 🧪 Testing
 
@@ -329,15 +346,23 @@ image: "/images/blog-image.jpg"
 
 ## ✅ Recent Major Updates
 
+### Product Page Tracking Implementation (November 17, 2025)
+- ✅ **useProductTracking Hook**: Custom React hook for behavioral tracking across all product pages
+- ✅ **Automatic Page View Tracking**: Track when visitors land on any product page
+- ✅ **Engagement Time Measurement**: Monitor time on page (>30 seconds = highly engaged visitor)
+- ✅ **CTA Location Tracking**: Track which specific CTAs convert best (hero, urgency, package, timeline, final)
+- ✅ **Complete Funnel Coverage**: Track entire journey from homepage → quiz → product pages → cart → purchase
+- ✅ **AI-Ready Data**: Enable Brevo segmentation for high-intent visitors who engaged but didn't convert
+
 ### Brevo Multi-Product Hub Integration (November 2025)
 - ✅ **Multi-Product Navigation**: Problem-based product discovery on homepage
 - ✅ **Smart Quiz**: 10-question health assessment with email capture and product recommendations
 - ✅ **Automated Email Sequences**: Quiz nurture, cart abandonment recovery, post-purchase follow-ups
-- ✅ **Behavioral Tracking**: Complete visitor journey tracking with 9 event types
+- ✅ **Behavioral Tracking**: Complete visitor journey tracking with 11 event types
 - ✅ **Customer Segmentation**: 10 automated lists + 25 custom contact attributes
 - ✅ **API Integration**: 4 Brevo endpoints for real-time tracking and automation
 
-See `BREVO_MULTI_PRODUCT_INTEGRATION.md` for complete implementation details.
+See `docs/brevo/BREVO_MULTI_PRODUCT_INTEGRATION.md` for complete implementation details.
 
 ## 🚧 Future Enhancements
 
@@ -383,5 +408,5 @@ Proprietary - All rights reserved
 ---
 
 **Last Updated:** November 17, 2025
-**Version:** 3.0.0 (Square + Brevo Multi-Product Hub)
+**Version:** 3.1.0 (Square + Brevo Multi-Product Hub + Product Page Tracking)
 **Status:** Production Ready ✅
