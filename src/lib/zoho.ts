@@ -54,6 +54,7 @@ export function getAuthorizationUrl(state?: string): string {
     response_type: 'code',
     access_type: 'offline', // Get refresh token for long-term access
     redirect_uri: ZOHO_CONFIG.redirectUri,
+    prompt: 'consent', // Force re-authorization to get refresh token
     ...(state && { state }),
   });
 
