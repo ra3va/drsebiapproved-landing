@@ -36,8 +36,44 @@ Comprehensive email campaign management for the Dr. Sebi Approved 8K customer wi
 
 ## Core Capabilities
 
-### 1. Send Test Email
-**When to use**: User asks to "send a test email" or "email kingthriva@gmail.com"
+### 1. Send Custom Email (NEW - Natural Language)
+**When to use**: User asks to send email to anyone with custom content
+
+**Natural Language Examples**:
+- "Send an email to john@example.com saying we have a sale"
+- "Email my team at team@company.com about the meeting tomorrow"
+- "Send kingthriva@gmail.com a message about the new feature"
+- "Email carl@zoho.com and ask if he got the credentials"
+
+**Process**:
+1. Parse user's natural language request
+2. Extract: recipient(s), subject, message content
+3. If subject not specified, generate from message content
+4. If message is brief, expand into professional email body
+5. Send via Zoho Mail API directly (not campaign endpoint)
+6. Report success with preview of what was sent
+
+**Implementation**:
+```bash
+# Use Zoho Mail API directly for custom emails
+curl -X POST $BASE_URL/api/zoho/send-email \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": ["john@example.com"],
+    "subject": "Sale Announcement",
+    "htmlContent": "<p>Hi John,</p><p>We have a sale...</p>",
+    "textContent": "Hi John, We have a sale..."
+  }'
+```
+
+**Smart Content Generation**:
+- If user says "send email about X" → generate professional email about X
+- If user provides full message → use as-is
+- Always include greeting and signature
+- Use Dr. Sebi Approved branding for business emails
+
+### 2. Send Campaign Test Email
+**When to use**: User asks to "send a test email" or "test the campaign email"
 
 **Process**:
 1. Detect environment (localhost or production)
@@ -51,7 +87,7 @@ Comprehensive email campaign management for the Dr. Sebi Approved 8K customer wi
 Send a test email to kingthriva@gmail.com
 ```
 
-### 2. Send Batch Emails
+### 3. Send Batch Emails
 **When to use**: User asks to "send emails", "start campaign", or "send batch"
 
 **Process**:
@@ -73,7 +109,7 @@ Send a test email to kingthriva@gmail.com
 }
 ```
 
-### 3. Upload Customer CSV
+### 4. Upload Customer CSV
 **When to use**: User provides CSV file or asks to "upload customer list"
 
 **Process**:
@@ -93,7 +129,7 @@ Send a test email to kingthriva@gmail.com
 }
 ```
 
-### 4. Check Campaign Status
+### 5. Check Campaign Status
 **When to use**: User asks about "campaign status", "how many sent", or "progress"
 
 **API Endpoint**:
@@ -107,7 +143,7 @@ Returns:
 - Next batch preview
 - Estimated days remaining
 
-### 5. Clean Test Data
+### 6. Clean Test Data
 **When to use**: Before any email sends, automatically clean fake addresses
 
 **Process**:
@@ -148,6 +184,21 @@ Returns:
 
 Use `$BASE_URL` variable based on environment detection.
 
+### Send Custom Email (NEW)
+```bash
+# Send custom email to anyone
+curl -X POST $BASE_URL/api/zoho/send-email \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": ["recipient@example.com"],
+    "subject": "Your Subject Here",
+    "htmlContent": "<p>Your HTML email content</p>",
+    "textContent": "Plain text version",
+    "cc": ["optional@example.com"],
+    "bcc": ["optional@example.com"]
+  }'
+```
+
 ### Send Batch
 ```bash
 # Development
@@ -185,7 +236,38 @@ curl https://drsebiapproved.com/api/campaign/status
 
 ## Workflow Examples
 
-### Example 1: Send Test Email
+### Example 1: Send Custom Email (Natural Language)
+```
+User: "Send an email to carl@zoho.com asking if he received the API credentials"
+
+Steps:
+1. Parse request:
+   - To: carl@zoho.com
+   - Subject: "API Credentials Follow-up"
+   - Message: Professional email asking about credentials
+2. Generate email content:
+   Subject: "Following up on API Credentials"
+   Body: "Hi Carl, I wanted to follow up to see if you received the API 
+   credentials we discussed. Please let me know if you need anything else. 
+   Best regards, Ra - Dr. Sebi Approved"
+3. Send via Zoho Mail API
+4. Report: "✅ Email sent to carl@zoho.com: 'Following up on API Credentials'"
+```
+
+```
+User: "Email my team at team@company.com, kingthriva@gmail.com about tomorrow's meeting at 2pm"
+
+Steps:
+1. Parse request:
+   - To: team@company.com, kingthriva@gmail.com
+   - Subject: "Tomorrow's Meeting - 2pm"
+   - Message: Meeting reminder
+2. Generate professional email
+3. Send to both recipients
+4. Report: "✅ Email sent to 2 recipients about tomorrow's meeting"
+```
+
+### Example 2: Send Campaign Test Email
 ```
 User: "Send a test email to kingthriva@gmail.com"
 
@@ -197,7 +279,7 @@ Steps:
 5. Report: "✅ Test email sent to kingthriva@gmail.com"
 ```
 
-### Example 2: Upload CSV and Send
+### Example 3: Upload CSV and Send
 ```
 User: "Upload this CSV and send to the first 10 customers"
 [provides customers.csv file]
@@ -210,7 +292,7 @@ Steps:
 5. Report upload and send statistics
 ```
 
-### Example 3: Check Progress
+### Example 4: Check Progress
 ```
 User: "How's the email campaign going?"
 
@@ -315,13 +397,16 @@ Then use `$BASE_URL` in all API calls.
 
 ## Best Practices
 
-1. **Always clean first**: Run cleanup-test-emails.js before any send
-2. **Verify recipients**: Check campaign status to see who will receive emails
-3. **Use dry runs**: Test with `"dryRun": true` before actual sends
-4. **Monitor status**: Check `/api/campaign/status` after batch sends
-5. **Protect spam rating**: Only send to real, verified email addresses
-6. **Auto-detect environment**: Check port 3000 before every operation
-7. **Confirm production sends**: Always confirm with user before production batch sends
+1. **Parse natural language carefully**: Extract recipient, subject, and message from user's request
+2. **Generate professional content**: If user provides brief message, expand into proper email format
+3. **Always clean first**: Run cleanup-test-emails.js before campaign sends
+4. **Verify recipients**: Check campaign status to see who will receive emails
+5. **Use dry runs**: Test with `"dryRun": true` before actual sends
+6. **Monitor status**: Check `/api/campaign/status` after batch sends
+7. **Protect spam rating**: Only send to real, verified email addresses
+8. **Auto-detect environment**: Check port 3000 before every operation
+9. **Confirm production sends**: Always confirm with user before production batch sends
+10. **Smart email composition**: Include greeting, body, and signature in all custom emails
 
 ## Environment Examples
 
@@ -347,6 +432,65 @@ Steps:
 4. After confirmation, send batch
 ```
 
+## Natural Language Email Parsing Guide
+
+### Extracting Recipients
+**Patterns to recognize**:
+- "send email to X" → to: [X]
+- "email X and Y" → to: [X, Y]
+- "send X a message" → to: [X]
+- "email my team at X" → to: [X]
+- "cc X on this" → cc: [X]
+
+### Extracting Subject
+**Patterns to recognize**:
+- "about X" → subject: X
+- "regarding X" → subject: X
+- "subject: X" → subject: X
+- If not specified → generate from message content
+
+### Extracting Message
+**Patterns to recognize**:
+- "saying X" → message: X
+- "tell them X" → message: X
+- "ask if X" → message: question about X
+- "let them know X" → message: X
+
+### Email Composition Template
+```html
+<p>Hi {recipient_name},</p>
+
+<p>{user_message_expanded}</p>
+
+<p>Best regards,<br>
+Ra Thriva<br>
+Dr. Sebi Approved<br>
+<a href="https://drsebiapproved.com">drsebiapproved.com</a></p>
+```
+
+### Smart Content Expansion
+**If user says**: "tell them we have a sale"
+**Expand to**: "I wanted to let you know that we're currently running a special sale on our Dr. Sebi approved products. Check out our website for details!"
+
+**If user says**: "ask if he got the credentials"
+**Expand to**: "I wanted to follow up to see if you received the credentials I sent over. Please let me know if you need anything else or have any questions."
+
+### Example Parsing
+
+**Input**: "Send an email to carl@zoho.com and john@example.com about the meeting tomorrow at 2pm"
+
+**Parsed**:
+- to: ["carl@zoho.com", "john@example.com"]
+- subject: "Meeting Tomorrow - 2pm"
+- message: "I wanted to remind you about our meeting scheduled for tomorrow at 2pm. Looking forward to connecting with you then."
+
+**Input**: "Email kingthriva@gmail.com saying the OAuth is working now"
+
+**Parsed**:
+- to: ["kingthriva@gmail.com"]
+- subject: "OAuth Integration Update"
+- message: "Great news! The OAuth integration is now working successfully. Everything is set up and ready to go."
+
 ---
 
-**This skill makes email sending flawless and effortless for Ra's Dr. Sebi campaign across both development and production environments.**
+**This skill makes email sending flawless and effortless for Ra's Dr. Sebi campaign across both development and production environments, with natural language support for sending any email to anyone.**
