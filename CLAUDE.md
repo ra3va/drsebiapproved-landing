@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ParaCleanse Elite is a Next.js-based e-commerce landing page for Dr. Sebi's Original Two-Phase Parasite Cleansing System. This is a premium wellness brand focused on authentic, natural healing products with Shopify integration for direct-to-consumer sales.
+ParaCleanse Elite is a Next.js-based e-commerce landing page for Dr. Sebi's Original Two-Phase Parasite Cleansing System. This is a premium wellness brand focused on authentic, natural healing products with Square integration for direct-to-consumer sales.
 
 ## Commands
 
@@ -16,7 +16,7 @@ npm run start        # Start production server
 npm run lint         # Run ESLint checks
 ```
 
-### Docker Deployment
+### Docker Deployment (depreacate we use github)
 ```bash
 docker build -t parasite-cleanse .
 docker run -p 3000:3000 parasite-cleanse
@@ -30,14 +30,13 @@ docker-compose -f docker-compose.dev.yml up
 - **Next.js 14.1.0** with App Router
 - **TypeScript** for type safety
 - **Tailwind CSS** with custom design system
-- **Shopify Storefront API** for e-commerce
+- **Square API** for e-commerce
 - **Framer Motion** for animations
 - **MDX** for blog content management
 
 ### Key Dependencies
-- `@shopify/shopify-api` - E-commerce integration
+- `square` - E-commerce integration
 - `@radix-ui/*` - Accessible UI primitives
-- `graphql-request` - Shopify API queries
 - `next-mdx-remote` - Dynamic blog content
 - `html2canvas` - Screenshot functionality
 - `reading-time` - Blog reading time estimation
@@ -54,23 +53,24 @@ src/
 ├── components/
 │   ├── ui/                # Reusable UI components (shadcn/ui)
 │   ├── Header.tsx         # Main navigation
-│   └── ShopifyAnalytics.tsx
+│   └── SquareCheckout.tsx
 ├── lib/
 │   ├── blog.ts            # Blog content management
 │   ├── mdx-components.tsx # MDX component mapping
+│   ├── brevo-client.js    # Email marketing client
 │   └── utils.ts           # Shared utilities
 └── utils/
-    └── shopify.ts         # E-commerce API integration
+    └── square.ts          # E-commerce API integration (if exists, else remove)
 content/blog/              # MDX blog posts with frontmatter
 ```
 
 ## Important Patterns
 
-### Shopify Integration
-- Uses GraphQL Storefront API for product data and checkout
-- Product IDs configured via environment variables
-- Cart creation and management through `src/utils/shopify.ts`
-- Analytics tracking with Shopify + Facebook Pixel
+### Square Integration
+- Uses Square Catalog/Payments API for product data, orders, and payments
+- Catalog setup via `/api/square/setup-catalog`
+- Payment processing via `/api/square/process-payment`
+- Analytics tracking with Google Analytics + Facebook Pixel + Brevo
 
 ### Content Management
 - Blog posts are MDX files in `content/blog/` with frontmatter metadata
@@ -95,11 +95,8 @@ content/blog/              # MDX blog posts with frontmatter
 
 Required environment variables:
 ```env
-NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=your-token
-NEXT_PUBLIC_PRODUCT_ID=your-product-id
-
-# Brevo Email Marketing API
+SQUARE_ACCESS_TOKEN=your-square-access-token
+SQUARE_LOCATION_ID=your-square-location-id
 BREVO_API_KEY=your-brevo-api-key
 ```
 
@@ -141,10 +138,10 @@ BREVO_API_KEY=your-brevo-api-key
 - Use structured content for SEO optimization
 
 ### E-commerce Features
-- Product data fetched via GraphQL from Shopify Storefront API
-- Checkout flow redirects to Shopify for secure payment processing
-- Analytics tracking implemented for conversion optimization
-- Cart functionality uses Shopify's built-in cart management
+- Products managed in Square catalog
+- Checkout via Square Web Payments SDK + server-side order/payment APIs
+- Full order fulfillment with shipping/customer data
+- Coupon validation and analytics integration
 
 ### Deployment
 - Containerized with Docker for consistent deployments

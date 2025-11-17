@@ -62,4 +62,4 @@ The blog is managed through local MDX files in the `content/blog` directory. Eac
 
 ## Shopify Integration
 
-The project integrates with the Shopify Storefront API to fetch product information and create checkouts. The integration logic is located in `src/utils/shopify.ts`. The `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`, `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN`, and `NEXT_PUBLIC_PRODUCT_ID` environment variables must be set for the integration to work.
+The project uses Square for e-commerce (catalog, payments). Key endpoints: `/api/square/setup-catalog`, `/api/square/process-payment`. Env vars: `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`.
