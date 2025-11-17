@@ -160,15 +160,21 @@ export async function storeTokens(
 
   const { data, error } = await supabase
     .from('zoho_oauth_tokens')
-    .upsert({
-      user_email: userEmail,
-      access_token: tokens.accessToken,
-      refresh_token: tokens.refreshToken,
-      expires_at: tokens.expiresAt.toISOString(),
-      token_type: tokens.tokenType || 'Bearer',
-      scope: tokens.scope || ZOHO_SCOPES,
-      updated_at: new Date().toISOString(),
-    })
+    .upsert(
+      {
+        user_email: userEmail,
+        access_token: tokens.accessToken,
+        refresh_token: tokens.refreshToken,
+        expires_at: tokens.expiresAt.toISOString(),
+        token_type: tokens.tokenType || 'Bearer',
+        scope: tokens.scope || ZOHO_SCOPES,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: 'user_email',
+        ignoreDuplicates: false,
+      }
+    )
     .select()
     .single();
 
