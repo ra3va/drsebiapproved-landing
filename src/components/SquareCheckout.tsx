@@ -124,6 +124,39 @@ export default function SquareCheckout({
     }
   }, [currentStep])
 
+  // Cart abandonment tracking
+  useEffect(() => {
+    // Only track if email has been entered
+    if (!email) return
+
+    const handleBeforeUnload = () => {
+      // Don't track if purchase was completed
+      if (localStorage.getItem('lastOrder')) return
+
+      // Mark cart as abandoned
+      const alreadyAbandoned = localStorage.getItem('cartAbandoned')
+      if (alreadyAbandoned) return // Already tracked
+
+      localStorage.setItem('cartAbandoned', 'true')
+
+      // Send to Brevo API
+      fetch('/api/brevo/cart-abandoned', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          cartItems,
+          cartValue: finalTotal / 100,
+          checkoutUrl: window.location.href
+        }),
+        keepalive: true // Ensure request completes even as page unloads
+      }).catch(err => console.error('Cart abandonment tracking failed:', err))
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [email, finalTotal, cartItems])
+
   const initializeSquare = useCallback(async () => {
     // Prevent multiple simultaneous initializations
     if (initializingRef.current) {
@@ -240,6 +273,21 @@ export default function SquareCheckout({
 
   const goToNextStep = () => {
     if (validateStep(currentStep)) {
+      // Track email entered - user is now identifiable
+      if (currentStep === 1 && email) {
+        // Identify user in Brevo for behavioral tracking
+        if (typeof window !== 'undefined' && (window as any).Brevo) {
+          (window as any).Brevo.push(['identify', {
+            email: email,
+            firstname: fullName.split(' ')[0] || '',
+            source: 'checkout'
+          }]);
+        }
+        // Track cart state for abandonment recovery
+        localStorage.setItem('checkoutEmail', email)
+        localStorage.setItem('checkoutCartValue', finalTotal.toString())
+      }
+
       setCurrentStep(prev => Math.min(prev + 1, 3))
     }
   }
@@ -322,6 +370,31 @@ export default function SquareCheckout({
         const data = await response.json()
 
         if (data.success) {
+          // Save order data to localStorage for success page tracking
+          const orderData = {
+            orderId: data.orderId,
+            email,
+            fullName,
+            phone,
+            address: {
+              addressLine1: address,
+              locality: city,
+              administrativeDistrictLevel1: state,
+              postalCode: zipCode,
+              country: 'US'
+            },
+            cartItems,
+            subtotal,
+            shippingCost,
+            discount,
+            finalTotal,
+            couponCode
+          }
+          localStorage.setItem('lastOrder', JSON.stringify(orderData))
+
+          // Clear cart abandonment flag
+          localStorage.removeItem('cartAbandoned')
+
           onSuccess?.()
         } else {
           setError(data.error || 'Payment failed')

@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle, Leaf, Shield, Zap, Star, ArrowRight, Menu, Heart, Brain, Droplets, Award, Wind, Download, Users } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
-import Header from "@/components/Header";
+import Header from "@/components/Header"
+import ProblemNavigation from "@/components/ProblemNavigation";
 
 export default function Home() {
   return (
@@ -57,6 +58,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Problem-Based Navigation Section */}
+        <ProblemNavigation />
 
         {/* Featured Products Section */}
         <section className="w-full py-20 bg-white">

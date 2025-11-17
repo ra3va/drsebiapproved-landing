@@ -1,25 +1,87 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { CheckCircle, Package, Mail, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 export default function CheckoutSuccessPage() {
+  const [purchaseTracked, setPurchaseTracked] = useState(false)
+
   useEffect(() => {
-    // Track conversion
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'purchase', {
-        transaction_id: Date.now().toString(),
-        value: 89.99,
-        currency: 'USD',
-        items: [{
-          item_name: 'Product Purchase',
-          category: 'Health Supplements'
-        }]
-      })
+    // Only track once
+    if (purchaseTracked) return
+
+    // Get order data from localStorage (set by SquareCheckout component)
+    const orderDataStr = localStorage.getItem('lastOrder')
+    if (!orderDataStr) {
+      console.warn('No order data found in localStorage')
+      return
     }
-  }, [])
+
+    try {
+      const orderData = JSON.parse(orderDataStr)
+
+      // Track conversion with GTM
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'purchase', {
+          transaction_id: orderData.orderId || Date.now().toString(),
+          value: orderData.finalTotal / 100,
+          currency: 'USD',
+          items: orderData.cartItems.map((item: any) => ({
+            item_name: item.name,
+            category: 'Health Supplements',
+            price: item.price / 100,
+            quantity: item.quantity || 1
+          }))
+        })
+      }
+
+      // Track with Brevo behavioral tracking
+      if (typeof window !== 'undefined' && (window as any).Brevo) {
+        (window as any).Brevo.push(['track', 'order_completed', {
+          order_id: orderData.orderId,
+          revenue: orderData.finalTotal / 100,
+          products: orderData.cartItems.map((item: any) => item.name).join(', '),
+          product_count: orderData.cartItems.length
+        }]);
+      }
+
+      // Send to Brevo API for customer list management
+      fetch('/api/brevo/purchase-complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: orderData.email,
+          firstName: orderData.fullName?.split(' ')[0] || '',
+          lastName: orderData.fullName?.split(' ').slice(1).join(' ') || '',
+          productsPurchased: orderData.cartItems.map((item: any) => ({
+            name: item.name,
+            quantity: item.quantity || 1,
+            price: item.price / 100
+          })),
+          orderValue: orderData.finalTotal / 100,
+          orderId: orderData.orderId,
+          shippingAddress: orderData.address
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Purchase tracked in Brevo:', data)
+        setPurchaseTracked(true)
+        // Clear order data after tracking
+        localStorage.removeItem('lastOrder')
+      })
+      .catch(error => {
+        console.error('Brevo purchase tracking error:', error)
+        // Still mark as tracked to prevent retries
+        setPurchaseTracked(true)
+      })
+
+    } catch (error) {
+      console.error('Error parsing order data:', error)
+    }
+  }, [purchaseTracked])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4">
