@@ -463,7 +463,7 @@ Steps:
 <p>{user_message_expanded}</p>
 
 <p>Best regards,<br>
-Ra Thriva<br>
+Dr. Sebi Team<br>
 Dr. Sebi Approved<br>
 <a href="https://drsebiapproved.com">drsebiapproved.com</a></p>
 ```

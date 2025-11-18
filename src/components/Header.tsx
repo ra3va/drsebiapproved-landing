@@ -1,9 +1,12 @@
 'use client';
 
 import Link from "next/link";
-import { ArrowRight, Leaf, Menu, Star } from "lucide-react";
+import { ArrowRight, Leaf, Menu, Star, X } from "lucide-react";
+import { useState } from "react";
 
 export default function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <header className="fixed w-full top-0 z-50">
       {/* Top announcement bar */}
@@ -74,10 +77,71 @@ export default function Header() {
               </Link>
             </nav>
 
-            <button className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
-              <Menu className="h-6 w-6" />
+            <button 
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
+
+          {/* Mobile menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-border">
+              <nav className="flex flex-col space-y-1 py-4">
+                <Link 
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" 
+                  href="/#testimonials"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Success Stories
+                </Link>
+                <Link 
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" 
+                  href="/paracleanse"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  ParaCleanse
+                </Link>
+                <Link 
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" 
+                  href="/maya"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Maya Formula
+                </Link>
+                <Link 
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" 
+                  href="/seamoss"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sea Moss
+                </Link>
+                <Link 
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" 
+                  href="/mucus-cleanser"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Mucus Cleanser
+                </Link>
+                <div className="px-4 pt-2">
+                  <Link 
+                    className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-full shadow-lg shadow-primary/25 transition-all duration-200" 
+                    href="/quiz"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Take Health Quiz
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Link>
+                </div>
+              </nav>
+            </div>
+          )}
         </div>
       </div>
     </header>
