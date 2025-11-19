@@ -540,7 +540,10 @@ export default function MayaPage() {
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90 text-white rounded-full px-12 py-6 text-xl font-semibold shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all mb-8"
-              onClick={() => window.open('https://drsebiwebsite.com/collections/frontpage/products/maya', '_blank')}
+              onClick={() => {
+                trackCTAClick('final-cta-checkout');
+                window.location.href = '/checkout?product=maya';
+              }}
             >
               <ArrowRight className="w-6 h-6 mr-3" />
               Order Maya Formula Now
