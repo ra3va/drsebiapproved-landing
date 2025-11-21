@@ -8,9 +8,110 @@ export async function POST(request: NextRequest) {
     const SQUARE_VERSION = '2025-10-16'
     const SQUARE_ACCESS_TOKEN = process.env.SQUARE_ACCESS_TOKEN
 
-    // Step 1: Create Square Order with line items
+    // Step 1: Create/Update Customer in Square Customer Directory
+    console.log('👤 Creating customer in Square...')
+    let customerId: string | undefined
+
+    if (customerDetails?.email) {
+      try {
+        // Split name into first/last
+        const nameParts = (customerDetails.name || '').trim().split(' ')
+        const givenName = nameParts[0] || ''
+        const familyName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ''
+
+        // First, search for existing customer by email
+        const searchResponse = await fetch('https://connect.squareup.com/v2/customers/search', {
+          method: 'POST',
+          headers: {
+            'Square-Version': SQUARE_VERSION,
+            'Authorization': `Bearer ${SQUARE_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            query: {
+              filter: {
+                email_address: {
+                  exact: customerDetails.email
+                }
+              }
+            }
+          })
+        })
+
+        const searchData = await searchResponse.json()
+
+        if (searchData.customers && searchData.customers.length > 0) {
+          // Customer exists, use their ID and update info
+          customerId = searchData.customers[0].id
+          console.log('✅ Found existing customer:', customerId)
+
+          // Update customer with latest info
+          await fetch(`https://connect.squareup.com/v2/customers/${customerId}`, {
+            method: 'PUT',
+            headers: {
+              'Square-Version': SQUARE_VERSION,
+              'Authorization': `Bearer ${SQUARE_ACCESS_TOKEN}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              given_name: givenName,
+              family_name: familyName,
+              email_address: customerDetails.email,
+              phone_number: customerDetails.phone || undefined,
+              address: customerDetails.address ? {
+                address_line_1: customerDetails.address.addressLine1,
+                locality: customerDetails.address.locality,
+                administrative_district_level_1: customerDetails.address.administrativeDistrictLevel1,
+                postal_code: customerDetails.address.postalCode,
+                country: customerDetails.address.country || 'US'
+              } : undefined
+            })
+          })
+        } else {
+          // Create new customer
+          const customerResponse = await fetch('https://connect.squareup.com/v2/customers', {
+            method: 'POST',
+            headers: {
+              'Square-Version': SQUARE_VERSION,
+              'Authorization': `Bearer ${SQUARE_ACCESS_TOKEN}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              idempotency_key: `customer-${Date.now()}-${Math.random()}`,
+              given_name: givenName,
+              family_name: familyName,
+              email_address: customerDetails.email,
+              phone_number: customerDetails.phone || undefined,
+              address: customerDetails.address ? {
+                address_line_1: customerDetails.address.addressLine1,
+                locality: customerDetails.address.locality,
+                administrative_district_level_1: customerDetails.address.administrativeDistrictLevel1,
+                postal_code: customerDetails.address.postalCode,
+                country: customerDetails.address.country || 'US'
+              } : undefined,
+              note: 'Customer from drsebiapproved.com'
+            })
+          })
+
+          const customerData = await customerResponse.json()
+
+          if (customerData.errors) {
+            console.warn('⚠️ Customer creation warning:', customerData.errors)
+            // Continue without customer_id - don't fail the order
+          } else {
+            customerId = customerData.customer.id
+            console.log('✅ Customer created:', customerId)
+          }
+        }
+      } catch (err) {
+        console.warn('⚠️ Customer creation/search failed:', err)
+        // Continue without customer_id - don't fail the order
+      }
+    }
+
+    // Step 2: Create Square Order with line items
     console.log('📝 Creating Square Order with line items...')
-    
+
     const lineItems = cartItems.map((item: any) => ({
       name: item.name,
       quantity: item.quantity.toString(),
@@ -42,13 +143,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Add customer info to order
-    if (customerDetails?.email || customerDetails?.name) {
-      orderRequest.order.customer_id = undefined // We'll create customer inline
+    // Link customer to order
+    if (customerId) {
+      orderRequest.order.customer_id = customerId
+      console.log('🔗 Linking order to customer:', customerId)
+    }
+
+    // Add coupon code to order metadata if present
+    if (couponCode) {
       orderRequest.order.metadata = {
-        customer_name: customerDetails?.name || '',
-        customer_email: customerDetails?.email || '',
-        customer_phone: customerDetails?.phone || ''
+        coupon_code: couponCode
       }
     }
 
@@ -77,14 +181,6 @@ export async function POST(request: NextRequest) {
           }
         }
       ]
-    }
-
-    // Add coupon code to order metadata
-    if (couponCode) {
-      if (!orderRequest.order.metadata) {
-        orderRequest.order.metadata = {}
-      }
-      orderRequest.order.metadata.coupon_code = couponCode
     }
 
     // Create the order
@@ -211,6 +307,33 @@ export async function POST(request: NextRequest) {
       couponCode: couponCode || 'None',
       totalAmount: `$${(amount / 100).toFixed(2)}`
     })
+
+    // --- CAMPAIGN STOP SWITCH ---
+    // If the customer is in our re-engagement campaign, mark them as converted
+    if (customerDetails?.email) {
+      try {
+        const { supabase, isSupabaseConfigured } = await import('@/lib/supabase');
+
+        if (isSupabaseConfigured()) {
+          console.log(`🛑 Checking campaign status for ${customerDetails.email}...`);
+
+          const { error: campaignError } = await supabase
+            .from('reengagement_campaign')
+            .update({
+              status: 'converted',
+              converted_at: new Date().toISOString()
+            })
+            .eq('customer_email', customerDetails.email);
+
+          if (!campaignError) {
+            console.log(`✅ Campaign stopped for ${customerDetails.email} (Converted)`);
+          }
+        }
+      } catch (err) {
+        console.warn('⚠️ Failed to update campaign status:', err);
+      }
+    }
+    // ---------------------------
 
     return NextResponse.json({
       success: true,

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ParaCleanse Elite is a Next.js-based e-commerce landing page for Dr. Sebi's Original Two-Phase Parasite Cleansing System. This is a premium wellness brand focused on authentic, natural healing products with Square integration for direct-to-consumer sales.
+This is a Next.js-based landing page for Dr. Sebi's Original Products & Systems. This is a premium wellness brand focused on authentic, natural healing products. **Sales and fulfillment handled via Square + Shippo integration**, while this site serves as the e-commerce frontend with **dual email infrastructure: Zoho for transactional/manual campaigns and Brevo for marketing automation**.
 
 ## Commands
 
@@ -30,47 +30,63 @@ git push origin main
 - **Next.js 14.1.0** with App Router
 - **TypeScript** for type safety
 - **Tailwind CSS** with custom design system
-- **Square API** for e-commerce
+- **Zoho Mail API** for email campaign management
+- **Supabase** for campaign database (PostgreSQL)
 - **Framer Motion** for animations
 - **MDX** for blog content management
 
 ### Key Dependencies
-- `square` - E-commerce integration
-- `@radix-ui/*` - Accessible UI primitives
+- `@supabase/supabase-js` - Database client for campaign tracking
+- `@radix-ui/*` - Accessible UI primitives (shadcn/ui)
 - `next-mdx-remote` - Dynamic blog content
 - `html2canvas` - Screenshot functionality
 - `reading-time` - Blog reading time estimation
+- `dotenv` - Environment variable management
+- **Square SDK** - Payment processing and order management
+- **Shippo API** - Automated shipping label creation and tracking
 
 ## Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router
-│   ├── blog/[slug]/       # Dynamic blog posts
-│   ├── quiz/              # Interactive health quiz
-│   ├── links/             # Link pages
-│   └── page.tsx           # Main landing page
+├── app/                           # Next.js App Router
+│   ├── admin/campaign/           # Campaign admin dashboard
+│   │   ├── page.tsx              # Main campaign dashboard
+│   │   └── components/           # Dashboard components
+│   ├── api/campaign/             # Campaign API routes
+│   │   ├── status/               # Campaign stats endpoint
+│   │   ├── send-batch/           # Batch email sender
+│   │   ├── upload-list/          # CSV upload handler
+│   │   ├── delete-email/         # Delete individual email
+│   │   ├── clear-all/            # Clear all campaign data
+│   │   └── track-click/          # Click tracking endpoint
+│   ├── api/auth/zoho/            # Zoho OAuth flow
+│   ├── blog/[slug]/              # Dynamic blog posts
+│   ├── quiz/                     # Interactive health quiz
+│   ├── links/                    # Link pages
+│   └── page.tsx                  # Main landing page
 ├── components/
-│   ├── ui/                # Reusable UI components (shadcn/ui)
-│   ├── Header.tsx         # Main navigation
-│   └── SquareCheckout.tsx
+│   ├── ui/                       # Reusable UI components (shadcn/ui)
+│   └── Header.tsx                # Main navigation
 ├── lib/
-│   ├── blog.ts            # Blog content management
-│   ├── mdx-components.tsx # MDX component mapping
-│   ├── brevo-client.js    # Email marketing client
-│   └── utils.ts           # Shared utilities
-└── utils/
-    └── square.ts          # E-commerce API integration (if exists, else remove)
-content/blog/              # MDX blog posts with frontmatter
+│   ├── blog.ts                   # Blog content management
+│   ├── mdx-components.tsx        # MDX component mapping
+│   ├── supabase.ts               # Supabase client config
+│   ├── zoho.ts                   # Zoho Mail API client
+│   └── utils.ts                  # Shared utilities
+├── content/blog/                 # MDX blog posts with frontmatter
+├── prisma/migrations/            # Database schema migrations
+└── sessions/                     # Claude session logs
 ```
 
 ## Important Patterns
 
-### Square Integration
-- Uses Square Catalog/Payments API for product data, orders, and payments
-- Catalog setup via `/api/square/setup-catalog`
-- Payment processing via `/api/square/process-payment`
-- Analytics tracking with Google Analytics + Facebook Pixel + Brevo
+### E-commerce Integration
+- **Payment Processing**: Square Payment API (embedded checkout)
+- **Order Management**: Square Orders API with customer profiles
+- **Shipping & Fulfillment**: Shippo API for automated label creation
+- **Customer Journey**: Landing page → Multi-step checkout → Square payment → Automated shipping
+- **Integration Flow**: Site checkout → Square order + customer → Shippo auto-label → Tracking update → Customer notification
 
 ### Content Management
 - Blog posts are MDX files in `content/blog/` with frontmatter metadata
@@ -95,34 +111,77 @@ content/blog/              # MDX blog posts with frontmatter
 
 Required environment variables:
 ```env
+# Supabase Database
+NEXT_PUBLIC_SUPABASE_URL=https://ohxtngzmyamixwfvisje.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Zoho Mail API (for email campaigns)
+ZOHO_CLIENT_ID=your-zoho-client-id
+ZOHO_CLIENT_SECRET=your-zoho-client-secret
+ZOHO_REDIRECT_URI=http://localhost:3000/api/auth/zoho/callback
+ZOHO_FROM_EMAIL=info@drsebiapproved.com
+ZOHO_FROM_NAME=Dr. Sebi Approved
+
+# Square Payment & Orders API
+NEXT_PUBLIC_SQUARE_APPLICATION_ID=your-square-app-id
+NEXT_PUBLIC_SQUARE_LOCATION_ID=your-square-location-id
 SQUARE_ACCESS_TOKEN=your-square-access-token
-SQUARE_LOCATION_ID=your-square-location-id
+SQUARE_WEBHOOK_SIGNATURE_KEY=your-webhook-signing-key
+
+# Shippo Shipping API (for automated fulfillment)
+SHIPPO_API_TOKEN=your-shippo-live-token
+SHIPPO_TEST_TOKEN=your-shippo-test-token
+
+# Warehouse/Fulfillment Address
+WAREHOUSE_NAME=Dr. Sebi Approved
+WAREHOUSE_STREET=your-warehouse-address
+WAREHOUSE_CITY=your-city
+WAREHOUSE_STATE=TX
+WAREHOUSE_ZIP=your-zip
+WAREHOUSE_PHONE=your-phone
+
+# Notifications
+LABEL_NOTIFICATION_EMAIL=your-email@example.com
+
+# Brevo (optional, for lead magnets)
 BREVO_API_KEY=your-brevo-api-key
 ```
 
-## Brevo API Integration
+## Email Infrastructure - Dual Strategy
 
-### Credentials
-- **API Key**: Stored in `.env.local` (not committed to repo)
-- **MCP API Token**: `eyJhcGlfa2V5IjoieGtleXNpYi04MWM4MmNlYzM5NjQ3Mzk0OGUxMjUxYzBlZDdjNWNkYTU0MGM0ZGM1MWJmMDAxOWJkNjlkMDE4YTlkOTA4Yzg5NS1EYTVlQUNUQk9FOVRhaWhyIfQ==`
+### Why Two Email Systems?
+**Zoho Mail API** and **Brevo** serve different, complementary purposes:
+
+**Zoho (Transactional & Manual Campaigns):**
+- One-off emails to specific customers
+- Re-engagement campaigns for old customer CSVs
+- Foundational email infrastructure
+- Manual campaign control
+- Click tracking for conversions
+- Links customers back to Brevo automation
+
+**Brevo (Marketing Automation & Analytics):**
+- Full marketing automation workflows
+- Advanced open/click rate analytics
+- Behavioral tracking and segmentation
+- Cart abandonment sequences
+- Purchase follow-up automation
+- Lead magnet delivery and nurture
+- True multi-touch attribution
+
+### Brevo Integration Details
 - **Verified Sender**: info@drsebiapproved.com ✅
-- **Domain Authentication**: drsebiapproved.com ✅ (DKIM + DMARC configured)
-
-### Testing Configuration
-- **Test Email**: kingthriva@gmail.com (Ra's email for all testing)
-
-### Free Account Capabilities
-- **100,000 contacts** (vs Mailchimp's 500)
-- **300 emails/day** (9,000/month vs Mailchimp's 1,000/month)
-- **Full API access** with marketing automation
-- **Rate limits**: 100 requests/hour general, 10 req/sec for contacts
-- **Transactional emails** included for automated PDF delivery
-
-### Lead Magnet Integration
-- Email capture via `/api/contacts` endpoint
-- Automated welcome series with gut health guide PDF
-- Contact segmentation by source (blog, quiz, etc.)
-- Webhook triggers for immediate PDF delivery
+- **Domain Auth**: drsebiapproved.com (DKIM + DMARC) ✅
+- **Capacity**: 100K contacts, 300 emails/day
+- **Behavioral Tracking**: Installed via JS tracker (client_key: fe6w1ww57kreu47ho3uax9h2)
+- **API Endpoints**:
+  - `/api/brevo/checkout-started` - Capture checkout abandonment
+  - `/api/brevo/checkout-shipping` - Track shipping info entry
+  - `/api/brevo/cart-abandoned` - Trigger recovery sequence
+  - `/api/brevo/purchase-complete` - Post-purchase automation
+  - `/api/brevo/quiz-submit` - Quiz funnel tracking
+  - `/api/brevo/track-problem` - Problem awareness tracking
 
 ## Development Notes
 
@@ -137,11 +196,23 @@ BREVO_API_KEY=your-brevo-api-key
 - Images stored in `public/images/` with Next.js Image optimization
 - Use structured content for SEO optimization
 
-### E-commerce Features
-- Products managed in Square catalog
-- Checkout via Square Web Payments SDK + server-side order/payment APIs
-- Full order fulfillment with shipping/customer data
-- Coupon validation and analytics integration
+### Zoho Email Campaign Features
+- **Admin Dashboard**: `/admin/campaign` - Manage email campaigns
+- **Campaign Management**:
+  - CSV upload for customer lists
+  - Batch sending (rate-limited to avoid spam flags)
+  - Multi-stage campaigns (Intro → Follow-up → Urgency)
+  - Priority queue system (follow-ups first, then new leads)
+- **Tracking Capabilities**:
+  - ✅ Click tracking (wrapped URLs)
+  - ✅ Conversion tracking (purchase events)
+  - ✅ Bounce detection
+  - ❌ Email opens (not available on Zoho free tier)
+- **Database**: Supabase PostgreSQL with 3 tables:
+  - `reengagement_campaign` - Customer records and campaign status
+  - `campaign_clicks` - Click tracking data
+  - `zoho_oauth_tokens` - OAuth credentials
+- **API Routes**: All campaign routes use `export const dynamic = 'force-dynamic'` to prevent caching issues
 
 ### Deployment
 - GitHub integration with Render.com for automatic deployments
@@ -253,8 +324,112 @@ BREVO_API_KEY=your-brevo-api-key
 - **Use descriptive filename** that captures session essence
 
 ### Example Session Topics for Filenames
-- `shopify-integration-setup` - E-commerce configuration work
+- `zoho-campaign-implementation` - Email campaign system work
 - `blog-content-creation` - Adding new MDX blog posts
 - `ui-component-development` - Building new interface components
 - `deployment-configuration` - GitHub and Render.com setup
 - `analytics-implementation` - Tracking and conversion optimization
+- `api-caching-and-delete-debugging` - Debugging Next.js caching issues
+
+---
+
+## Critical Technical Notes
+
+### Square Customer & Order Management (Updated 2025-11-21)
+**Customer Creation Flow:**
+- Before creating an order, the system searches for existing customers by email
+- If customer exists, updates their info and uses existing customer_id
+- If new customer, creates profile in Square Customer Directory
+- Customer profile includes: name, email, phone, shipping address
+- Order is linked to customer via `order.customer_id` field
+- Location: `src/app/api/square/process-payment/route.ts:11-110`
+
+**Order Fulfillment Structure:**
+- Orders include fulfillment details with type: 'SHIPMENT'
+- Shipment details include recipient address and contact info
+- Tracking number added via UpdateOrder API after label creation
+- Tracking updates trigger Square customer notifications
+
+### Shippo Automated Shipping (Planned Implementation)
+**Integration Architecture:**
+- Square webhook triggers label creation on order.created event
+- Shippo API creates shipment and purchases cheapest rate
+- Label PDF URL returned and emailed to fulfillment team
+- Tracking number automatically updated in Square order
+- Customer receives tracking notification from Square
+- Implementation guide: `/SHIPPO_AUTOMATION_IMPLEMENTATION.md`
+
+### Next.js 14 Caching Behavior
+**IMPORTANT**: Next.js 14 App Router caches API routes aggressively by default, even in development mode.
+
+**Symptoms of caching issues:**
+- API returns stale data
+- Database changes don't reflect in API responses
+- DELETE operations appear to fail but actually succeed
+
+**Solution:**
+```typescript
+// Add to ALL admin/dashboard API routes
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+```
+
+**Affected routes:**
+- `/api/campaign/status` ✅ Fixed
+- `/api/campaign/delete-email` ✅ Fixed
+- `/api/campaign/clear-all` ✅ Fixed
+- `/api/campaign/send-batch` ✅ Fixed
+- `/api/campaign/upload-list` ✅ Fixed
+
+### Supabase Configuration
+The admin client must be configured to bypass RLS and prevent session caching:
+
+```typescript
+export const supabaseAdmin = createClient(
+  supabaseUrl,
+  supabaseServiceRoleKey,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+    db: {
+      schema: 'public'
+    }
+  }
+);
+```
+
+### Database Delete Patterns
+**Best Practice for "delete all" operations:**
+
+```typescript
+// ✅ GOOD - Works with any field type
+await supabase
+  .from('table_name')
+  .delete()
+  .not('email_field', 'eq', 'impossible-value@never-exists.com');
+
+// ❌ BAD - Type-dependent, can fail with UUID vs INTEGER
+await supabase
+  .from('table_name')
+  .delete()
+  .neq('id', someValue);
+```
+
+### Known Issues & Solutions
+
+1. **Test Data in Migration**
+   - File: `prisma/migrations/01_create_zoho_campaign_tables.sql`
+   - Lines 142-153 contain sample INSERT statements
+   - Should be commented out for production deployments
+
+2. **Email Campaign Rate Limits**
+   - Zoho free tier: 300 emails/day
+   - Recommended batch size: 75 emails/day
+   - Delay between sends: 120 seconds (2 minutes)
+
+3. **Shopify Integration**
+   - Sales handled externally via Shopify
+   - No payment processing in this codebase
+   - Customer journey: This site → External Shopify checkout
