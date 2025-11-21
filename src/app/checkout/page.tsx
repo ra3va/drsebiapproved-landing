@@ -5,7 +5,14 @@ import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { Shield, Lock, CheckCircle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import SquareCheckout from '@/components/SquareCheckout'
+import CheckoutV1 from '@/components/checkout/variants/CheckoutV1'
+import CheckoutV2 from '@/components/checkout/variants/CheckoutV2'
+
+// Variant configuration
+const VARIANTS = {
+  'v1': CheckoutV1,
+  'v2': CheckoutV2,
+} as const
 
 // Product configuration
 const PRODUCTS = {
@@ -71,11 +78,15 @@ function CheckoutContent() {
   const searchParams = useSearchParams()
   const [product, setProduct] = useState<any>(null)
   const [mounted, setMounted] = useState(false)
+  const [variant, setVariant] = useState<'v1' | 'v2'>('v1')
 
   useEffect(() => {
     setMounted(true)
     const productId = searchParams?.get('product') || 'paracleanse'
+    const variantParam = searchParams?.get('variant') || 'v1'
+
     setProduct(PRODUCTS[productId as keyof typeof PRODUCTS] || PRODUCTS.paracleanse)
+    setVariant((variantParam === 'v2' ? 'v2' : 'v1') as 'v1' | 'v2')
   }, [searchParams])
 
   if (!mounted || !product) {
@@ -85,6 +96,9 @@ function CheckoutContent() {
       </div>
     )
   }
+
+  // Select checkout component based on variant
+  const CheckoutComponent = VARIANTS[variant]
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -108,7 +122,7 @@ function CheckoutContent() {
         <div className="lg:grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12">
           {/* Checkout Form - Full width on mobile, left column on desktop */}
           <div className="lg:order-1 min-w-0">
-            <SquareCheckout
+            <CheckoutComponent
               productName={product.name}
               price={product.price}
               variationId={product.variationId}
@@ -166,11 +180,11 @@ function CheckoutContent() {
                   </div>
                   <div className="flex justify-between text-sm sm:text-base text-green-600 font-medium">
                     <span>Shipping</span>
-                    <span>FREE</span>
+                    <span>Calculated at checkout</span>
                   </div>
                   <div className="flex justify-between text-lg sm:text-xl font-bold text-gray-900 pt-2 sm:pt-3 border-t border-gray-200">
                     <span>Total</span>
-                    <span>${(product.price / 100).toFixed(2)}</span>
+                    <span>Calculated at checkout</span>
                   </div>
                 </div>
               </div>
