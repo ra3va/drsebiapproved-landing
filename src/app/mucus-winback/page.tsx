@@ -152,16 +152,13 @@ export default function MucusWinBackPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <Button
-                        size="lg"
+                      <a
+                        href={`/checkout?product=mucus-cleanser&coupon=${discountCode}`}
                         onClick={handleCTAClick}
-                        asChild
-                        className="w-full bg-green-600 hover:bg-green-700 text-white px-8 py-6 text-xl h-auto font-bold shadow-lg"
+                        className="block w-full bg-green-600 hover:bg-green-700 text-white px-8 py-6 text-xl text-center font-bold shadow-lg rounded-lg transition-colors"
                       >
-                        <a href={`/checkout?product=mucus-cleanser&coupon=${discountCode}`}>
-                          Get My Mucus Cleanser for $24.99 →
-                        </a>
-                      </Button>
+                        Get My Mucus Cleanser for $24.99 →
+                      </a>
 
                       <p className="text-sm text-gray-600 text-center">
                         ✅ Your code will be automatically applied at checkout
@@ -384,16 +381,13 @@ export default function MucusWinBackPage() {
                   </div>
                 </div>
 
-                <Button
-                  size="lg"
+                <a
+                  href={`/checkout?product=mucus-cleanser&coupon=${discountCode}`}
                   onClick={handleCTAClick}
-                  asChild
-                  className="w-full bg-green-600 hover:bg-green-700 text-white px-8 py-6 text-xl h-auto font-bold shadow-lg mb-6"
+                  className="block w-full bg-green-600 hover:bg-green-700 text-white px-8 py-6 text-xl text-center font-bold shadow-lg rounded-lg transition-colors mb-6"
                 >
-                  <a href={`/checkout?product=mucus-cleanser&coupon=${discountCode}`}>
-                    Get My Mucus Cleanser for $24.99 →
-                  </a>
-                </Button>
+                  Get My Mucus Cleanser for $24.99 →
+                </a>
 
                 <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
