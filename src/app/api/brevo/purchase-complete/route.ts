@@ -116,13 +116,37 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Update contact with purchase data
+    // Update contact with purchase data and add to customer lists
     await brevoClient.addContact({
       email,
       attributes,
       listIds: lists.map(l => l.id),
       updateEnabled: true
     });
+
+    // Remove from abandonment and checkout lists (they completed purchase!)
+    const cleanupLists = [
+      'Checkout Started',
+      'Abandoned Cart - Low Intent',
+      'Abandoned Cart - High Intent'
+    ];
+
+    for (const listName of cleanupLists) {
+      try {
+        const list = await brevoClient.getListByName(listName);
+        if (list) {
+          // Remove contact from this list
+          await brevoClient.request(`/contacts/lists/${list.id}/contacts/remove`, {
+            method: 'POST',
+            body: JSON.stringify({ emails: [email] })
+          });
+          console.log(`✅ Removed ${email} from "${listName}"`);
+        }
+      } catch (error) {
+        // List might not exist yet - that's okay
+        console.log(`ℹ️ List "${listName}" not found or contact not in list`);
+      }
+    }
 
     console.log(`Purchase tracked for ${email} - Products: ${productSlugs.join(', ')} - Order: ${orderId}`);
 

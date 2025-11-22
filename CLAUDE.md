@@ -181,9 +181,105 @@ BREVO_API_KEY=your-brevo-api-key
   - `/api/brevo/checkout-started` - Capture checkout abandonment
   - `/api/brevo/checkout-shipping` - Track shipping info entry
   - `/api/brevo/cart-abandoned` - Trigger recovery sequence
-  - `/api/brevo/purchase-complete` - Post-purchase automation
+  - `/api/brevo/purchase-complete` - Post-purchase automation (removes from abandonment lists)
+  - `/api/brevo/winback-optin` - Win-back campaign opt-in
   - `/api/brevo/quiz-submit` - Quiz funnel tracking
   - `/api/brevo/track-problem` - Problem awareness tracking
+
+### Brevo List Management Architecture
+
+**List Structure Philosophy:**
+- **Campaign Source Lists** (permanent) - Track where customers came from
+- **Behavioral Lists** (dynamic) - Track current customer journey stage
+- **Customer Lists** (permanent) - Product ownership and purchase history
+
+#### Campaign Source Lists (Never Remove Contacts)
+- **"Win-Back - Mucus Cleanser"** - Opted in from flu season win-back landing page
+- **"Win-Back - Maya Formula"** - Future campaign tracking
+- **"Win-Back - Sea Moss"** - Future campaign tracking
+- **Purpose**: Attribution tracking, campaign performance analysis, future targeting
+
+#### Behavioral Lists (Dynamic Movement)
+- **"Checkout Started"** - Anyone who enters email at checkout Step 1
+  - **Added**: When user completes contact info and clicks "Continue to Shipping"
+  - **Removed**: When purchase completes (moved to customer lists)
+
+- **"Abandoned Cart - Low Intent"** - Left at Step 1 (contact info only, no shipping address)
+  - **Added**: User exits after entering email but before shipping
+  - **Recovery Sequence**: 4hr → 2 day → 5 day (educational, soft touch)
+  - **Removed**: When purchase completes
+
+- **"Abandoned Cart - High Intent"** - Left at Step 2+ (had shipping/payment info)
+  - **Added**: User exits after entering shipping address
+  - **Recovery Sequence**: 5min → 30min → 2hr (aggressive, urgent)
+  - **Removed**: When purchase completes
+
+#### Customer Lists (Permanent Product Ownership)
+- **"ParaCleanse Customers"** - Purchased ParaCleanse Elite
+- **"Maya Customers"** - Purchased Maya Formula
+- **"Sea Moss Customers"** - Purchased Sea Moss Capsules
+- **"Mucus Cleanser Customers"** - Purchased Mucus Cleanser
+- **"Bundle Buyers"** - Purchased 2+ products in single order
+- **Purpose**: Product-specific automations, cross-sell sequences, restock reminders
+
+#### List Movement Rules
+
+| Event | Action |
+|-------|--------|
+| **Win-back landing page opt-in** | Add to "Win-Back - [Product]" (permanent) |
+| **Checkout Step 1 complete** | Add to "Checkout Started" + Set `source: 'winback-checkout'` if from win-back |
+| **User exits at Step 1** | Move to "Abandoned Cart - Low Intent" + Remove from "Checkout Started" |
+| **User exits at Step 2+** | Move to "Abandoned Cart - High Intent" + Remove from "Checkout Started" |
+| **Purchase completes** | Add to product customer lists + Remove from ALL abandonment lists |
+
+#### Key Brevo Contact Attributes
+
+**Win-Back Campaign Attributes:**
+- `WINBACK_SOURCE` - Campaign identifier (e.g., 'mucus-cleanser-winback')
+- `DISCOUNT_CODE` - Coupon code provided (e.g., 'STOPMUCUS')
+- `COUNTDOWN_EXPIRES` - When discount expires (72 hours from opt-in)
+- `CUSTOMER_STATUS` - 'win-back-lead', 'active', etc.
+
+**Checkout Flow Attributes:**
+- `CHECKOUT_IN_PROGRESS` - 'true' when in checkout, 'false' on complete/abandon
+- `CHECKOUT_STEP` - 'contact_info', 'shipping_address', 'payment'
+- `CHECKOUT_ABANDONED_STAGE` - 'step_1', 'step_2', 'step_3'
+- `ABANDONMENT_INTENT_LEVEL` - 'low', 'medium', 'high'
+- `SOURCE` - 'checkout', 'winback-checkout', 'quiz', etc.
+
+**Purchase Attributes:**
+- `LAST_PURCHASE_PRODUCT` - Primary product slug
+- `LAST_PURCHASE_VALUE` - Order total
+- `LAST_PURCHASE_DATE` - ISO date
+- `PRODUCTS_OWNED` - Comma-separated product slugs
+- `IS_BUNDLE_BUYER` - 'true' or 'false'
+- `CART_ABANDONED` - 'false' after purchase
+
+#### Win-Back Campaign Pre-Fill Flow
+
+**Purpose**: Reduce friction by pre-filling checkout with data from landing page opt-in.
+
+**Flow:**
+1. User opts in on `/mucus-winback` → Email + First Name captured
+2. API call to `/api/brevo/winback-optin` → Contact added to "Win-Back - Mucus Cleanser"
+3. Redirect to: `/checkout?product=mucus-cleanser&coupon=STOPMUCUS&email=user@example.com&firstName=John`
+4. Checkout page extracts URL params and passes to SquareCheckout component
+5. SquareCheckout **pre-fills** email and fullName fields on mount
+6. User only needs to add: Phone → Shipping Address → Payment
+7. Step 1 tracking sets `source: 'winback-checkout'` (detected via `initialEmail` prop or `STOPMUCUS` coupon)
+
+**Benefits:**
+- Reduces data entry friction (email + name already captured)
+- Higher conversion rate (fewer form fields)
+- Clean attribution (`SOURCE` attribute tracks campaign origin)
+- User feels "remembered" by the system
+
+**Implementation Files:**
+- [/src/components/WinBackOptIn.tsx:56-64](/src/components/WinBackOptIn.tsx#L56-L64) - Passes email/firstName in redirect URL
+- [/src/app/checkout/page.tsx:78-89](/src/app/checkout/page.tsx#L78-L89) - Extracts URL params and passes to SquareCheckout
+- [/src/components/SquareCheckout.tsx:156-164](/src/components/SquareCheckout.tsx#L156-L164) - Pre-fills email/fullName fields on mount
+- [/src/components/SquareCheckout.tsx:374-390](/src/components/SquareCheckout.tsx#L374-L390) - Detects win-back source and tracks properly
+- [/src/app/api/brevo/purchase-complete/route.ts:127-149](/src/app/api/brevo/purchase-complete/route.ts#L127-L149) - Removes from abandonment lists
 
 ## Development Notes
 

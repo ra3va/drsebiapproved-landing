@@ -19,6 +19,8 @@ interface SquareCheckoutProps {
   productImage?: string
   productId: string
   initialCoupon?: string
+  initialEmail?: string
+  initialFirstName?: string
   onSuccess?: () => void
 }
 
@@ -35,6 +37,8 @@ export default function SquareCheckout({
   productImage,
   productId,
   initialCoupon,
+  initialEmail,
+  initialFirstName,
   onSuccess
 }: SquareCheckoutProps) {
   // Cart state - support multiple items
@@ -148,6 +152,16 @@ export default function SquareCheckout({
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }, [currentStep])
+
+  // Pre-fill contact info from URL parameters (win-back flow)
+  useEffect(() => {
+    if (initialEmail && !email) {
+      setEmail(initialEmail)
+    }
+    if (initialFirstName && !fullName) {
+      setFullName(initialFirstName)
+    }
+  }, [initialEmail, initialFirstName]) // Only run on mount or when props change
 
   // Auto-apply coupon from URL parameter
   useEffect(() => {
@@ -357,6 +371,10 @@ export default function SquareCheckout({
           const firstName = nameParts[0] || '';
           const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
+          // Detect if this is a win-back flow based on coupon or pre-filled data
+          const isWinBackFlow = initialEmail || couponCode === 'STOPMUCUS';
+          const source = isWinBackFlow ? 'winback-checkout' : 'checkout';
+
           await fetch('/api/brevo/checkout-started', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -368,7 +386,7 @@ export default function SquareCheckout({
               cartItems,
               cartValue: finalTotal / 100,
               checkoutStep: 'contact_info',
-              source: 'checkout'
+              source: source
             })
           });
         } catch (error) {

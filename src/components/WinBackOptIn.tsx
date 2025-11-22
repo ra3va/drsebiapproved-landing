@@ -53,9 +53,15 @@ export default function WinBackOptIn({ onSuccess, className = '' }: WinBackOptIn
           onSuccess(result.discountCode);
         }
 
-        // Redirect to checkout immediately with auto-applied coupon
+        // Redirect to checkout with auto-applied coupon AND pre-filled contact data
         setTimeout(() => {
-          window.location.href = `/checkout?product=mucus-cleanser&coupon=${result.discountCode}`;
+          const checkoutUrl = new URLSearchParams({
+            product: 'mucus-cleanser',
+            coupon: result.discountCode,
+            email: email,
+            ...(firstName && { firstName: firstName })
+          });
+          window.location.href = `/checkout?${checkoutUrl.toString()}`;
         }, 1000); // 1 second delay to show success state
       } else {
         setError(result.message || 'Something went wrong. Please try again.');
