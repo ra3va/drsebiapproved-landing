@@ -598,6 +598,12 @@ export default function SquareCheckout({
                     <span>${(shippingCost / 100).toFixed(2)}</span>
                   )}
                 </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-green-600 font-semibold">
+                    <span>Discount ({couponCode.toUpperCase()})</span>
+                    <span>-${(discount / 100).toFixed(2)}</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200">
@@ -762,8 +768,8 @@ export default function SquareCheckout({
                 )}
               </div>
               {discount > 0 && (
-                <div className="flex justify-between text-green-600">
-                  <span>Discount</span>
+                <div className="flex justify-between text-green-600 font-semibold">
+                  <span>Discount ({couponCode.toUpperCase()})</span>
                   <span>-${(discount / 100).toFixed(2)}</span>
                 </div>
               )}
@@ -808,6 +814,27 @@ export default function SquareCheckout({
           ))}
         </div>
       </div>
+
+      {/* Discount Applied Banner - Show when coupon is active */}
+      {discount > 0 && (
+        <div className="bg-gradient-to-r from-green-600 to-green-500 border-2 border-green-700 rounded-lg p-4 mb-4 shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-white text-base">
+                🎉 Discount Applied: {couponCode.toUpperCase()}
+              </p>
+              <p className="text-green-50 text-sm">
+                You're saving ${(discount / 100).toFixed(2)} on your order!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Social Proof Banner - Step 1 Only */}
       {currentStep === 1 && (
@@ -1077,9 +1104,9 @@ export default function SquareCheckout({
                   )}
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between text-green-600">
-                    <span>Discount</span>
-                    <span className="font-medium">-${(discount / 100).toFixed(2)}</span>
+                  <div className="flex justify-between text-green-600 font-semibold">
+                    <span>Discount ({couponCode.toUpperCase()})</span>
+                    <span>-${(discount / 100).toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-base font-bold text-gray-900 pt-1.5 border-t border-gray-300">

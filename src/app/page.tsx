@@ -267,8 +267,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-2xl font-bold text-foreground">$31.99</p>
-                      <p className="text-sm text-cyan-600">Save 47% | Was $59.99</p>
+                      <p className="text-2xl font-bold text-foreground">$39.99</p>
+                      <p className="text-sm text-cyan-600">Respiratory & Cellular Support</p>
                     </div>
                   </div>
                   <Link href="/mucus-cleanser">

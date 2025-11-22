@@ -54,7 +54,7 @@ const PRODUCTS = {
   'mucus-cleanser': {
     id: 'mucus-cleanser',
     name: 'Mucus Cleanser',
-    price: 3199,
+    price: 3999,
     variationId: '6JARPI34BXU27SS36ZFSEJQP',
     image: '/mucus.png',
     description: 'Respiratory & Cellular Cleansing',

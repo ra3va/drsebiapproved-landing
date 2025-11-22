@@ -38,3 +38,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Temporary scripts and logs from AI sessions
+apply-migration.js
+check-campaign-data.js
+check-campaign-status.sql
+check-campaigns.sql
+check-zoho-status.js
+delete-test-emails.sh
+dev-server.log
+fix_migration.sql
+query-db-direct.js
+reset-test-email.js
+test-supabase-permissions.js
+verify-schema.js
