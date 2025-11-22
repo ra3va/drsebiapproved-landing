@@ -186,6 +186,23 @@ BREVO_API_KEY=your-brevo-api-key
   - `/api/brevo/quiz-submit` - Quiz funnel tracking
   - `/api/brevo/track-problem` - Problem awareness tracking
 
+### Brevo API Capabilities (Programmatic Access)
+
+**✅ What You CAN Do via API** (implemented in `/src/lib/brevo-client.js`):
+- **Contact Management**: Create, update, delete contacts; set custom attributes
+- **List Management**: Create lists, add/remove contacts, find by name
+- **Campaign Creation**: Create one-off email campaigns, schedule sends, get stats
+- **Transactional Emails**: Send individual emails with templates or custom HTML
+- **Rate Limits**: Built-in handling (10/sec contacts, 100/hr general, 1000/sec transactional)
+
+**❌ What You CANNOT Do via API**:
+- **Automation Workflows**: No endpoint exists to create multi-step email sequences programmatically
+- **Conditional Logic**: Cannot define triggers, wait times, or branches via code
+- **Email Sequences**: Must be built in Brevo UI manually
+
+**Recommended Strategy**:
+Create automation workflows once in Brevo UI, then trigger them programmatically by adding contacts to lists. Code handles data and list management, Brevo handles email sequences and timing.
+
 ### Brevo List Management Architecture
 
 **List Structure Philosophy:**
