@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           error: 'Zoho not configured',
-          message: 'Waiting for Zoho API credentials from Carl. Please add ZOHO_CLIENT_ID and ZOHO_CLIENT_SECRET to environment variables.',
+          message: 'Zoho not configured. Please add ZOHO_CLIENT_ID and ZOHO_CLIENT_SECRET to environment variables.',
           instructions: 'See ZOHO_SETUP_INSTRUCTIONS.md for setup details'
         },
         { status: 503 }

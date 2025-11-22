@@ -7,15 +7,33 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Environment variables (will use placeholders until Carl provides Supabase account)
+// Environment variables (managed via .env.local)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'PENDING_SETUP';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'PENDING_SETUP';
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'PENDING_SETUP';
 
 // Create Supabase client with fallback values to allow build to succeed
 // Runtime checks will prevent actual use without credentials
+
+// Client for public/client-side operations (read-only with RLS)
 export const supabase = createClient(
   supabaseUrl !== 'PENDING_SETUP' ? supabaseUrl : 'https://placeholder.supabase.co',
   supabaseAnonKey !== 'PENDING_SETUP' ? supabaseAnonKey : 'placeholder-key-for-build'
+);
+
+// Admin client for server-side API routes (bypasses RLS, full access)
+export const supabaseAdmin = createClient(
+  supabaseUrl !== 'PENDING_SETUP' ? supabaseUrl : 'https://placeholder.supabase.co',
+  supabaseServiceRoleKey !== 'PENDING_SETUP' ? supabaseServiceRoleKey : 'placeholder-service-key-for-build',
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+    db: {
+      schema: 'public'
+    }
+  }
 );
 
 // TypeScript types for our 3 tables
@@ -38,20 +56,28 @@ export interface ZohoOAuthToken {
 
 /**
  * Re-engagement Campaign Table
- * Tracks email sends for the 8K customer win-back campaign
+ * Tracks email sends for multi-campaign system (Win-Back, Warm, Cold, etc.)
  */
 export interface ReengagementCampaign {
   id: number;
   customer_email: string;
   customer_name: string | null;
   sent_at: string | null; // ISO timestamp
-  status: 'pending' | 'sent' | 'failed' | 'bounced' | 'clicked';
+  status: 'pending' | 'sent' | 'failed' | 'bounced' | 'clicked' | 'active' | 'converted' | 'unsubscribed' | 'completed';
   error_message: string | null;
   zoho_message_id: string | null;
   clicked_at: string | null; // ISO timestamp when discount link clicked
+  converted_at: string | null; // When they purchased
+  campaign_stage: number | null; // 1=Intro, 2=FollowUp1, 3=Urgency
+  next_action_date: string | null; // When next email is due
   added_to_brevo: boolean;
   brevo_synced_at: string | null;
   batch_number: number | null; // Which daily batch (1-160 for 8000 emails at 50/day)
+  // NEW: Campaign Management Fields
+  campaign_name: string; // e.g., "Win-Back - Former Paid Customers"
+  campaign_type: 'winback' | 'warm' | 'cold' | 'general';
+  campaign_description: string | null;
+  uploaded_at: string; // ISO timestamp
   created_at: string;
   updated_at: string;
 }
@@ -74,6 +100,43 @@ export interface DiscountClick {
 }
 
 /**
+ * Batch Send Log Table
+ * Tracks daily email batch sends for rate limiting and audit trail
+ */
+export interface BatchSendLog {
+  id: string; // UUID
+  campaign_name: string;
+  sent_date: string; // Date string (YYYY-MM-DD)
+  emails_sent: number;
+  follow_ups_sent: number;
+  new_leads_sent: number;
+  batch_size_limit: number;
+  duration_seconds: number | null;
+  status: 'completed' | 'failed' | 'partial' | 'cancelled';
+  error_message: string | null;
+  override_limit: boolean;
+  created_at: string; // ISO timestamp
+}
+
+/**
+ * Campaign Click Table (Enhanced)
+ * Tracks link clicks with campaign and email stage context
+ */
+export interface CampaignClick {
+  id: string; // UUID
+  campaign_id: string | null; // UUID reference to reengagement_campaign
+  customer_email: string;
+  url_destination: string;
+  user_agent: string | null;
+  ip_address: string | null;
+  clicked_at: string; // ISO timestamp
+  // NEW: Campaign context fields
+  campaign_name: string | null;
+  email_stage: number | null; // Which email (1, 2, 3) generated this click
+  campaign_id_legacy: string | null; // For backward compat
+}
+
+/**
  * Helper function to check if Supabase is configured
  */
 export function isSupabaseConfigured(): boolean {
@@ -91,7 +154,7 @@ export async function safeSupabaseQuery<T>(
     return {
       data: null,
       error: {
-        message: 'Supabase not configured. Waiting for credentials from Carl.',
+        message: 'Supabase not configured. Please check environment variables.',
         code: 'SUPABASE_NOT_CONFIGURED'
       }
     };

@@ -18,6 +18,7 @@ interface SquareCheckoutProps {
   variationId: string
   productImage?: string
   productId: string
+  initialCoupon?: string
   onSuccess?: () => void
 }
 
@@ -33,6 +34,7 @@ export default function SquareCheckout({
   variationId,
   productImage,
   productId,
+  initialCoupon,
   onSuccess
 }: SquareCheckoutProps) {
   // Cart state - support multiple items
@@ -146,6 +148,33 @@ export default function SquareCheckout({
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }, [currentStep])
+
+  // Auto-apply coupon from URL parameter
+  useEffect(() => {
+    if (initialCoupon && !couponCode && subtotal > 0) {
+      setCouponCode(initialCoupon)
+      // Auto-verify the coupon
+      const autoVerify = async () => {
+        setVerifyingCoupon(true)
+        try {
+          const response = await fetch('/api/square/verify-coupon', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: initialCoupon, price: subtotal })
+          })
+          const data = await response.json()
+          if (data.valid) {
+            setDiscount(data.discount)
+          }
+        } catch (e) {
+          console.error('Failed to auto-apply coupon:', e)
+        } finally {
+          setVerifyingCoupon(false)
+        }
+      }
+      autoVerify()
+    }
+  }, [initialCoupon, subtotal]) // Only run when these change
 
   // Cart abandonment tracking
   useEffect(() => {

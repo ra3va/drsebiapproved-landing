@@ -12,14 +12,18 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { supabase, supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase';
 import { BrevoClient } from '@/lib/brevo-client';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const email = searchParams.get('email');
-    const redirect = searchParams.get('redirect') || '/';
+    const redirect = searchParams.get('redirect') || searchParams.get('dest') || searchParams.get('url') || '/';
+    // NEW: Capture campaign context from URL
+    const campaignName = searchParams.get('campaign');
+    const emailStage = searchParams.get('stage') ? parseInt(searchParams.get('stage')!) : null;
+
 
     // Validate email parameter
     if (!email) {
@@ -29,7 +33,7 @@ export async function GET(request: NextRequest) {
     // Decode email if URL encoded
     const decodedEmail = decodeURIComponent(email);
 
-    console.log(`📊 Click tracked: ${decodedEmail}`);
+    console.log(`📊 Click tracked: ${decodedEmail} (Campaign: ${campaignName || 'unknown'}, Stage: ${emailStage || 'unknown'})`);
 
     // Extract tracking data from request
     const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || null;
@@ -55,36 +59,47 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL(redirect, request.url));
     }
 
-    // Update campaign status to 'clicked'
-    const { error: updateError } = await supabase
-      .from('reengagement_campaign')
-      .update({
-        status: 'clicked',
-        clicked_at: new Date().toISOString(),
-      })
-      .eq('id', campaign.id);
+    // Update campaign status to 'clicked' (only if not converted/completed)
+    // Using admin client to bypass RLS
+    if (campaign.status !== 'converted' && campaign.status !== 'completed') {
+      const { error: updateError } = await supabaseAdmin
+        .from('reengagement_campaign')
+        .update({
+          status: 'clicked',
+          clicked_at: new Date().toISOString(),
+        })
+        .eq('id', campaign.id);
 
-    if (updateError) {
-      console.error('Failed to update campaign status:', updateError);
+      if (updateError) console.error('Failed to update campaign status:', updateError);
     }
 
-    // Log click to discount_clicks table
-    const { error: logError } = await supabase
-      .from('discount_clicks')
+    // Log click to campaign_clicks table (New System)
+    // Using admin client to bypass RLS
+    const { error: logError } = await supabaseAdmin
+      .from('campaign_clicks')
       .insert({
+        campaign_id: campaign.id,
+        customer_email: decodedEmail,
+        url_destination: redirect,
+        ip_address: ipAddress,
+        user_agent: userAgent,
+        clicked_at: new Date().toISOString(),
+        // NEW: Campaign context fields
+        campaign_name: campaignName || campaign.campaign_name || null,
+        email_stage: emailStage || campaign.campaign_stage || 1,
+      });
+
+    if (logError) {
+      // Fallback to legacy table if new one fails (e.g. migration not run)
+      console.warn('Failed to log to campaign_clicks, trying discount_clicks:', logError.message);
+      await supabaseAdmin.from('discount_clicks').insert({
         campaign_id: campaign.id,
         customer_email: decodedEmail,
         clicked_at: new Date().toISOString(),
         ip_address: ipAddress,
         user_agent: userAgent,
-        referrer: referrer,
-        utm_source: searchParams.get('utm_source'),
-        utm_medium: searchParams.get('utm_medium'),
-        utm_campaign: searchParams.get('utm_campaign'),
+        referrer: referrer
       });
-
-    if (logError) {
-      console.error('Failed to log click:', logError);
     }
 
     // Sync to Brevo (re-opt-in signal)
@@ -117,8 +132,8 @@ export async function GET(request: NextRequest) {
       // Add contact to re-engaged list
       await brevoClient.addContactsToList(reengagedList.id, [decodedEmail]);
 
-      // Update database with Brevo sync status
-      await supabase
+      // Update database with Brevo sync status using admin client
+      await supabaseAdmin
         .from('reengagement_campaign')
         .update({
           added_to_brevo: true,

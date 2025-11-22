@@ -55,48 +55,53 @@ CREATE TRIGGER zoho_tokens_updated_at
 -- Tracks the 8,000 customer win-back email campaign
 -- Rate limited to 50-75 emails per day to avoid spam flags
 
+-- Create table for campaign tracking
 CREATE TABLE IF NOT EXISTS reengagement_campaign (
-    id SERIAL PRIMARY KEY,
-    customer_email VARCHAR(255) UNIQUE NOT NULL,
-    customer_name VARCHAR(255),
-    sent_at TIMESTAMP WITH TIME ZONE,
-    status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'failed', 'bounced', 'clicked')),
-    error_message TEXT,
-    zoho_message_id VARCHAR(255),
-    clicked_at TIMESTAMP WITH TIME ZONE,
-    added_to_brevo BOOLEAN DEFAULT FALSE,
-    brevo_synced_at TIMESTAMP WITH TIME ZONE,
-    batch_number INTEGER, -- Which daily batch (1-160 for 8000 emails at 50/day)
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  customer_email TEXT NOT NULL UNIQUE,
+  customer_name TEXT,
+  status TEXT NOT NULL DEFAULT 'pending', -- pending, sent, clicked, converted, bounced, unsubscribed
+  batch_number INTEGER, -- 1-160 (for 50/day pacing)
+  campaign_stage INTEGER DEFAULT 1, -- 1=Intro, 2=FollowUp1, 3=Urgency, etc.
+  next_action_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(), -- When next email is due
+  sent_at TIMESTAMP WITH TIME ZONE, -- Last email sent time
+  clicked_at TIMESTAMP WITH TIME ZONE, -- First click time
+  converted_at TIMESTAMP WITH TIME ZONE, -- When they purchased
+  zoho_message_id TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Index for fast email lookups
-CREATE INDEX IF NOT EXISTS idx_campaign_email ON reengagement_campaign(customer_email);
+-- Create table for click tracking
+CREATE TABLE IF NOT EXISTS campaign_clicks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  campaign_id UUID REFERENCES reengagement_campaign(id),
+  customer_email TEXT NOT NULL,
+  url_destination TEXT NOT NULL,
+  user_agent TEXT,
+  ip_address TEXT,
+  clicked_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
--- Index for status filtering (find pending emails to send)
+-- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_campaign_status ON reengagement_campaign(status);
-
--- Index for batch processing
 CREATE INDEX IF NOT EXISTS idx_campaign_batch ON reengagement_campaign(batch_number);
+CREATE INDEX IF NOT EXISTS idx_campaign_email ON reengagement_campaign(customer_email);
+CREATE INDEX IF NOT EXISTS idx_campaign_next_action ON reengagement_campaign(next_action_date);
 
--- Index for finding emails that need Brevo sync
-CREATE INDEX IF NOT EXISTS idx_campaign_brevo_sync ON reengagement_campaign(clicked_at, added_to_brevo)
-    WHERE clicked_at IS NOT NULL AND added_to_brevo = FALSE;
-
--- Auto-update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_campaign_updated_at()
+-- Create updated_at trigger
+CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
+    NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ language 'plpgsql';
 
-CREATE TRIGGER campaign_updated_at
+CREATE TRIGGER update_reengagement_campaign_updated_at
     BEFORE UPDATE ON reengagement_campaign
     FOR EACH ROW
-    EXECUTE FUNCTION update_campaign_updated_at();
+    EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================
 -- TABLE 3: Discount Click Tracking

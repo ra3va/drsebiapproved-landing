@@ -13,7 +13,8 @@ import axios from 'axios';
 import { supabase, isSupabaseConfigured } from './supabase';
 
 // Zoho OAuth configuration
-// WAITING FOR CARL: Replace PENDING_SETUP values when credentials ready
+// Zoho Integration - Production Ready
+// Credentials managed via .env.local
 const ZOHO_CONFIG = {
   clientId: process.env.ZOHO_CLIENT_ID || 'PENDING_SETUP',
   clientSecret: process.env.ZOHO_CLIENT_SECRET || 'PENDING_SETUP',
@@ -45,7 +46,7 @@ export function isZohoConfigured(): boolean {
  */
 export function getAuthorizationUrl(state?: string): string {
   if (!isZohoConfigured()) {
-    throw new Error('Zoho not configured. Waiting for credentials from Carl.');
+    throw new Error('Zoho not configured. Please check environment variables.');
   }
 
   const params = new URLSearchParams({
@@ -272,7 +273,7 @@ export async function sendEmail(
 ) {
   try {
     if (!isZohoConfigured()) {
-      throw new Error('Zoho not configured. Waiting for credentials from Carl.');
+      throw new Error('Zoho not configured. Please check environment variables.');
     }
 
     // Get valid access token (auto-refreshes if needed)

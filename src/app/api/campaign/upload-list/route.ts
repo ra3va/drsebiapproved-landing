@@ -12,7 +12,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { supabase, supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase';
 
 interface CsvRow {
   email: string;
@@ -34,7 +34,14 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { csvData, batchSize = 50 } = body;
+    const {
+      csvData,
+      batchSize = 50,
+      campaignName = 'Default Campaign',
+      campaignType = 'general',
+      campaignDescription = null,
+      sourceFiles = []
+    } = body;
 
     if (!csvData) {
       return NextResponse.json(
@@ -42,6 +49,22 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    const normalizedCampaignName = (campaignName || '').trim();
+    if (!normalizedCampaignName) {
+      return NextResponse.json(
+        { error: 'Campaign name required', message: 'Please provide a campaignName when uploading CSVs' },
+        { status: 400 }
+      );
+    }
+
+    const allowedTypes = ['winback', 'warm', 'cold', 'general'];
+    const requestedType = ((campaignType || '') as string).toString().toLowerCase();
+    const normalizedCampaignType = allowedTypes.includes(requestedType)
+      ? requestedType
+      : 'general';
+    const normalizedDescription = campaignDescription ? String(campaignDescription).trim() : null;
+    const uploadTimestamp = new Date().toISOString();
 
     // Parse CSV (simple parser - expects email,name format)
     const rows = csvData.trim().split('\n');
@@ -79,30 +102,65 @@ export async function POST(request: NextRequest) {
     const campaignRecords = customers.map((customer, index) => ({
       customer_email: customer.email,
       customer_name: customer.name,
-      status: 'pending',
+      status: 'pending', // ALWAYS reset to pending on upload
       batch_number: Math.floor(index / batchSize) + 1, // Batch 1, 2, 3, etc.
+      campaign_stage: 1, // Start at stage 1
+      next_action_date: new Date().toISOString(), // Ready to send now
+      sent_at: null, // Clear sent timestamp
+      clicked_at: null, // Clear click timestamp
+      converted_at: null, // Clear conversion timestamp
+      campaign_name: normalizedCampaignName,
+      campaign_type: normalizedCampaignType,
+      campaign_description: normalizedDescription,
+      uploaded_at: uploadTimestamp,
     }));
 
+    console.log('[Upload API] Upserting', campaignRecords.length, 'records...');
+
     // Insert into database (upsert to handle duplicates)
-    const { data, error } = await supabase
+    // Using supabaseAdmin to bypass RLS and ensure writes succeed
+    const { data, error } = await supabaseAdmin
       .from('reengagement_campaign')
       .upsert(campaignRecords, {
         onConflict: 'customer_email', // Don't duplicate emails
-        ignoreDuplicates: false, // Update existing records
+        ignoreDuplicates: false, // Update existing records - RESET their status!
       })
       .select();
 
     if (error) {
-      console.error('Database error:', error);
+      console.error('[Upload API] Database error:', error);
+      console.error('[Upload API] Error details:', JSON.stringify(error, null, 2));
       return NextResponse.json(
-        { error: 'Failed to upload customers', message: error.message },
+        { error: 'Failed to upload customers', message: error.message, details: error },
         { status: 500 }
       );
     }
 
-    console.log(`✅ Successfully uploaded ${data.length} customers to campaign database`);
+    const insertedCount = data?.length || 0;
+    console.log('[Upload API] Upsert complete. Inserted/updated:', insertedCount);
 
-    // Get campaign statistics
+    if (insertedCount === 0) {
+      console.error('[Upload API] WARNING: No records were inserted! This might be an RLS issue.');
+      return NextResponse.json(
+        {
+          error: 'No records inserted',
+          message: 'Upsert returned 0 rows. Check Supabase RLS policies.',
+          hint: 'Make sure reengagement_campaign table has INSERT and UPDATE permissions enabled.'
+        },
+        { status: 500 }
+      );
+    }
+
+    if (insertedCount < customers.length) {
+      console.warn(`[Upload API] Only ${insertedCount} of ${customers.length} records were inserted!`);
+    }
+
+    console.log(`✅ Successfully uploaded ${data.length} customers to campaign database under "${normalizedCampaignName}"`);
+    if (Array.isArray(sourceFiles) && sourceFiles.length > 0) {
+      console.log('[Upload API] Source files:', sourceFiles.join(', '));
+    }
+
+    // Get campaign statistics (read-only, regular client is fine)
     const { data: stats } = await supabase
       .from('reengagement_campaign')
       .select('status', { count: 'exact' });
@@ -122,6 +180,8 @@ export async function POST(request: NextRequest) {
         batchSize,
         estimatedDays: totalBatches,
         statusBreakdown: statusCounts,
+        campaignName: normalizedCampaignName,
+        campaignType: normalizedCampaignType,
       },
     });
 

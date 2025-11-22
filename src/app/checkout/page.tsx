@@ -70,12 +70,15 @@ const PRODUCTS = {
 function CheckoutContent() {
   const searchParams = useSearchParams()
   const [product, setProduct] = useState<any>(null)
+  const [initialCoupon, setInitialCoupon] = useState<string>('')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const productId = searchParams?.get('product') || 'paracleanse'
+    const couponCode = searchParams?.get('coupon') || ''
     setProduct(PRODUCTS[productId as keyof typeof PRODUCTS] || PRODUCTS.paracleanse)
+    setInitialCoupon(couponCode)
   }, [searchParams])
 
   if (!mounted || !product) {
@@ -114,6 +117,7 @@ function CheckoutContent() {
               variationId={product.variationId}
               productImage={product.image}
               productId={product.id}
+              initialCoupon={initialCoupon}
               onSuccess={() => {
                 // Redirect to success page
                 window.location.href = '/checkout/success'
