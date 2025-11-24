@@ -12,9 +12,9 @@ const PRODUCTS = {
   'paracleanse': {
     id: 'paracleanse',
     name: 'ParaCleanse Elite',
-    price: 8999,  // $89.99 regular
+    price: 8570,  // $85.70 regular
     variationId: '5JV44RI47GC5IMYSENVXMV3D',
-    image: '/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png',
+    image: '/paracleanse.png',
     description: 'Two-Phase Parasite Cleansing System',
     features: [
       'Phase 1: ParaWash Biofilm Disruptor',
@@ -181,7 +181,7 @@ function CheckoutContent() {
               {/* Order Summary Card */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm mb-4 sm:mb-6">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Order Summary</h2>
-                
+
                 {/* Product Details */}
                 <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-200">
                   <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">

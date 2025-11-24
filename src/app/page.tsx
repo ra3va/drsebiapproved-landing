@@ -47,11 +47,11 @@ export default function Home() {
                   <div className="w-full h-48 flex items-center justify-center mb-4 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
                     <div className="relative">
                       <Image
-                        src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
+                        src="/paracleanse.png"
                         alt="ParaCleanse Elite Two-Phase System"
-                        width={200}
-                        height={200}
-                        className="w-32 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                        width={300}
+                        height={300}
+                        className="w-48 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
                       />
                     </div>
                   </div>
@@ -65,7 +65,7 @@ export default function Home() {
                   <div className="space-y-2 mb-6">
                     {[
                       "Phase 1: Biofilm disruption",
-                      "Phase 2: Deep parasite elimination", 
+                      "Phase 2: Deep parasite elimination",
                       "Complete 14-day protocol",
                       "Natural & powerful formula"
                     ].map((benefit, i) => (
@@ -78,11 +78,11 @@ export default function Home() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-full">
                       <div className="flex items-baseline gap-2 mb-1">
-                        <p className="text-2xl font-bold text-foreground">$62.99</p>
-                        <p className="text-lg text-muted-foreground line-through">$89.99</p>
+                        <p className="text-2xl font-bold text-foreground">$59.99</p>
+                        <p className="text-lg text-muted-foreground line-through">$85.70</p>
                       </div>
                       <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
-                        SAVE 30% | $27 OFF
+                        SAVE 30% | $25.71 OFF
                       </div>
                       <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
                     </div>
@@ -289,7 +289,7 @@ export default function Home() {
                       <Download className="w-4 h-4 mr-2" />
                       <span>BLACK FRIDAY BONUS - FREE</span>
                     </div>
-                    
+
                     <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4 leading-tight">
                       The Hidden
                       <span className="text-red-600 block">Parasite Crisis</span>
@@ -304,7 +304,7 @@ export default function Home() {
                     <div className="grid gap-3 mb-6 w-full">
                       {[
                         "Identify the 7 hidden signs of parasite infection",
-                        "Learn why most parasite cleanses fail completely", 
+                        "Learn why most parasite cleanses fail completely",
                         "Discover Dr. Sebi's biofilm-breaking protocol",
                         "Get the complete 2-phase elimination system"
                       ].map((benefit, i) => (
@@ -343,7 +343,7 @@ export default function Home() {
                     <div className="relative group">
                       {/* Glow effect */}
                       <div className="absolute inset-0 bg-red-500/10 rounded-2xl blur-2xl scale-110 group-hover:scale-125 transition-transform duration-500" />
-                      
+
                       {/* Book cover */}
                       <div className="relative bg-white rounded-2xl shadow-2xl p-6 transform hover:scale-105 transition-transform duration-300">
                         <Image
@@ -353,7 +353,7 @@ export default function Home() {
                           height={375}
                           className="w-[240px] h-auto object-contain rounded-lg shadow-lg"
                         />
-                        
+
                         {/* Floating elements */}
                         <div className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
                           FREE
@@ -481,7 +481,7 @@ export default function Home() {
                     {/* Decorative elements */}
                     <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-10 group-hover:bg-primary/10 transition-colors"></div>
                     <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/5 rounded-tr-full -z-10 group-hover:bg-primary/10 transition-colors"></div>
-                    
+
                     {/* Rating stars */}
                     <div className="flex mb-6">
                       {[...Array(testimonial.rating)].map((_, i) => (
@@ -778,14 +778,14 @@ export default function Home() {
           </div>
           <div className="mt-12 pt-8 border-t border-yellow-600/20">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-center md:text-left">
+              <div className="text-center md:text-left">
                 <p className="text-sm text-gray-400">
-                © 2024 Dr. Sebi Approved LLC. All rights reserved.
-              </p>
+                  © 2024 Dr. Sebi Approved LLC. All rights reserved.
+                </p>
                 <p className="text-xs text-gray-500 mt-1">
-                These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
-              </p>
-            </div>
+                  These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
+                </p>
+              </div>
               <div className="flex gap-4">
                 <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                   Privacy Policy

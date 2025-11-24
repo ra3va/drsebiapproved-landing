@@ -32,8 +32,8 @@ export default function ParaCleanseBlackFridayPDP() {
   }, []);
 
   // Product pricing
-  const originalPrice = 89.99;
-  const salePrice = 62.99;
+  const originalPrice = 85.70;
+  const salePrice = 59.99;
   const discount = Math.round(((originalPrice - salePrice) / originalPrice) * 100);
   const savings = originalPrice - salePrice;
 
@@ -103,7 +103,7 @@ export default function ParaCleanseBlackFridayPDP() {
                   </div>
 
                   <Image
-                    src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
+                    src="/paracleanse.png"
                     alt="ParaCleanse Elite Two-Phase System"
                     width={500}
                     height={500}
@@ -186,16 +186,14 @@ export default function ParaCleanseBlackFridayPDP() {
                     {/* Buy 1 */}
                     <button
                       onClick={() => setQuantity(1)}
-                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
-                        quantity === 1
-                          ? 'border-yellow-500 bg-yellow-50'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${quantity === 1
+                        ? 'border-yellow-500 bg-yellow-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                        }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          quantity === 1 ? 'border-yellow-500' : 'border-gray-300'
-                        }`}>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${quantity === 1 ? 'border-yellow-500' : 'border-gray-300'
+                          }`}>
                           {quantity === 1 && <div className="w-3 h-3 rounded-full bg-yellow-500" />}
                         </div>
                         <span className="font-semibold">Buy 1</span>
@@ -206,16 +204,14 @@ export default function ParaCleanseBlackFridayPDP() {
                     {/* Buy 2 Get 1 Free */}
                     <button
                       onClick={() => setQuantity(2)}
-                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all relative ${
-                        quantity === 2
-                          ? 'border-yellow-500 bg-yellow-50'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all relative ${quantity === 2
+                        ? 'border-yellow-500 bg-yellow-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                        }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          quantity === 2 ? 'border-yellow-500' : 'border-gray-300'
-                        }`}>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${quantity === 2 ? 'border-yellow-500' : 'border-gray-300'
+                          }`}>
                           {quantity === 2 && <div className="w-3 h-3 rounded-full bg-yellow-500" />}
                         </div>
                         <div className="flex flex-col items-start">

@@ -1,7 +1,7 @@
 # Project Memory: Dr. Sebi Approved (Parasite Cleanse Landing)
 
-**Last Updated:** November 23, 2025
-**Status:** Production Ready / Active Marketing Phase
+**Last Updated:** November 24, 2025
+**Status:** Production Ready / Active Marketing Phase (Black Friday Sale)
 **URL:** https://drsebiapproved.com
 **Tech Stack:** Next.js 14, Tailwind, Square (Payments), Brevo (CRM/Marketing), Zoho Mail (Cold/Win-back), Supabase (Campaign Database), Render (Hosting).
 
@@ -9,30 +9,29 @@
 
 ## 🧠 Project Context & Architecture
 
-This project has transitioned from a simple landing page with external Shopify checkout to a fully custom, integrated e-commerce platform. It is designed to support Ra's goal of a $3K/month "Digital Nomad" lifestyle via automated revenue streams.
+This project has transitioned from a simple landing page with external Shopify checkout to a fully custom, integrated e-commerce platform. It is currently running a **Black Friday Campaign** (Nov 25-30) with a full site-wide theme takeover.
 
 ### Core Pillars
-1.  **Commerce (Square):** Custom multi-step checkout, product catalog, coupon management, and customer profiles.
+1.  **Commerce (Square):** Custom multi-step checkout, product catalog, coupon management (`BLACKFRIDAY30`), and customer profiles.
 2.  **Marketing Hub (Brevo):** Behavioral tracking, progressive profile building, and automated email flows.
 3.  **Outreach Engine (Zoho):** A custom-built "Win-Back" system for rate-limited sending to legacy customer lists (8k contacts).
-4.  **Content Funnel:** SEO-optimized blog and "Hidden Parasite Crisis" guide driving traffic to products.
+4.  **Content Funnel:** E-commerce PDPs (Black Friday mode) and SEO-optimized blog driving traffic.
 
 ---
 
 ## 🛠 System Implementation Status
 
 ### 1. Payment & Commerce (Square)
-**Status:** ✅ **LIVE**
-- **Migration:** Complete removal of Shopify legacy code.
-- **Catalog:** 4 Core Products (ParaCleanse, Maya, Sea Moss, Mucus Cleanser) set up programmatically.
-- **Checkout:** Custom "SquareCheckout" component.
-    - *Features:* Multi-step (Contact -> Shipping -> Payment), Mobile-optimized, Cart system with quantity selectors.
-    - *Upsells:* "Add 1 more for Free Shipping" logic ($5.95 flat vs Free).
-    - *Coupons:* Logic implemented (e.g., `STOPMUCUS`, `TEST99`).
-- **Customer Data:** Payments correctly link to Square Customer Directory (deduplicated by email).
+**Status:** ✅ **LIVE (Black Friday Mode)**
+- **Theme:** Full Black/Gold site takeover with sticky countdown banner.
+- **Pages:** Converted educational landers to **E-commerce Product Detail Pages (PDPs)** with social proof, quantity selectors, and urgency elements.
+- **Catalog:** 4 Core Products updated with Black Friday pricing (30% off).
+    - ParaCleanse Elite ($62.99), Maya ($41.99), Sea Moss ($27.99), Mucus Cleanser ($27.99).
+- **Checkout:** Custom "SquareCheckout" with premium gold accents, savings banner, and countdown timer.
+    - *Features:* Pre-fills quantity and coupon from URL (`?quantity=2&coupon=BLACKFRIDAY30`).
 - **Reference Docs:**
     - `docs/square/SQUARE_SETUP.md`
-    - `docs/square/square-checkout-integration-details.md`
+    - `BLACK_FRIDAY_REVERT_PLAN.md`
 
 ### 2. Marketing Automation (Brevo)
 **Status:** ✅ **LIVE**
@@ -110,28 +109,40 @@ This project has transitioned from a simple landing page with external Shopify c
     - Archived legacy/duplicate configuration files to `_deprecated/`.
     - Updated path references in utility scripts.
 
+### Phase 6: Black Friday Campaign (Nov 23-24, 2025)
+- **Full Site Takeover:** Implemented Black/Gold theme across Header, Footer, and CTAs. Added sticky countdown banner.
+- **PDP Transformation:** Converted educational landers to high-conversion E-commerce Product Detail Pages (PDPs) with dynamic social proof ("2.5K in carts") and quantity selectors.
+- **Checkout Optimization:** Added "Premium Urgency Accents", savings banners, and fixed quantity/coupon pre-fill logic.
+- **Pricing & Coupons:** Integrated `BLACKFRIDAY30` (30% off). Updated catalog pricing across the board.
+- **Technical Fixes:** Resolved critical CSS compilation failure and mobile responsive issues.
+- **Artifacts:** Created `BLACK_FRIDAY_REVERT_PLAN.md` and backed up original landers to `src/app/*-lander/`.
+
 ---
 
 ## 🔑 Critical Technical Notes for Agents
 
-1.  **Supabase Clients:**
+1.  **Black Friday Revert:**
+    - Original educational landers are backed up in `src/app/*-lander/`.
+    - Use `BLACK_FRIDAY_REVERT_PLAN.md` to rollback theme and pages after Nov 30.
+
+2.  **Supabase Clients:**
     - `src/lib/supabase.ts` exports two clients: `supabase` (Anon/Client) and `supabaseAdmin` (Service Role). **ALWAYS** use `supabaseAdmin` for API routes performing writes or administrative reads to avoid RLS issues.
     - API Routes using Supabase MUST export `export const dynamic = 'force-dynamic'` to avoid serving stale cached data.
 
-2.  **Square SDK (v37+):**
+3.  **Square SDK (v37+):**
     - Use `client.catalog.batchUpsert()` (not upsertCatalogObject).
     - Prices require `BigInt` serialization (handle with care in JSON responses).
     - Product Images: SDK has a bug. Use direct `fetch` with `FormData` (see `scripts/upload-product-images.js`).
 
-3.  **Brevo vs. Zoho Strategy:**
+4.  **Brevo vs. Zoho Strategy:**
     - **Zoho:** Transactional/Cold/Win-back. Manual CSV uploads. API: `/api/campaign/*`.
     - **Brevo:** Marketing Automation/Behavioral. Triggered by API calls. API: `/api/brevo/*`.
     - *Do not confuse the two.* Zoho drives traffic; Brevo nurtures it.
 
-4.  **Mobile First:**
+5.  **Mobile First:**
     - All UI components (Checkout, Landing Pages) use progressive styling (`text-3xl sm:text-4xl`) to ensure no horizontal scrolling on mobile.
 
-5.  **Agent Skills:**
+6.  **Agent Skills:**
     - Use `.claude/skills/zoho-email-campaign/` for email operations (sending batches, checking status, cleaning test emails).
 
 ---
