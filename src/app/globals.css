@@ -4,33 +4,34 @@
 
 @layer base {
   :root {
-    --background: #FFFFFF;
-    --foreground: #1A1A1A;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
     
-    --card: #FFFFFF;
-    --card-foreground: #1A1A1A;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
     
-    --popover: #FFFFFF;
-    --popover-foreground: #1A1A1A;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
     
-    --primary: #00A7E1;
-    --primary-foreground: #FFFFFF;
+    /* Brand blues and supporting tones (HSL for tailwind hsl(var(--token)) usage) */
+    --primary: 195 100% 44%; /* #00A7E1 */
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: #F7F9FC;
-    --secondary-foreground: #1A1A1A;
+    --secondary: 216 45% 98%; /* #F7F9FC */
+    --secondary-foreground: 0 0% 15%;
     
-    --muted: #F0F2F5;
-    --muted-foreground: #4B5563;
+    --muted: 220 16% 96%; /* #F0F2F5 */
+    --muted-foreground: 220 9% 46%; /* #4B5563 */
     
-    --accent: #E6F6FF;
-    --accent-foreground: #00A7E1;
+    --accent: 202 100% 95%; /* #E6F6FF */
+    --accent-foreground: 195 100% 44%;
     
-    --destructive: #dc2626;
-    --destructive-foreground: #FFFFFF;
+    --destructive: 0 72% 52%; /* #dc2626 */
+    --destructive-foreground: 0 0% 100%;
     
-    --border: #E5E7EB;
-    --input: #E5E7EB;
-    --ring: #00A7E1;
+    --border: 220 13% 91%; /* #E5E7EB */
+    --input: 220 13% 91%;
+    --ring: 195 100% 44%;
     
     --radius: 0.5rem;
   }

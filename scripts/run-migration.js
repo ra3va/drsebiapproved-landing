@@ -3,7 +3,7 @@
  * Creates the 3 tables needed for Zoho campaign
  */
 
-require('dotenv').config({ path: '.env.local' });
+require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
@@ -23,7 +23,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 async function runMigration() {
   try {
     // Read the SQL file
-    const sqlPath = path.join(__dirname, 'prisma', 'migrations', '01_create_zoho_campaign_tables.sql');
+    const sqlPath = path.join(__dirname, '..', 'prisma', 'migrations', '01_create_zoho_campaign_tables.sql');
     const sql = fs.readFileSync(sqlPath, 'utf8');
 
     console.log('📄 Read migration file: 01_create_zoho_campaign_tables.sql');

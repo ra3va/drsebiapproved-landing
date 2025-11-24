@@ -1,85 +1,143 @@
-# Project Memory: Dr. Sebi Approved Landing Page & Campaign Manager
+# Project Memory: Dr. Sebi Approved (Parasite Cleanse Landing)
 
-This document provides a comprehensive summary of the project's architecture, key systems, and development history, synthesized from all recorded session logs.
-
-## 1. Project Overview
-
-Dr. Sebi Approved is a Next.js-based e-commerce and marketing platform for a premium wellness brand. Its primary functions are content delivery (blog), lead generation (quiz, lead magnets), and direct-to-consumer sales. The project has evolved significantly from a simple landing page to a sophisticated system with dual email marketing platforms, a custom payment and checkout flow, and a full-fledged campaign management dashboard.
-
----
-
-## 2. Current System Architecture & Status
-
-### a. E-commerce & Payments
-- **Platform:** **Square** (Fully migrated from Shopify).
-- **Functionality:**
-    - Programmatically managed product catalog (4 core products).
-    - Mobile-first, multi-step checkout flow optimized for conversion, featuring a cart system, quantity selection, and pre-checkout upsells.
-    - Shipping strategy: $5.95 flat rate, free for 2+ items.
-    - **Orders API:** Properly integrated for line-item tracking.
-    - **Customer Directory:** Customer data is now correctly creating full profiles in Square's Customer Directory, fixing an earlier bug where data was only stored in order notes.
-- **Status:** ✅ **Live and Operational.**
-
-### b. Shipping & Fulfillment
-- **Platform:** **Shippo** (Planned Integration).
-- **Functionality:**
-    - The current process is manual.
-    - A complete implementation guide for webhook-based automation with Shippo has been created (`SHIPPO_AUTOMATION_IMPLEMENTATION.md`). This will automate label creation, rate shopping, and tracking updates.
-- **Status:** 🟡 **Planned.** Ready for implementation.
-
-### c. Marketing Automation (Behavioral)
-- **Platform:** **Brevo**.
-- **Functionality:**
-    - Serves as the primary system for automated, behavior-driven marketing.
-    - **Deeply Integrated Tracking:** Captures the full user journey, including:
-        - Quiz submissions and results.
-        - Product page views, engagement time, and CTA clicks.
-        - Progressive, stage-aware checkout abandonment.
-        - Purchase completions.
-    - **Segmentation:** A rich set of contact attributes (25+) and lists (10+) have been programmatically created to enable highly targeted campaigns.
-- **Status:** ✅ **Live and Operational.** Infrastructure is in place for building automation workflows in the Brevo dashboard.
-
-### d. Re-engagement Campaigns (Manual & Batch)
-- **Platform:** **Zoho Mail API** + **Supabase** database.
-- **Functionality:**
-    - A complete, standalone system for managing large, one-off email campaigns (e.g., the 8,000-customer win-back).
-    - **Admin Dashboard:** A comprehensive GUI at `/admin/campaign` for:
-        - Uploading multiple CSVs with campaign metadata.
-        - Manual email entry.
-        - Viewing campaign stats and progress.
-        - Granular deletion (single email, by campaign, or clear all).
-    - **Bucket System:** Intelligently prioritizes sending follow-up emails over new leads to ensure sequence integrity.
-    - **Stop Switch:** Automatically stops sending emails to a customer upon a successful Square purchase.
-- **Status:** ✅ **Live and Operational.** Critical bugs related to OAuth, database writes (RLS), and API caching have been resolved.
-
-### e. Core Technology
-- **Framework:** Next.js 14 with App Router.
-- **Database:** Supabase (PostgreSQL), primarily for the Zoho campaign system.
-- **Styling:** Tailwind CSS.
-- **Deployment:** Hosted on Render, with CI/CD from the `main` GitHub branch.
+**Last Updated:** November 23, 2025
+**Status:** Production Ready / Active Marketing Phase
+**URL:** https://drsebiapproved.com
+**Tech Stack:** Next.js 14, Tailwind, Square (Payments), Brevo (CRM/Marketing), Zoho Mail (Cold/Win-back), Supabase (Campaign Database), Render (Hosting).
 
 ---
 
-## 3. Key Milestones & Project Evolution
+## 🧠 Project Context & Architecture
 
-1.  **Initial Setup (Aug 2025):** Migrated from a slow Docker-based deployment to a streamlined **GitHub + Render** workflow.
-2.  **Shopify to Square Migration (Nov 2025):** Decisively moved away from Shopify, implementing a custom, highly-optimized checkout experience with Square. This involved programmatic product creation, a complex checkout component build, and full removal of legacy Shopify code.
-3.  **Dual Email Strategy Formation:**
-    - **Brevo Implementation (Aug 2025):** Initially integrated as the primary email tool, replacing a limited Mailchimp setup. It was later repurposed for fully automated, behavior-driven marketing.
-    - **Zoho Port (Nov 2025):** A complete Zoho Mail integration was ported from another project to handle a large-scale, manual win-back campaign, keeping it separate from the automated Brevo funnels.
-4.  **Admin Dashboard Creation & Hardening (Nov 2025):**
-    - Built a UI for the Zoho/Supabase campaign system.
-    - Initially built for a specific campaign, it was rebuilt to be a universal, campaign-agnostic tool.
-    - **Critical Bug Fixes:** Underwent significant debugging to resolve major issues with database writes (Supabase RLS), API read caching (Next.js 14), and production OAuth redirects (Render internal ports).
-5.  **Shipping Automation Planning (Nov 2025):** After fixing the Square customer data flow, a full research and planning phase was conducted, resulting in a decision to use **Shippo** for shipping automation.
+This project has transitioned from a simple landing page with external Shopify checkout to a fully custom, integrated e-commerce platform. It is designed to support Ra's goal of a $3K/month "Digital Nomad" lifestyle via automated revenue streams.
+
+### Core Pillars
+1.  **Commerce (Square):** Custom multi-step checkout, product catalog, coupon management, and customer profiles.
+2.  **Marketing Hub (Brevo):** Behavioral tracking, progressive profile building, and automated email flows.
+3.  **Outreach Engine (Zoho):** A custom-built "Win-Back" system for rate-limited sending to legacy customer lists (8k contacts).
+4.  **Content Funnel:** SEO-optimized blog and "Hidden Parasite Crisis" guide driving traffic to products.
 
 ---
 
-## 4. Current Status & Immediate Next Steps
+## 🛠 System Implementation Status
 
-The project is largely functional and robust, with two distinct and powerful email systems and a custom e-commerce checkout.
+### 1. Payment & Commerce (Square)
+**Status:** ✅ **LIVE**
+- **Migration:** Complete removal of Shopify legacy code.
+- **Catalog:** 4 Core Products (ParaCleanse, Maya, Sea Moss, Mucus Cleanser) set up programmatically.
+- **Checkout:** Custom "SquareCheckout" component.
+    - *Features:* Multi-step (Contact -> Shipping -> Payment), Mobile-optimized, Cart system with quantity selectors.
+    - *Upsells:* "Add 1 more for Free Shipping" logic ($5.95 flat vs Free).
+    - *Coupons:* Logic implemented (e.g., `STOPMUCUS`, `TEST99`).
+- **Customer Data:** Payments correctly link to Square Customer Directory (deduplicated by email).
+- **Reference Docs:**
+    - `docs/square/SQUARE_SETUP.md`
+    - `docs/square/square-checkout-integration-details.md`
 
-### Immediate Priorities:
-1.  **Fix Zoho Email Link Redirect Bug:** Links in sent emails are incorrectly redirecting to `localhost:10000`. This is a critical bug blocking the use of the Zoho campaign.
-2.  **Implement Shippo Automation:** Execute the plan in `SHIPPO_AUTOMATION_IMPLEMENTATION.md` to automate the shipping and fulfillment process. This is the next major step for operational efficiency.
-3.  **Apply Database Migration:** The `02_add_campaign_management.sql` migration, which creates an efficient `campaign_summary` view, has not been run. The API currently uses a slower, paginated query as a workaround. Applying this migration will improve dashboard performance.
+### 2. Marketing Automation (Brevo)
+**Status:** ✅ **LIVE**
+- **Architecture:** "Multi-Product Hub".
+- **Tracking:** Full funnel visibility.
+    - *Homepage:* Problem navigation tracking.
+    - *Quiz:* Score and recommendation tracking.
+    - *Product Pages:* Time-on-page (>30s engagement), CTA location clicks.
+    - *Checkout:* Progressive capture (Step 1 email capture -> Step 2 shipping -> Purchase).
+- **Data Structure:** 10 Lists (Prospects/Customers per product) + 25 Custom Attributes.
+- **Capabilities:** Pre-fill checkout links from landing pages.
+- **Reference Docs:**
+    - `docs/brevo/BREVO_MULTI_PRODUCT_INTEGRATION.md`
+    - `docs/brevo/brevo-tracking-guide.md`
+
+### 3. Win-Back Campaign System (Zoho + Supabase)
+**Status:** ✅ **LIVE**
+- **Purpose:** Re-engage 8,000 legacy customers without triggering spam filters.
+- **Tech:** Next.js API routes + Supabase (DB) + Zoho Mail API (OAuth).
+- **Dashboard:** `/admin/campaign` (Universal GUI).
+    - *Features:* CSV Upload (Excel compatible), Batch Preview, Bucket Priority Logic (Follow-ups > New Leads).
+    - *Rate Limiting:* Configurable (default 50-75/day).
+    - *Tracking:* Link click tracking (auto-wraps URLs) -> Syncs to Brevo.
+    - *Stop Switch:* Purchases auto-remove users from campaign.
+- **Infrastructure:**
+    - Supabase Service Role key used for Admin API to bypass RLS.
+    - `force-dynamic` used on API routes to prevent Next.js caching issues.
+- **Reference Docs:**
+    - `docs/zoho/ZOHO_INTEGRATION_SUMMARY.md`
+    - `docs/zoho/ZOHO_SETUP_INSTRUCTIONS.md`
+    - Agent Skill: `.claude/skills/zoho-email-campaign/`
+
+### 4. Shipping & Fulfillment
+**Status:** 🚧 **Planning / In Progress**
+- **Current:** Manual fulfillment via Square Dashboard.
+- **Planned:** Shippo Automation.
+    - *Strategy:* Webhooks trigger label creation -> PDF emailed to Ra.
+    - *Cost:* Self-fulfillment cheaper until ~100 orders/mo.
+- **Reference Docs:**
+    - `docs/shippo/SHIPPO_AUTOMATION_IMPLEMENTATION.md`
+
+---
+
+## 📜 Chronological Development History
+
+### Phase 1: Foundation (Aug 2025)
+- Migrated from Docker/DigitalOcean to **GitHub/Render** for CI/CD.
+- Implemented **Brevo** for Lead Magnet (Gut Health Guide) delivery.
+- Overhauled **Blog Content** for SEO and internal linking.
+- Added "Hidden Parasite Crisis" homepage section.
+
+### Phase 2: The E-Commerce Rewrite (Nov 16-17, 2025)
+- **Square Integration:** Built the entire catalog and payment flow from scratch.
+- **Shopify Excision:** Removed all legacy Shopify dependencies and tracking.
+- **Tracking Layer:** Implemented `useProductTracking` and progressive checkout capture.
+- **Zoho Port:** Ported the "Amber Unbound" CRM email logic to this project for the 8k customer list.
+
+### Phase 3: Refinement & Tooling (Nov 18-19, 2025)
+- **Dashboard Polish:** Fixed critical bugs in the Admin Dashboard (1000 row limit, database write consistency).
+- **UX Improvements:** Added manual email entry, "Clear All" danger zones, and mobile responsiveness fixes.
+- **Caching Fixes:** Resolved Next.js App Router aggressive caching on Admin APIs.
+
+### Phase 4: Specific Funnels (Nov 21-22, 2025)
+- **Mucus Cleanser Win-Back:**
+    - Created `/mucus-winback` landing page.
+    - Implemented 72h countdown timer (localStorage).
+    - **Pre-fill Flow:** Email entered on landing page auto-fills at checkout.
+    - **Discount:** `STOPMUCUS` (37% off) auto-applies via URL param.
+- **Square Customer Data Fix:** Resolved issue where customer data was stuck in metadata; now creates proper Customer profiles.
+
+### Phase 5: Organization & Maintenance (Nov 23, 2025)
+- **Root Directory Cleanup:**
+    - Moved scripts to `scripts/` and `scripts/tests/`.
+    - Consolidated documentation into `docs/brevo/`, `docs/zoho/`, `docs/shippo/`, and `docs/archive/`.
+    - Archived legacy/duplicate configuration files to `_deprecated/`.
+    - Updated path references in utility scripts.
+
+---
+
+## 🔑 Critical Technical Notes for Agents
+
+1.  **Supabase Clients:**
+    - `src/lib/supabase.ts` exports two clients: `supabase` (Anon/Client) and `supabaseAdmin` (Service Role). **ALWAYS** use `supabaseAdmin` for API routes performing writes or administrative reads to avoid RLS issues.
+    - API Routes using Supabase MUST export `export const dynamic = 'force-dynamic'` to avoid serving stale cached data.
+
+2.  **Square SDK (v37+):**
+    - Use `client.catalog.batchUpsert()` (not upsertCatalogObject).
+    - Prices require `BigInt` serialization (handle with care in JSON responses).
+    - Product Images: SDK has a bug. Use direct `fetch` with `FormData` (see `scripts/upload-product-images.js`).
+
+3.  **Brevo vs. Zoho Strategy:**
+    - **Zoho:** Transactional/Cold/Win-back. Manual CSV uploads. API: `/api/campaign/*`.
+    - **Brevo:** Marketing Automation/Behavioral. Triggered by API calls. API: `/api/brevo/*`.
+    - *Do not confuse the two.* Zoho drives traffic; Brevo nurtures it.
+
+4.  **Mobile First:**
+    - All UI components (Checkout, Landing Pages) use progressive styling (`text-3xl sm:text-4xl`) to ensure no horizontal scrolling on mobile.
+
+5.  **Agent Skills:**
+    - Use `.claude/skills/zoho-email-campaign/` for email operations (sending batches, checking status, cleaning test emails).
+
+---
+
+## 🔮 Next Steps (Roadmap)
+
+1.  **Shippo Automation:** Implement the planned webhook system (`docs/shippo/SHIPPO_AUTOMATION_IMPLEMENTATION.md`).
+2.  **Email Sequences:** Manually build the Brevo automation workflows (Logic is ready, content needed).
+3.  **Analytics:** Monitor the "Stop Switch" and conversion rates on the new Mucus funnel.

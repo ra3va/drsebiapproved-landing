@@ -1,451 +1,395 @@
 'use client';
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, Shield, Star, ArrowRight, Leaf, Zap, Brain, Heart, Users, Clock, Award, Wind, Droplets, Activity, Target, AlertTriangle, Info } from 'lucide-react'
+import { Card, CardContent } from "@/components/ui/card"
+import { CheckCircle, Star, ShoppingCart, Gift, Users, TrendingUp, Award, ShieldCheck, Download, Zap } from 'lucide-react'
 import Image from "next/image"
-import Link from "next/link"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
-import { useProductTracking } from "@/hooks/useProductTracking";
 
-export default function MucusCleanserPage() {
-  const [showModal, setShowModal] = useState(false);
+export default function MucusCleanserBlackFridayPDP() {
+  const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [inCartCount, setInCartCount] = useState(0);
+  const [recentPurchases, setRecentPurchases] = useState(0);
 
-  // Initialize product tracking
-  const { trackCTAClick, trackAddToCart } = useProductTracking({
-    productName: 'Mucus Cleanser',
-    productSlug: 'mucus-cleanser',
-    price: 39.99
-  });
+  // Simulate realistic dynamic numbers
+  useEffect(() => {
+    // Random number between 2.3K - 2.8K for cart count
+    const baseCartCount = 1400 + Math.floor(Math.random() * 350);
+    setInCartCount(baseCartCount);
+
+    // Random number between 100-240 for recent purchases
+    const basePurchases = 100 + Math.floor(Math.random() * 40);
+    setRecentPurchases(basePurchases);
+
+    // Update cart count every 15-30 seconds
+    const interval = setInterval(() => {
+      setInCartCount(prev => prev + Math.floor(Math.random() * 3) - 1); // +/- 0-2
+    }, Math.random() * 13500 + 13500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Product pricing
+  const originalPrice = 39.99;
+  const salePrice = 27.99;
+  const discount = Math.round(((originalPrice - salePrice) / originalPrice) * 100);
+  const savings = originalPrice - salePrice;
+
+  const handleAddToCart = () => {
+    setIsLoading(true);
+
+    // Track GA4 add_to_cart event
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'add_to_cart', {
+        currency: 'USD',
+        value: salePrice * quantity,
+        items: [{
+          item_id: 'mucus-cleanser-bf',
+          item_name: 'Mucus Cleanser - Black Friday',
+          item_category: 'Respiratory Support',
+          price: salePrice,
+          quantity: quantity
+        }]
+      });
+    }
+
+    // Redirect to checkout
+    window.location.href = `/checkout?product=mucus-cleanser&quantity=${quantity}&coupon=BLACKFRIDAY30`;
+  };
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num.toString();
+  };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-white pt-[4.5rem]">
       <Header />
-      {/* Spacer for fixed header */}
-      <div className="h-[5.5rem]"></div>
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-white to-accent/10 pt-16 pb-12">
-          {/* Background elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
+        {/* Black Friday Sticky Banner - Compact */}
+        <div className="sticky top-[72px] z-40 bg-gradient-to-r from-black via-gray-900 to-black border-b-2 border-yellow-350/30 py-2">
+          <div className="container mx-auto px-4 flex items-center justify-center gap-3 text-xs sm:text-sm">
+            <Zap className="w-4 h-4 text-yellow-350 fill-yellow-350" />
+            <span className="text-white font-bold">BLACK FRIDAY:</span>
+            <span className="text-yellow-400 font-bold">30% OFF</span>
+            <span className="text-gray-400">|</span>
+            <span className="text-gray-300">Code: <span className="text-yellow-400 font-mono">BLACKFRIDAY30</span></span>
           </div>
-          
-          <div className="container relative mx-auto px-4 max-w-[1200px]">
-            {/* Center the content and make product image more prominent */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center rounded-lg bg-cyan-500/10 px-4 py-2 text-sm text-cyan-600 mb-6">
-                <Wind className="w-4 h-4 mr-2" />
-                <span>RESPIRATORY & CELLULAR CLEANSING</span>
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-6 leading-tight">
-                Dr. Sebi's
-                <span className="text-cyan-600 block">Mucus Cleanser</span>
-                <span className="text-blue-600 block">Formula</span>
-              </h1>
+        </div>
 
-              <p className="text-xl text-muted-foreground mb-8 max-w-[700px] mx-auto leading-relaxed">
-                <strong>Eliminate excess mucus and cleanse at the cellular level.</strong> Dr. Sebi's powerful blend of cascara, mullein root, and African bird pepper supports respiratory health and natural detoxification.
-              </p>
+        {/* Product Detail Section */}
+        <section className="w-full py-8 md:py-12">
+          <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
 
-              {/* Dr. Sebi Quote Section */}
-              <div className="bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-cyan-500/10 rounded-3xl p-8 md:p-12 max-w-4xl mx-auto mb-12 border-2 border-cyan-500/20">
-                <div className="text-center">
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Wind className="w-8 h-8 text-cyan-600" />
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                      Eliminate the Root Cause
-                    </h3>
-                  </div>
-                  
-                  <blockquote className="text-xl md:text-2xl font-medium text-foreground mb-6 italic relative">
-                    <span className="absolute -top-4 -left-4 text-4xl text-cyan-500/30">"</span>
-                    <span className="relative z-10">
-                      Mucus is the cause of every disease. Eliminate the mucus and you eliminate the disease.
-                    </span>
-                    <span className="absolute -bottom-4 -right-4 text-4xl text-cyan-500/30">"</span>
-                  </blockquote>
-                  
-                  <p className="text-lg font-semibold text-cyan-600 mb-4">— Dr. Sebi's Teaching</p>
-                  
-                  <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-cyan-500/20">
-                    <div className="grid gap-4 md:grid-cols-2 text-left">
-                      <div className="flex items-start gap-3">
-                        <Award className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-1" />
-                        <div>
-                          <p className="font-semibold text-foreground">Handmade for Potency</p>
-                          <p className="text-sm text-muted-foreground">Fresh preparation preserves herbal effectiveness</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Shield className="h-5 w-5 text-blue-600 flex-shrink-0 mt-1" />
-                        <div>
-                          <p className="font-semibold text-foreground">Authentic Dr. Sebi Method</p>
-                          <p className="text-sm text-muted-foreground">Following original herbal compound formulations</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              {/* Left Column - Product Image */}
+              <div className="flex flex-col">
+                {/* Social Proof Badge */}
+                <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
+                  <ShoppingCart className="w-4 h-4 text-primary" />
+                  <span>In the carts of <strong className="text-foreground">{formatNumber(inCartCount)} people</strong> — buy before it's gone!</span>
                 </div>
-              </div>
-            </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Left Content - Product Image */}
-              <div className="flex justify-center lg:justify-start order-1 lg:order-1">
-                <div className="relative group">
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 bg-cyan-500/10 rounded-2xl blur-2xl scale-110 group-hover:scale-125 transition-transform duration-500" />
-                  
-                  {/* Product image */}
-                  <div className="relative bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-300">
-                    <Image
-                      src="/mucus.png"
-                      alt="Dr. Sebi's Mucus Cleanser"
-                      width={450}
-                      height={550}
-                      className="w-[350px] h-auto object-contain rounded-lg shadow-lg"
-                      priority
-                    />
-                    
-                    {/* Floating elements */}
-                    <div className="absolute -top-4 -right-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full animate-pulse">
-                      20% OFF
-                    </div>
-                    <div className="absolute -bottom-4 -left-4 bg-cyan-600 text-white text-sm font-medium px-3 py-1 rounded-full">
-                      30 Capsules
-                    </div>
+                {/* Product Image */}
+                <div className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 mb-6">
+                  {/* Black Friday Badge */}
+                  <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-350 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
+                    BLACK FRIDAY
+                  </div>
+
+                  <Image
+                    src="/mucus.png"
+                    alt="Dr. Sebi's Mucus Cleanser"
+                    width={350}
+                    height={350}
+                    className="w-full h-auto object-contain"
+                    priority
+                  />
+                </div>
+
+                {/* Trust Badges */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg">
+                    <ShieldCheck className="w-6 h-6 text-primary mb-1" />
+                    <span className="text-xs font-medium">100% Natural</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg">
+                    <Award className="w-6 h-6 text-primary mb-1" />
+                    <span className="text-xs font-medium">Dr. Sebi Formula</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg">
+                    <Users className="w-6 h-6 text-primary mb-1" />
+                    <span className="text-xs font-medium">10K+ Reviews</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Content - Benefits and Pricing */}
-              <div className="flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-2">
-                {/* Key Benefits */}
-                <div className="grid gap-4 mb-8 w-full max-w-[540px]">
-                  {[
-                    "Eliminates excess mucus naturally",
-                    "Supports respiratory and breathing health", 
-                    "Cleanses and rebuilds at cellular level",
-                    "Made with authentic Dr. Sebi herbs"
-                  ].map((benefit, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-left">{benefit}</span>
-                    </div>
-                  ))}
+              {/* Right Column - Product Info */}
+              <div className="flex flex-col">
+                {/* Product Title */}
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                  Mucus Cleanser
+                </h1>
+                <p className="text-lg text-primary font-medium mb-4">
+                  Two-Phase Parasite Cleansing System
+                </p>
+
+                {/* Rating */}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    ))}
+                  </div>
+                  <span className="text-sm font-semibold">Rated 4.7</span>
+                  <span className="text-sm text-muted-foreground">(1,982 reviews)</span>
+                  <span className="text-sm text-primary font-medium">Happy Customers</span>
+                </div>
+
+                {/* Badges */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <div className="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full border border-red-200">
+                    RESPIRATORY SUPPORT
+                  </div>
+                  <div className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20">
+                    Handmade for Potency
+                  </div>
                 </div>
 
                 {/* Pricing */}
-                <div className="bg-white border-2 border-cyan-500/20 rounded-2xl p-6 mb-8 w-full max-w-[540px]">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-3xl font-bold text-foreground">$31.99</p>
-                      <p className="text-lg text-muted-foreground line-through">$59.99</p>
-                    </div>
-                    <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold">
-                      SAVE 20%
+                <div className="mb-6 p-6 bg-gradient-to-br from-yellow-50 to-yellow-100/50 rounded-2xl border-2 border-yellow-350/30">
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <span className="text-4xl font-bold text-foreground">${salePrice}</span>
+                    <span className="text-2xl text-muted-foreground line-through">${originalPrice}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="bg-yellow-350 text-black text-sm font-bold px-3 py-1 rounded-full">
+                      SAVE {discount}% | ${savings.toFixed(2)} OFF
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">30 Capsules | Handmade to preserve potency</p>
+                  <p className="text-sm text-muted-foreground">
+                    Use code: <span className="text-yellow-700 font-mono font-bold">BLACKFRIDAY30</span> at checkout
+                  </p>
                 </div>
 
-                <Button
-                  size="lg"
-                  className="w-full max-w-[540px] bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-cyan-600/25 hover:translate-y-[1px] transition-all"
-                  onClick={() => {
-                    trackCTAClick('hero-checkout-cta');
-                    window.location.href = '/checkout?product=mucus-cleanser';
-                  }}
-                >
-                  <ArrowRight className="w-5 h-5 mr-2" />
-                  Proceed to Secure Checkout
-                </Button>
+                {/* Quantity Selector & Add to Cart */}
+                <div className="mb-6">
+                  <label className="text-sm font-medium mb-2 block">Quantity:</label>
 
-                {/* Social Proof */}
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    <span>1,500+ Satisfied Customers</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Star className="w-4 h-4 fill-cyan-600 text-cyan-600" />
-                    <span>4.8/5 Rating</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Key Ingredients Section */}
-        <section className="w-full py-20 bg-white">
-          <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Powerful Natural Ingredients
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Each herb in Dr. Sebi's Mucus Cleanser formula has been carefully selected for its specific properties in eliminating mucus and supporting cellular health.
-              </p>
-            </div>
-
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16">
-              {[
-                {
-                  name: "Cascara Sagrada",
-                  icon: <Leaf className="h-8 w-8 text-green-600" />,
-                  description: "Sacred bark known for gentle but effective cleansing properties.",
-                  benefits: ["Natural detoxification", "Supports elimination", "Gentle on system"]
-                },
-                {
-                  name: "Mullein Root",
-                  icon: <Wind className="h-8 w-8 text-blue-600" />,
-                  description: "Powerful respiratory herb traditionally used for lung and breathing support.",
-                  benefits: ["Respiratory health", "Mucus reduction", "Breathing support"]
-                },
-                {
-                  name: "African Bird Pepper",
-                  icon: <Zap className="h-8 w-8 text-red-600" />,
-                  description: "Potent pepper that stimulates circulation and helps break down mucus.",
-                  benefits: ["Circulation boost", "Mucus breakdown", "Energy enhancement"]
-                },
-                {
-                  name: "Rhubarb Root",
-                  icon: <Target className="h-8 w-8 text-purple-600" />,
-                  description: "Traditional cleansing root that supports digestive and cellular health.",
-                  benefits: ["Digestive support", "Cellular cleansing", "Natural detox"]
-                },
-                {
-                  name: "Dandelion Root",
-                  icon: <Droplets className="h-8 w-8 text-yellow-600" />,
-                  description: "Powerful liver support herb that aids in toxin elimination.",
-                  benefits: ["Liver support", "Toxin removal", "System cleansing"]
-                }
-              ].map((ingredient, i) => (
-                <Card key={i} className="relative overflow-hidden border-2 hover:border-cyan-500 transition-all duration-300 group">
-                  <CardHeader>
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-500/5 rounded-bl-full group-hover:bg-cyan-500/10 transition-colors"></div>
-                    <div className="flex items-center gap-3 mb-4">
-                      {ingredient.icon}
-                      <div>
-                        <CardTitle className="text-lg">{ingredient.name}</CardTitle>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">{ingredient.description}</p>
-                    <div className="space-y-2">
-                      <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
-                      {ingredient.benefits.map((benefit, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-cyan-600 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground">{benefit}</span>
+                  {/* Buy Options */}
+                  <div className="space-y-3 mb-4">
+                    {/* Buy 1 */}
+                    <button
+                      onClick={() => setQuantity(1)}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
+                        quantity === 1
+                          ? 'border-yellow-350 bg-yellow-50'
+                          : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                          quantity === 1 ? 'border-yellow-350' : 'border-gray-300'
+                        }`}>
+                          {quantity === 1 && <div className="w-3 h-3 rounded-full bg-yellow-350" />}
                         </div>
-                      ))}
+                        <span className="font-semibold">Buy 1</span>
+                      </div>
+                      <span className="font-bold text-lg">${salePrice}</span>
+                    </button>
+
+                    {/* Buy 2 Get 1 Free */}
+                    <button
+                      onClick={() => setQuantity(2)}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all relative ${
+                        quantity === 2
+                          ? 'border-yellow-350 bg-yellow-50'
+                          : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                          quantity === 2 ? 'border-yellow-350' : 'border-gray-300'
+                        }`}>
+                          {quantity === 2 && <div className="w-3 h-3 rounded-full bg-yellow-350" />}
+                        </div>
+                        <div className="flex flex-col items-start">
+                          <span className="font-semibold">Buy 2</span>
+                          <span className="text-xs text-primary font-medium">Best Value</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="font-bold text-lg">${(salePrice * 2).toFixed(2)}</span>
+                        <span className="text-xs text-muted-foreground line-through">${(originalPrice * 2).toFixed(2)}</span>
+                      </div>
+                      <div className="absolute -top-2 -right-2 bg-red-350 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        -{discount}%
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Add to Cart Button */}
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={isLoading}
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-350 hover:from-yellow-350 hover:to-yellow-400 text-black font-bold text-lg py-7 rounded-full shadow-lg shadow-yellow-350/25 hover:scale-105 transition-all"
+                  >
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    {isLoading ? 'Processing...' : 'Add to Cart'}
+                  </Button>
+                </div>
+
+                {/* Recent Activity */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6 p-3 bg-primary/5 rounded-lg border border-primary/10">
+                  <TrendingUp className="w-4 h-4 text-primary" />
+                  <span><strong className="text-foreground">{recentPurchases} people</strong> purchased this in the last 24 hours</span>
+                </div>
+
+                {/* Key Benefits */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-lg mb-3">What You Get:</h3>
+                  <div className="space-y-2">
+                    {[
+                      "Eliminates excess mucus naturally",
+                      "Supports respiratory health",
+                      "Cellular cleansing & detox",
+                      "Handmade for potency",
+                      "Cascara, mullein & bird pepper blend"
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Free Gifts Section */}
+                <div className="p-6 bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border-2 border-primary/20">
+                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                    <Gift className="w-5 h-5 text-primary" />
+                    FREE GIFTS WITH YOUR ORDER
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* E-book */}
+                    <div className="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-gray-200">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                        <Download className="w-6 h-6 text-primary" />
+                      </div>
+                      <span className="text-xs font-bold mb-1">FREE EBOOK</span>
+                      <span className="text-xs text-muted-foreground">Hidden Parasite Crisis Guide</span>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* Health Benefits Section */}
-        <section className="w-full py-20 bg-gradient-to-b from-accent/10 to-white">
-          <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Transform Your Respiratory & Cellular Health
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Experience the comprehensive benefits of natural mucus elimination and cellular cleansing with Dr. Sebi's time-tested formula.
-              </p>
-            </div>
-
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  icon: <Wind className="h-8 w-8 text-blue-600" />,
-                  title: "Respiratory Support",
-                  description: "Clear airways and support natural breathing function through mucus elimination."
-                },
-                {
-                  icon: <Activity className="h-8 w-8 text-green-600" />,
-                  title: "Cellular Cleansing", 
-                  description: "Deep cellular detoxification helps rebuild your body from the ground up."
-                },
-                {
-                  icon: <Heart className="h-8 w-8 text-red-600" />,
-                  title: "Overall Vitality",
-                  description: "Remove toxins and mucus buildup for improved energy and well-being."
-                },
-                {
-                  icon: <Shield className="h-8 w-8 text-purple-600" />,
-                  title: "Natural Defense",
-                  description: "Support your body's natural ability to maintain optimal health and function."
-                }
-              ].map((item, i) => (
-                <Card key={i} className="text-center border-2 hover:border-cyan-500 transition-all duration-300 group">
-                  <CardContent className="p-6">
-                    <div className="text-cyan-600 mb-4 flex justify-center">{item.icon}</div>
-                    <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm">{item.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* What to Expect Section */}
-            <div className="mt-16">
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border-2 border-cyan-500/20 max-w-4xl mx-auto">
-                <h3 className="text-2xl font-bold text-center text-foreground mb-8">
-                  What You Can Expect From Mucus Cleanser
-                </h3>
-                <div className="grid gap-6 md:grid-cols-2 text-left">
-                  {[
-                    "Reduced mucus buildup in respiratory system",
-                    "Improved breathing and airway clarity", 
-                    "Enhanced cellular detoxification and renewal",
-                    "Increased energy from toxin elimination",
-                    "Better overall respiratory function",
-                    "Natural support for body's cleansing processes"
-                  ].map((expectation, idx) => (
-                    <div key={idx} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-muted-foreground">{expectation}</span>
+                    {/* Free Shipping */}
+                    <div className="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-gray-200">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                        <ShieldCheck className="w-6 h-6 text-primary" />
+                      </div>
+                      <span className="text-xs font-bold mb-1">FREE SHIPPING</span>
+                      <span className="text-xs text-muted-foreground">On orders 2+ items</span>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Usage Instructions */}
-        <section className="w-full py-20 bg-white">
-          <div className="container px-4 md:px-6 max-w-[800px] mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                How to Use Mucus Cleanser
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Follow these guidelines for safe and effective mucus elimination and cellular cleansing.
+        {/* Product Description Section */}
+        <section className="w-full py-12 bg-gray-50">
+          <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
+            <h2 className="text-3xl font-bold mb-6">Why Mucus Cleanser Works</h2>
+
+            <div className="prose prose-lg max-w-none">
+              <p className="text-lg text-muted-foreground mb-6">
+                Dr. Sebi's Mucus Cleanser is the only two-phase system that addresses the root cause of why most parasite cleanses fail: <strong>biofilms</strong>. These protective shields allow parasites to hide from traditional treatments, but our revolutionary formula breaks through them.
               </p>
-            </div>
 
-            <div className="bg-gradient-to-br from-cyan-500/5 to-blue-500/5 rounded-2xl p-8">
-              <div className="grid gap-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
-                    1
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Recommended Dosage</h3>
-                    <p className="text-muted-foreground">Follow bottle instructions or as directed by your healthcare provider. Start with lower doses to assess tolerance.</p>
-                  </div>
-                </div>
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">1</div>
+                      Phase 1: Biofilm Disruption
+                    </h3>
+                    <p className="text-muted-foreground">
+                      The first 7 days break down the protective biofilm layer using powerful natural enzymes. This exposes parasites and makes them vulnerable to elimination.
+                    </p>
+                  </CardContent>
+                </Card>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
-                    2
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Best Practices</h3>
-                    <p className="text-muted-foreground">Take with plenty of water and maintain hydration throughout your cleansing period.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
-                    3
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Duration</h3>
-                    <p className="text-muted-foreground">Use as directed for optimal results. Some customers report benefits within days of consistent use.</p>
-                  </div>
-                </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-yellow-800 mb-2">Important Safety Information</h4>
-                      <ul className="text-sm text-yellow-700 space-y-1">
-                        <li>• Consult your healthcare provider before use, especially if pregnant or nursing</li>
-                        <li>• Discontinue use if adverse reactions occur</li>
-                        <li>• Not intended to diagnose, treat, cure, or prevent any disease</li>
-                        <li>• Keep out of reach of children</li>
-                        <li>• Store in a cool, dry place</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">2</div>
+                      Phase 2: Deep Elimination
+                    </h3>
+                    <p className="text-muted-foreground">
+                      Days 8-14 target and eliminate parasites at every stage of their lifecycle using Dr. Sebi's wildcrafted herb blend. Complete system cleansing.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
-        <section className="w-full py-20 bg-gradient-to-b from-accent/10 to-white">
+        <section className="w-full py-12 bg-white">
           <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Real Results from Real Customers
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                See how Dr. Sebi's Mucus Cleanser has helped people breathe better and feel healthier.
-              </p>
-            </div>
+            <h2 className="text-3xl font-bold mb-8 text-center">What Our Customers Say</h2>
 
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid md:grid-cols-3 gap-6">
               {[
                 {
-                  quote: "I noticed a significant reduction in mucus buildup within just a few days. My breathing feels so much clearer and I have more energy.",
-                  author: "Jennifer M.",
-                  location: "Phoenix, AZ",
-                  rating: 5
+                  name: "Sarah M.",
+                  location: "Dallas, TX",
+                  rating: 5,
+                  text: "After just 14 days, my energy levels are through the roof! I can't believe how much better I feel. This is the real deal.",
+                  image: "/images/testimonials/E1lm-p99Mp_mid.jpg"
                 },
                 {
-                  quote: "This formula really works! I've struggled with respiratory issues for years, and the Mucus Cleanser has made such a difference in my daily comfort.",
-                  author: "David R.",
-                  location: "Chicago, IL", 
-                  rating: 5
+                  name: "Michael C.",
+                  location: "San Francisco, CA",
+                  rating: 5,
+                  text: "I've tried other cleanses before, but Mucus Cleanser is different. The two-phase system actually works. No more bloating!",
+                  image: "/images/testimonials/4JL1TreUi_mid (2).jpg"
                 },
                 {
-                  quote: "Dr. Sebi's approach to eliminating mucus makes so much sense. I feel like I'm breathing better and my whole system feels cleaner.",
-                  author: "Maria L.",
-                  location: "Los Angeles, CA",
-                  rating: 5
+                  name: "Emma R.",
+                  location: "Miami, FL",
+                  rating: 5,
+                  text: "My brain fog is completely gone. I wish I had found Dr. Sebi's products years ago. Worth every penny!",
+                  image: "/images/testimonials/9c05X9Grw_mid.jpg"
                 }
               ].map((testimonial, i) => (
-                <Card key={i} className="relative overflow-hidden group hover:border-cyan-500 transition-all duration-300">
+                <Card key={i} className="border-2 hover:border-primary transition-all">
                   <CardContent className="p-6">
-                    {/* Rating stars */}
-                    <div className="flex mb-4">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Image
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        width={48}
+                        height={48}
+                        className="rounded-full"
+                      />
+                      <div>
+                        <p className="font-semibold">{testimonial.name}</p>
+                        <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                      </div>
+                    </div>
+                    <div className="flex mb-3">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-cyan-600 text-cyan-600" />
+                        <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                       ))}
                     </div>
-
-                    {/* Quote */}
-                    <blockquote className="text-gray-700 mb-4 relative">
-                      <span className="absolute -top-2 -left-2 text-2xl text-cyan-500/20">"</span>
-                      <span className="relative z-10">{testimonial.quote}</span>
-                      <span className="absolute -bottom-2 -right-2 text-2xl text-cyan-500/20">"</span>
-                    </blockquote>
-
-                    {/* Author info */}
-                    <div className="text-sm">
-                      <p className="font-semibold">{testimonial.author}</p>
-                      <p className="text-muted-foreground">{testimonial.location}</p>
-                    </div>
+                    <p className="text-sm text-muted-foreground">"{testimonial.text}"</p>
                   </CardContent>
                 </Card>
               ))}
@@ -453,86 +397,38 @@ export default function MucusCleanserPage() {
           </div>
         </section>
 
-        {/* Final CTA Section */}
-        <section className="w-full py-20 bg-gradient-to-b from-cyan-500/10 to-white">
+        {/* CTA Section */}
+        <section className="w-full py-12 bg-gradient-to-br from-black via-gray-900 to-black">
           <div className="container px-4 md:px-6 max-w-[800px] mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Start Your Mucus Cleansing Journey Today
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Don't Miss This Black Friday Deal
             </h2>
-            <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              Experience the power of Dr. Sebi's natural approach to eliminating excess mucus and supporting cellular health. Clear your respiratory system and revitalize your body naturally.
+            <p className="text-xl text-gray-300 mb-8">
+              30% off ends November 29th. Stock is limited.
             </p>
-            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-              <p className="text-cyan-800 font-medium text-center">
-                <strong>"Mucus is the cause of every disease. Eliminate the mucus and you eliminate the disease."</strong> — Dr. Sebi's Teaching
-              </p>
-              <p className="text-cyan-700 text-sm text-center mt-2">
-                Handmade with authentic herbs following Dr. Sebi's original methods for maximum potency and effectiveness.
-              </p>
-            </div>
-            
-            {/* Pricing Display */}
-            <div className="bg-white border-2 border-cyan-500/20 rounded-2xl p-8 mb-8 max-w-md mx-auto">
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-foreground">$31.99</p>
-                  <p className="text-lg text-muted-foreground line-through">$59.99</p>
-                </div>
-                <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold">
-                  SAVE 20%
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">30 Capsules | Handmade to preserve potency</p>
-            </div>
-            
-            <Button 
-              size="lg" 
-              className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-12 py-6 text-xl font-semibold shadow-lg shadow-cyan-600/25 hover:translate-y-[1px] transition-all mb-8"
-              onClick={() => window.open('https://drsebiwebsite.com/collections/frontpage/products/mucus-cleanser', '_blank')}
+            <Button
+              onClick={handleAddToCart}
+              size="lg"
+              className="bg-gradient-to-r from-yellow-400 to-yellow-350 hover:from-yellow-350 hover:to-yellow-400 text-black font-bold text-lg px-12 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
             >
-              <ArrowRight className="w-6 h-6 mr-3" />
-              Order Mucus Cleanser Now
+              <ShoppingCart className="w-5 h-5 mr-2" />
+              Get 30% Off Now
             </Button>
-
-            <div className="flex flex-col sm:flex-row gap-8 justify-center items-center text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                <span>Secure Checkout</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                <span>Ships in 5-10 Days</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4" />
-                <span>100% Authentic</span>
-              </div>
-            </div>
           </div>
         </section>
       </main>
 
-      <footer className="w-full border-t border-border bg-white">
-        <div className="container px-4 py-12 md:px-6">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Leaf className="h-6 w-6 text-primary" />
-              <span className="ml-2 text-lg font-bold">Dr. Sebi Approved LLC</span>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">
-              Continuing Dr. Sebi's mission of bringing natural healing to the world.
-            </p>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-xs text-muted-foreground">
-              <Link href="#" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">Terms of Service</Link>
-              <span>© 2024 Dr. Sebi Approved LLC. All rights reserved.</span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-4">
+      {/* Footer */}
+      <footer className="w-full border-t border-gray-200 bg-gray-50">
+        <div className="container px-4 py-8 md:px-6">
+          <div className="text-center text-sm text-gray-400">
+            <p className="mb-2">© 2024 Dr. Sebi Approved LLC. All rights reserved.</p>
+            <p className="text-xs text-gray-350">
               These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
             </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

@@ -7,12 +7,12 @@ import { Shield, Lock, CheckCircle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import SquareCheckout from '@/components/SquareCheckout'
 
-// Product configuration
+// Product configuration - Regular prices (before Black Friday 30% discount)
 const PRODUCTS = {
   'paracleanse': {
     id: 'paracleanse',
     name: 'ParaCleanse Elite',
-    price: 5999,
+    price: 8999,  // $89.99 regular
     variationId: '5JV44RI47GC5IMYSENVXMV3D',
     image: '/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png',
     description: 'Two-Phase Parasite Cleansing System',
@@ -26,7 +26,7 @@ const PRODUCTS = {
   'maya': {
     id: 'maya',
     name: 'Maya Formula',
-    price: 4499,
+    price: 5999,  // $59.99 regular
     variationId: 'TWJMT4CUFNFNQKG3S5EQRPLO',
     image: '/maya.png',
     description: '26 Herb Iron-Rich Formula',
@@ -40,7 +40,7 @@ const PRODUCTS = {
   'seamoss': {
     id: 'seamoss',
     name: 'Sea Moss Capsules',
-    price: 3199,
+    price: 3999,  // $39.99 regular
     variationId: 'YGDG42LYJKWH75NNW6HPWP5M',
     image: '/seamoss.png',
     description: 'Honduran Wildcrafted Sea Moss',
@@ -54,7 +54,7 @@ const PRODUCTS = {
   'mucus-cleanser': {
     id: 'mucus-cleanser',
     name: 'Mucus Cleanser',
-    price: 3999,
+    price: 3999,  // $39.99 regular
     variationId: '6JARPI34BXU27SS36ZFSEJQP',
     image: '/mucus.png',
     description: 'Respiratory & Cellular Cleansing',
@@ -74,6 +74,9 @@ function CheckoutContent() {
   const [initialEmail, setInitialEmail] = useState<string>('')
   const [initialFirstName, setInitialFirstName] = useState<string>('')
   const [mounted, setMounted] = useState(false)
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 })
+
+  const [initialQuantity, setInitialQuantity] = useState(1)
 
   useEffect(() => {
     setMounted(true)
@@ -81,12 +84,37 @@ function CheckoutContent() {
     const couponCode = searchParams?.get('coupon') || ''
     const email = searchParams?.get('email') || ''
     const firstName = searchParams?.get('firstName') || ''
+    const quantity = parseInt(searchParams?.get('quantity') || '1', 10)
 
     setProduct(PRODUCTS[productId as keyof typeof PRODUCTS] || PRODUCTS.paracleanse)
     setInitialCoupon(couponCode)
     setInitialEmail(email)
     setInitialFirstName(firstName)
+    setInitialQuantity(quantity > 0 ? quantity : 1)
   }, [searchParams])
+
+  // Black Friday countdown timer
+  useEffect(() => {
+    const currentYear = new Date().getFullYear()
+    const saleEnd = new Date(`November 30, ${currentYear} 00:00:00 PST`)
+
+    const calculateTimeLeft = () => {
+      const difference = saleEnd.getTime() - new Date().getTime()
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60)
+        })
+      }
+    }
+
+    calculateTimeLeft()
+    const timer = setInterval(calculateTimeLeft, 60000) // Update every minute
+
+    return () => clearInterval(timer)
+  }, [])
 
   if (!mounted || !product) {
     return (
@@ -97,18 +125,30 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Minimal Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div className="min-h-screen bg-gray-50 pt-[100px] md:pt-[112px]">
+      {/* Minimal Header - positioned below Black Friday banner */}
+      <header className="bg-white border-b border-gray-200 sticky top-[100px] md:top-[112px] z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href={`/${product.id}`} className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
               <span className="text-sm">Back to Product</span>
             </Link>
-            <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-gray-900">Secure Checkout</span>
+            <div className="flex items-center gap-4">
+              {/* Countdown Timer - Desktop Only */}
+              {(timeLeft.days > 0 || timeLeft.hours > 0 || timeLeft.minutes > 0) && (
+                <div className="hidden md:flex items-center gap-2 text-xs">
+                  <span className="text-yellow-600 font-semibold">Sale ends in:</span>
+                  <span className="font-mono font-bold text-gray-900">
+                    {timeLeft.days}D {timeLeft.hours}H {timeLeft.minutes}M
+                  </span>
+                </div>
+              )}
+              {/* Secure Checkout Badge */}
+              <div className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-medium text-gray-900">Secure Checkout</span>
+              </div>
             </div>
           </div>
         </div>
@@ -127,6 +167,7 @@ function CheckoutContent() {
               initialCoupon={initialCoupon}
               initialEmail={initialEmail}
               initialFirstName={initialFirstName}
+              initialQuantity={initialQuantity}
               onSuccess={() => {
                 // Redirect to success page
                 window.location.href = '/checkout/success'

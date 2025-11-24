@@ -21,6 +21,7 @@ interface SquareCheckoutProps {
   initialCoupon?: string
   initialEmail?: string
   initialFirstName?: string
+  initialQuantity?: number
   onSuccess?: () => void
 }
 
@@ -39,6 +40,7 @@ export default function SquareCheckout({
   initialCoupon,
   initialEmail,
   initialFirstName,
+  initialQuantity = 1,
   onSuccess
 }: SquareCheckoutProps) {
   // Cart state - support multiple items
@@ -48,7 +50,7 @@ export default function SquareCheckout({
       name: productName,
       price: price,
       variationId: variationId,
-      quantity: 1,
+      quantity: initialQuantity,
       image: productImage
     }
   ])
@@ -165,30 +167,32 @@ export default function SquareCheckout({
 
   // Auto-apply coupon from URL parameter
   useEffect(() => {
-    if (initialCoupon && !couponCode && subtotal > 0) {
+    if (initialCoupon && !couponCode) {
       setCouponCode(initialCoupon)
-      // Auto-verify the coupon
-      const autoVerify = async () => {
-        setVerifyingCoupon(true)
-        try {
-          const response = await fetch('/api/square/verify-coupon', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: initialCoupon, price: subtotal })
-          })
-          const data = await response.json()
-          if (data.valid) {
-            setDiscount(data.discount)
+      // Auto-verify the coupon once subtotal is available
+      if (subtotal > 0) {
+        const autoVerify = async () => {
+          setVerifyingCoupon(true)
+          try {
+            const response = await fetch('/api/square/verify-coupon', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code: initialCoupon, price: subtotal })
+            })
+            const data = await response.json()
+            if (data.valid) {
+              setDiscount(data.discount)
+            }
+          } catch (e) {
+            console.error('Failed to auto-apply coupon:', e)
+          } finally {
+            setVerifyingCoupon(false)
           }
-        } catch (e) {
-          console.error('Failed to auto-apply coupon:', e)
-        } finally {
-          setVerifyingCoupon(false)
         }
+        autoVerify()
       }
-      autoVerify()
     }
-  }, [initialCoupon, subtotal]) // Only run when these change
+  }, [initialCoupon, subtotal, couponCode]) // Include couponCode to prevent re-runs
 
   // Cart abandonment tracking
   useEffect(() => {
@@ -835,7 +839,7 @@ export default function SquareCheckout({
 
       {/* Discount Applied Banner - Show when coupon is active */}
       {discount > 0 && (
-        <div className="bg-gradient-to-r from-green-600 to-green-500 border-2 border-green-700 rounded-lg p-4 mb-4 shadow-lg">
+        <div className="bg-gradient-to-r from-yellow-600 to-yellow-500 border-2 border-yellow-700 rounded-lg p-4 mb-4 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0">
               <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -918,14 +922,17 @@ export default function SquareCheckout({
                     onClick={() => addUpsellProduct({
                       id: 'maya',
                       name: 'Maya Formula',
-                      price: 4499,
+                      price: 5999,  // $59.99 regular
                       variationId: 'TWJMT4CUFNFNQKG3S5EQRPLO',
                       image: '/maya.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
                   >
-                    <span className="text-xs font-medium text-gray-900">+ Add Maya Formula</span>
-                    <span className="text-xs font-semibold text-primary">$44.99</span>
+                    <div className="flex flex-col items-start">
+                      <span className="text-xs font-medium text-gray-900">+ Add Maya Formula</span>
+                      <span className="text-[10px] text-gray-500 line-through">$59.99</span>
+                    </div>
+                    <span className="text-xs font-semibold text-yellow-700">$41.99</span>
                   </button>
                 )}
                 {productId !== 'seamoss' && (
@@ -933,14 +940,17 @@ export default function SquareCheckout({
                     onClick={() => addUpsellProduct({
                       id: 'seamoss',
                       name: 'Sea Moss Capsules',
-                      price: 3199,
+                      price: 3999,  // $39.99 regular
                       variationId: 'YGDG42LYJKWH75NNW6HPWP5M',
                       image: '/seamoss.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
                   >
-                    <span className="text-xs font-medium text-gray-900">+ Add Sea Moss</span>
-                    <span className="text-xs font-semibold text-primary">$31.99</span>
+                    <div className="flex flex-col items-start">
+                      <span className="text-xs font-medium text-gray-900">+ Add Sea Moss</span>
+                      <span className="text-[10px] text-gray-500 line-through">$39.99</span>
+                    </div>
+                    <span className="text-xs font-semibold text-yellow-700">$27.99</span>
                   </button>
                 )}
                 {productId !== 'mucus-cleanser' && (
@@ -948,14 +958,17 @@ export default function SquareCheckout({
                     onClick={() => addUpsellProduct({
                       id: 'mucus-cleanser',
                       name: 'Mucus Cleanser',
-                      price: 3199,
+                      price: 3999,  // $39.99 regular
                       variationId: '6JARPI34BXU27SS36ZFSEJQP',
                       image: '/mucus.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
                   >
-                    <span className="text-xs font-medium text-gray-900">+ Add Mucus Cleanser</span>
-                    <span className="text-xs font-semibold text-primary">$31.99</span>
+                    <div className="flex flex-col items-start">
+                      <span className="text-xs font-medium text-gray-900">+ Add Mucus Cleanser</span>
+                      <span className="text-[10px] text-gray-500 line-through">$39.99</span>
+                    </div>
+                    <span className="text-xs font-semibold text-yellow-700">$27.99</span>
                   </button>
                 )}
               </div>
@@ -1134,6 +1147,22 @@ export default function SquareCheckout({
               </div>
             </div>
 
+            {/* Black Friday Savings Banner - Step 3 Only */}
+            {currentStep === 3 && discount > 0 && (
+              <div className="bg-gradient-to-r from-yellow-50 to-white border-2 border-yellow-500 rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl">🎉</div>
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-900">Black Friday Savings Applied</p>
+                    <p className="text-sm text-gray-600">
+                      You're saving <span className="text-yellow-700 font-bold">${(discount / 100).toFixed(2)}</span> with code
+                      <span className="font-mono text-yellow-700 font-bold ml-1">BLACKFRIDAY30</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Coupon Code */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -1271,10 +1300,10 @@ export default function SquareCheckout({
                 <button
                   onClick={handlePayment}
                   disabled={isLoading || !cardInitialized}
-                  className={`w-full py-3.5 rounded-lg font-semibold transition-all text-base shadow-lg ${
+                  className={`w-full py-3.5 rounded-lg font-bold transition-all text-base shadow-lg ${
                     isLoading || !cardInitialized
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black shadow-yellow-500/25'
                   }`}
                 >
                   {isLoading ? 'Processing...' : `Complete Order • $${(finalTotal / 100).toFixed(2)}`}

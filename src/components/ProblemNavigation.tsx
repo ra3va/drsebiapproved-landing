@@ -89,7 +89,7 @@ export default function ProblemNavigation() {
           {problems.map((problem) => (
             <Card
               key={problem.id}
-              className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 cursor-pointer group hover:shadow-lg"
+              className="relative overflow-hidden border-2 hover:border-yellow-500 transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-yellow-500/20"
               onClick={() => handleProblemClick(problem)}
             >
               <CardContent className="p-6 text-center">
@@ -99,7 +99,7 @@ export default function ProblemNavigation() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-xl font-bold mb-2 group-hover:text-yellow-600 transition-colors">
                   {problem.title}
                 </h3>
 
@@ -112,14 +112,14 @@ export default function ProblemNavigation() {
                 <div className="space-y-2 text-left text-sm mb-4">
                   {problem.symptoms.map((symptom, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                       <span className="text-muted-foreground">{symptom}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* CTA */}
-                <div className="mt-4 text-primary font-medium group-hover:underline flex items-center justify-center gap-2">
+                <div className="mt-4 text-yellow-600 font-bold group-hover:underline flex items-center justify-center gap-2">
                   <span>Explore Solution</span>
                   <span className="transform group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -129,7 +129,7 @@ export default function ProblemNavigation() {
         </div>
 
         {/* Quiz CTA */}
-        <div className="text-center bg-white rounded-2xl p-8 max-w-2xl mx-auto border-2 border-primary/20 shadow-md">
+        <div className="text-center bg-gradient-to-br from-yellow-50 to-white rounded-2xl p-8 max-w-2xl mx-auto border-2 border-yellow-500/30 shadow-md">
           <h3 className="text-2xl font-bold mb-3">
             Not Sure Which Solution Is Right For You?
           </h3>
@@ -147,7 +147,7 @@ export default function ProblemNavigation() {
               router.push('/quiz');
             }}
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg shadow-lg shadow-primary/25 hover:translate-y-[1px] transition-all"
+            className="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold rounded-full px-8 py-6 text-lg shadow-lg shadow-yellow-500/25 hover:translate-y-[1px] transition-all"
           >
             Take Our Health Quiz →
           </Button>

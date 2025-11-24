@@ -22,7 +22,7 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#22c55e",
+          DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -97,7 +97,7 @@ export default {
             },
             blockquote: {
               color: 'hsl(var(--muted-foreground))',
-              borderLeftColor: '#22c55e',
+              borderLeftColor: 'hsl(var(--primary))',
             },
             'code::before': {
               content: '""',
@@ -113,9 +113,9 @@ export default {
               fontWeight: '500',
             },
             a: {
-              color: '#22c55e',
+              color: 'hsl(var(--primary))',
               '&:hover': {
-                color: '#16a34a',
+                color: 'hsl(var(--ring))',
               },
             },
           },

@@ -6,64 +6,23 @@ import { CheckCircle, Leaf, Shield, Zap, Star, ArrowRight, Menu, Heart, Brain, D
 import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/Header"
-import ProblemNavigation from "@/components/ProblemNavigation";
+import ProblemNavigation from "@/components/ProblemNavigation"
+import BlackFridayHero from "@/components/BlackFridayHero";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-white pt-[4.5rem]">
       <Header />
-      {/* Spacer for fixed header */}
-      <div className="h-[5.5rem]"></div>
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-white to-accent/10 pt-16 pb-12">
-          {/* Background elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
-          </div>
-          
-          <div className="container relative mx-auto px-4 max-w-[1200px]">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center rounded-lg bg-primary/10 px-4 py-2 text-sm text-primary mb-6">
-                <Leaf className="w-4 h-4 mr-2" />
-                <span>DR. SEBI'S AUTHENTIC FORMULAS</span>
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-6 leading-tight">
-                Transform Your Health with
-                <span className="text-primary block">Dr. Sebi's Natural</span>
-                <span className="text-green-600 block">Healing Solutions</span>
-              </h1>
-
-              <p className="text-xl text-muted-foreground mb-12 max-w-[700px] mx-auto leading-relaxed">
-                Discover authentic Dr. Sebi approved products for complete body wellness. From parasite cleansing to mineral supplementation, experience the power of nature's most effective healing compounds.
-              </p>
-
-              <div className="grid grid-cols-3 gap-6 max-w-[600px] mx-auto border rounded-xl p-6 bg-card/50 backdrop-blur-sm">
-                <div className="flex flex-col items-center">
-                  <div className="text-3xl font-bold text-primary mb-1">30+</div>
-                  <div className="text-sm text-muted-foreground">Years Legacy</div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="text-3xl font-bold text-primary mb-1">100%</div>
-                  <div className="text-sm text-muted-foreground">Natural</div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="text-3xl font-bold text-primary mb-1">50K+</div>
-                  <div className="text-sm text-muted-foreground">Customers</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Black Friday Hero Section */}
+        <BlackFridayHero />
 
         {/* Problem-Based Navigation Section */}
         <ProblemNavigation />
 
         {/* Featured Products Section */}
-        <section className="w-full py-20 bg-white">
+        <section id="products" className="w-full py-20 bg-white">
           <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -77,6 +36,10 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
               {/* ParaCleanse Elite */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                {/* Black Friday Badge */}
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
+                  BLACK FRIDAY
+                </div>
                 <div className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   BESTSELLER
                 </div>
@@ -113,13 +76,19 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">$59.99</p>
-                      <p className="text-sm text-muted-foreground">Complete 2-phase system</p>
+                    <div className="w-full">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <p className="text-2xl font-bold text-foreground">$62.99</p>
+                        <p className="text-lg text-muted-foreground line-through">$89.99</p>
+                      </div>
+                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
+                        SAVE 30% | $27 OFF
+                      </div>
+                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
                     </div>
                   </div>
                   <Link href="/paracleanse">
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold shadow-lg shadow-yellow-500/20">
                       Learn More
                     </Button>
                   </Link>
@@ -128,6 +97,10 @@ export default function Home() {
 
               {/* Maya Formula */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                {/* Black Friday Badge */}
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
+                  BLACK FRIDAY
+                </div>
                 <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   DR. SEBI'S GREATEST
                 </div>
@@ -164,13 +137,19 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">$44.99</p>
-                      <p className="text-sm text-red-600">Save 25% | Was $59.99</p>
+                    <div className="w-full">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <p className="text-2xl font-bold text-foreground">$41.99</p>
+                        <p className="text-lg text-muted-foreground line-through">$59.99</p>
+                      </div>
+                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
+                        SAVE 30% | $18 OFF
+                      </div>
+                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
                     </div>
                   </div>
                   <Link href="/maya">
-                    <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold shadow-lg shadow-yellow-500/20">
                       Learn More
                     </Button>
                   </Link>
@@ -179,6 +158,10 @@ export default function Home() {
 
               {/* Sea Moss */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                {/* Black Friday Badge */}
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
+                  BLACK FRIDAY
+                </div>
                 <div className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   92 MINERALS
                 </div>
@@ -215,13 +198,19 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">$31.99</p>
-                      <p className="text-sm text-blue-600">Save 36% | Was $49.99</p>
+                    <div className="w-full">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <p className="text-2xl font-bold text-foreground">$27.99</p>
+                        <p className="text-lg text-muted-foreground line-through">$39.99</p>
+                      </div>
+                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
+                        SAVE 30% | $12 OFF
+                      </div>
+                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
                     </div>
                   </div>
                   <Link href="/seamoss">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold shadow-lg shadow-yellow-500/20">
                       Learn More
                     </Button>
                   </Link>
@@ -230,6 +219,10 @@ export default function Home() {
 
               {/* Mucus Cleanser */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
+                {/* Black Friday Badge */}
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
+                  BLACK FRIDAY
+                </div>
                 <div className="absolute top-4 right-4 bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   RESPIRATORY SUPPORT
                 </div>
@@ -266,13 +259,19 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">$39.99</p>
-                      <p className="text-sm text-cyan-600">Respiratory & Cellular Support</p>
+                    <div className="w-full">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <p className="text-2xl font-bold text-foreground">$27.99</p>
+                        <p className="text-lg text-muted-foreground line-through">$39.99</p>
+                      </div>
+                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
+                        SAVE 30% | $12 OFF
+                      </div>
+                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
                     </div>
                   </div>
                   <Link href="/mucus-cleanser">
-                    <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white">
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold shadow-lg shadow-yellow-500/20">
                       Learn More
                     </Button>
                   </Link>
@@ -281,14 +280,14 @@ export default function Home() {
             </div>
 
             {/* Hidden Parasite Crisis Free Guide Section */}
-            <section className="w-full py-16 mt-12 bg-gradient-to-br from-red-50 via-white to-primary/5 rounded-3xl border-2 border-red-100">
+            <section className="w-full py-16 mt-12 bg-gradient-to-br from-yellow-50 via-white to-yellow-100/30 rounded-3xl border-2 border-yellow-500/30">
               <div className="container px-4 max-w-[1000px] mx-auto">
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   {/* Left Content */}
                   <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                    <div className="inline-flex items-center rounded-lg bg-red-500/10 px-4 py-2 text-sm text-red-600 mb-4 font-semibold">
+                    <div className="inline-flex items-center rounded-lg bg-yellow-500/20 px-4 py-2 text-sm text-yellow-700 mb-4 font-bold border border-yellow-500/30">
                       <Download className="w-4 h-4 mr-2" />
-                      <span>FREE INSTANT DOWNLOAD</span>
+                      <span>BLACK FRIDAY BONUS - FREE</span>
                     </div>
                     
                     <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4 leading-tight">
@@ -317,9 +316,9 @@ export default function Home() {
                     </div>
 
                     <Link href="/hidden-parasite-crisis">
-                      <Button 
-                        size="lg" 
-                        className="bg-red-600 hover:bg-red-700 text-white rounded-full px-8 py-4 text-lg shadow-lg shadow-red-600/25 hover:translate-y-[1px] transition-all mb-4"
+                      <Button
+                        size="lg"
+                        className="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold rounded-full px-8 py-4 text-lg shadow-lg shadow-yellow-600/25 hover:translate-y-[1px] transition-all mb-4"
                       >
                         <Download className="w-5 h-5 mr-2" />
                         Download Your Free Guide Now
@@ -370,19 +369,19 @@ export default function Home() {
             </section>
 
             <div className="text-center mt-12">
-              <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-8 max-w-2xl mx-auto">
+              <div className="bg-gradient-to-r from-yellow-600/10 via-yellow-500/10 to-yellow-600/10 rounded-2xl p-8 max-w-2xl mx-auto border border-yellow-500/20">
                 <h3 className="text-2xl font-bold mb-4">Start Your Healing Journey Today</h3>
                 <p className="text-muted-foreground mb-6">
                   Experience the transformative power of Dr. Sebi's natural healing protocols. Each product is designed to work synergistically for complete body wellness.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/quiz">
-                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
+                    <Button size="lg" className="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold shadow-lg shadow-yellow-500/25">
                       Take Our Health Quiz
                     </Button>
                   </Link>
                   <Link href="/hidden-parasite-crisis">
-                    <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
+                    <Button size="lg" variant="outline" className="border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-500/10 font-bold">
                       Free Health Guide
                     </Button>
                   </Link>
@@ -639,7 +638,7 @@ export default function Home() {
         <section id="order" className="w-full py-24 bg-gradient-to-b from-accent/20 to-white">
           <div className="container px-4 md:px-6">
             <div className="max-w-3xl mx-auto text-center">
-              <span className="text-primary font-medium">Start Your Journey</span>
+              <span className="text-yellow-600 font-bold">BLACK FRIDAY SALE</span>
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
                 Transform Your Health Today
               </h2>
@@ -649,34 +648,34 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/quiz">
-                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg">
+                    <Button size="lg" className="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold rounded-full px-8 py-6 text-lg shadow-lg shadow-yellow-500/25">
                       Take Our Health Quiz
                     </Button>
                   </Link>
                   <Link href="/hidden-parasite-crisis">
-                    <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5 rounded-full px-8 py-6 text-lg">
+                    <Button size="lg" variant="outline" className="border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-500/10 font-bold rounded-full px-8 py-6 text-lg">
                       Free Health Guide
                     </Button>
                   </Link>
                 </div>
               </div>
               <div className="mt-12 grid gap-6 md:grid-cols-3">
-                <div className="flex flex-col items-center p-6 bg-accent/5 rounded-2xl">
-                  <Shield className="h-8 w-8 text-primary mb-4" />
+                <div className="flex flex-col items-center p-6 bg-yellow-500/5 rounded-2xl border border-yellow-500/20">
+                  <Shield className="h-8 w-8 text-yellow-600 mb-4" />
                   <h3 className="font-semibold mb-2">100% Authentic</h3>
                   <p className="text-sm text-muted-foreground text-center">
                     Original Dr. Sebi formulas made with wildcrafted herbs
                   </p>
                 </div>
-                <div className="flex flex-col items-center p-6 bg-accent/5 rounded-2xl">
-                  <Leaf className="h-8 w-8 text-primary mb-4" />
+                <div className="flex flex-col items-center p-6 bg-yellow-500/5 rounded-2xl border border-yellow-500/20">
+                  <Leaf className="h-8 w-8 text-yellow-600 mb-4" />
                   <h3 className="font-semibold mb-2">Natural Ingredients</h3>
                   <p className="text-sm text-muted-foreground text-center">
                     Pure, potent plant-based compounds
                   </p>
                 </div>
-                <div className="flex flex-col items-center p-6 bg-accent/5 rounded-2xl">
-                  <Heart className="h-8 w-8 text-primary mb-4" />
+                <div className="flex flex-col items-center p-6 bg-yellow-500/5 rounded-2xl border border-yellow-500/20">
+                  <Heart className="h-8 w-8 text-yellow-600 mb-4" />
                   <h3 className="font-semibold mb-2">Proven Results</h3>
                   <p className="text-sm text-muted-foreground text-center">
                     Thousands of satisfied customers worldwide
@@ -688,113 +687,113 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="w-full border-t border-border bg-white">
+      <footer className="w-full border-t border-yellow-600/20 bg-black">
         <div className="container px-4 py-12 md:px-6">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div>
               <div className="flex items-center mb-4">
-                <Leaf className="h-6 w-6 text-primary" />
-                <span className="ml-2 text-lg font-bold">Dr. Sebi Approved LLC</span>
+                <Leaf className="h-6 w-6 text-yellow-400" />
+                <span className="ml-2 text-lg font-bold text-white">Dr. Sebi Approved LLC</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-gray-400 mb-4">
                 Continuing Dr. Sebi's mission of bringing natural healing to the world through authentic, proven formulas.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Quick Links</h3>
+              <h3 className="font-semibold mb-4 text-yellow-400">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#testimonials">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#testimonials">
                     Success Stories
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/blog">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/blog">
                     Blog
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/paracleanse">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/paracleanse">
                     ParaCleanse Elite
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/maya">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/maya">
                     Maya Formula
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/seamoss">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/seamoss">
                     Sea Moss
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/mucus-cleanser">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/mucus-cleanser">
                     Mucus Cleanser
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="/quiz">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/quiz">
                     Health Quiz
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Support</h3>
+              <h3 className="font-semibold mb-4 text-yellow-400">Support</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                     Shipping Policy
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                     Return Policy
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-muted-foreground hover:text-foreground transition-colors" href="#">
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                     FAQ
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
+              <h3 className="font-semibold mb-4 text-yellow-400">Contact</h3>
               <ul className="space-y-2">
-                <li className="text-sm text-muted-foreground">
+                <li className="text-sm text-gray-400">
                   990 Hwy. 287 N, Suite 106 #157
                 </li>
-                <li className="text-sm text-muted-foreground">
+                <li className="text-sm text-gray-400">
                   Mansfield, Texas 76063
                 </li>
                 <li>
-                  <Link className="text-sm text-primary hover:text-primary/90 transition-colors" href="mailto:info@drsebiwebsite.com">
+                  <Link className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors" href="mailto:info@drsebiwebsite.com">
                     info@drsebiwebsite.com
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-border">
+          <div className="mt-12 pt-8 border-t border-yellow-600/20">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-center md:text-left">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                 © 2024 Dr. Sebi Approved LLC. All rights reserved.
               </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                 These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
               </p>
             </div>
               <div className="flex gap-4">
-                <Link className="text-xs text-muted-foreground hover:text-foreground transition-colors" href="#">
+                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                   Privacy Policy
                 </Link>
-                <Link className="text-xs text-muted-foreground hover:text-foreground transition-colors" href="#">
+                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                   Terms of Service
                 </Link>
-                <Link className="text-xs text-muted-foreground hover:text-foreground transition-colors" href="#">
+                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
                   Legal
                 </Link>
               </div>
