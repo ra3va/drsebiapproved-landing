@@ -51,7 +51,7 @@ export default function BlackFridayHero() {
             <span className="text-white">Black Friday</span>
             <br />
             <span className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
-              Cleanse Sale
+              Ultimate Sale
             </span>
           </motion.h1>
 
