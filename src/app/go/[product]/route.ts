@@ -7,6 +7,10 @@ const PRODUCTS: Record<string, string> = {
   mucus: '/mucus-cleanser',
 };
 
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://drsebiapproved.com' 
+  : 'http://localhost:3000';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { product: string } }
@@ -15,7 +19,7 @@ export async function GET(
   const destination = PRODUCTS[product];
 
   if (!destination) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(`${BASE_URL}/`);
   }
 
   // Build UTM params for GA4
@@ -26,5 +30,5 @@ export async function GET(
     utm_campaign: 'blackfriday2025',
   });
 
-  return NextResponse.redirect(new URL(`${destination}?${utmParams}`, request.url));
+  return NextResponse.redirect(`${BASE_URL}${destination}?${utmParams}`);
 }
