@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Toaster, toast } from 'sonner';
 import { Upload, X } from 'lucide-react';
@@ -55,7 +55,7 @@ export default function CampaignDashboard() {
     }, [showUpload, showBatchPreview, showSettings]);
 
     // --- Fetch Data ---
-    const fetchStatus = async (isRefresh = false) => {
+    const fetchStatus = useCallback(async (isRefresh = false) => {
         if (isRefresh) setRefreshing(true);
         try {
             const params = new URLSearchParams();
@@ -82,7 +82,7 @@ export default function CampaignDashboard() {
             setLoading(false);
             setRefreshing(false);
         }
-    };
+    }, [selectedCampaign]);
 
     // Initial Load & Polling
     useEffect(() => {
@@ -94,7 +94,7 @@ export default function CampaignDashboard() {
         }, 30000);
 
         return () => clearInterval(interval);
-    }, [selectedCampaign]);
+    }, [fetchStatus, selectedCampaign]);
 
     // --- Handlers ---
 

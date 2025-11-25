@@ -1,9 +1,9 @@
 # Project Memory: Dr. Sebi Approved (Parasite Cleanse Landing)
 
-**Last Updated:** November 24, 2025
-**Status:** Production Ready / Active Marketing Phase (Black Friday Sale)
+**Last Updated:** November 25, 2025 11:03 CST
+**Status:** Production Ready / Active Marketing Phase (Black Friday Sale) - Migrated to Brevo for Campaigns
 **URL:** https://drsebiapproved.com
-**Tech Stack:** Next.js 14, Tailwind, Square (Payments), Brevo (CRM/Marketing), Zoho Mail (Cold/Win-back), Supabase (Campaign Database), Render (Hosting).
+**Tech Stack:** Next.js 14, Tailwind, Square (Payments), Brevo (Marketing Campaigns & Transactional), Zoho Mail (Deprecated/Fallback for Cold), Supabase (Campaign Database), Render (Hosting).
 
 ---
 
@@ -13,8 +13,11 @@ This project has transitioned from a simple landing page with external Shopify c
 
 ### Core Pillars
 1.  **Commerce (Square):** Custom multi-step checkout, product catalog, coupon management (`BLACKFRIDAY30`), and customer profiles.
-2.  **Marketing Hub (Brevo):** Behavioral tracking, progressive profile building, and automated email flows.
-3.  **Outreach Engine (Zoho):** A custom-built "Win-Back" system for rate-limited sending to legacy customer lists (8k contacts).
+2.  **Marketing Hub (Brevo):** 
+    - **Behavioral:** Progressive profile building and automated email flows.
+    - **Campaigns:** Primary engine for bulk email sends (migrated from Zoho due to spam blocks).
+    - **Transactional:** Receipt emails and system notifications.
+3.  **Outreach Engine (Zoho):** *Legacy/Fallback*. Infrastructure exists but was blocked by spam filters during Black Friday launch. Now using Brevo Marketing Campaigns.
 4.  **Content Funnel:** E-commerce PDPs (Black Friday mode) and SEO-optimized blog driving traffic.
 
 ---
@@ -29,40 +32,36 @@ This project has transitioned from a simple landing page with external Shopify c
     - ParaCleanse Elite ($62.99), Maya ($41.99), Sea Moss ($27.99), Mucus Cleanser ($27.99).
 - **Checkout:** Custom "SquareCheckout" with premium gold accents, savings banner, and countdown timer.
     - *Features:* Pre-fills quantity and coupon from URL (`?quantity=2&coupon=BLACKFRIDAY30`).
+    - *Fixes:* Resolved discount application logic to match order totals.
+- **Receipts:** Transactional receipt emails now sent via **Brevo** immediately after purchase.
 - **Reference Docs:**
     - `docs/square/SQUARE_SETUP.md`
     - `BLACK_FRIDAY_REVERT_PLAN.md`
 
-### 2. Marketing Automation (Brevo)
-**Status:** ✅ **LIVE**
-- **Architecture:** "Multi-Product Hub".
+### 2. Marketing Automation & Campaigns (Brevo)
+**Status:** ✅ **LIVE (Primary Engine)**
+- **Architecture:** "Multi-Product Hub" + Campaign Manager.
+- **Campaigns:** Migrated from Zoho.
+    - *Black Friday 2025:* List of 1,139 contacts synced from Supabase.
+    - *Capacity:* ~300 emails/day (Free Tier limit).
+    - *Tools:* Custom scripts for syncing contacts and creating campaigns (`scripts/sync-contacts-to-brevo.js`, etc.).
 - **Tracking:** Full funnel visibility.
     - *Homepage:* Problem navigation tracking.
     - *Quiz:* Score and recommendation tracking.
     - *Product Pages:* Time-on-page (>30s engagement), CTA location clicks.
     - *Checkout:* Progressive capture (Step 1 email capture -> Step 2 shipping -> Purchase).
-- **Data Structure:** 10 Lists (Prospects/Customers per product) + 25 Custom Attributes.
-- **Capabilities:** Pre-fill checkout links from landing pages.
 - **Reference Docs:**
     - `docs/brevo/BREVO_MULTI_PRODUCT_INTEGRATION.md`
-    - `docs/brevo/brevo-tracking-guide.md`
+    - `docs/brevo/BREVO_API_CAPABILITIES.md`
 
 ### 3. Win-Back Campaign System (Zoho + Supabase)
-**Status:** ✅ **LIVE**
-- **Purpose:** Re-engage 8,000 legacy customers without triggering spam filters.
-- **Tech:** Next.js API routes + Supabase (DB) + Zoho Mail API (OAuth).
-- **Dashboard:** `/admin/campaign` (Universal GUI).
-    - *Features:* CSV Upload (Excel compatible), Batch Preview, Bucket Priority Logic (Follow-ups > New Leads).
-    - *Rate Limiting:* Configurable (default 50-75/day).
-    - *Tracking:* Link click tracking (auto-wraps URLs) -> Syncs to Brevo.
-    - *Stop Switch:* Purchases auto-remove users from campaign.
-- **Infrastructure:**
-    - Supabase Service Role key used for Admin API to bypass RLS.
-    - `force-dynamic` used on API routes to prevent Next.js caching issues.
+**Status:** ⚠️ **BLOCKED / DEPRECATED**
+- **History:** Built for rate-limited sending (50-75/day). Hit spam detection (550 5.4.6) after 42 emails during Black Friday launch.
+- **Current State:** Infrastructure remains (API routes, Supabase tables), but active sending has moved to Brevo.
+- **Dashboard:** `/admin/campaign` still functional for list management but sending is paused.
 - **Reference Docs:**
     - `docs/zoho/ZOHO_INTEGRATION_SUMMARY.md`
     - `docs/zoho/ZOHO_SETUP_INSTRUCTIONS.md`
-    - Agent Skill: `.claude/skills/zoho-email-campaign/`
 
 ### 4. Analytics & Intelligence (GA4)
 **Status:** ✅ **LIVE (E-commerce Enhanced)**
@@ -75,14 +74,14 @@ This project has transitioned from a simple landing page with external Shopify c
     - `docs/AGENT_GA4_ACCESS.md`
     - `docs/GA4_TRACKING_AUDIT.md`
 
-### 5. Shipping & Fulfillment
-**Status:** 🚧 **Planning / In Progress**
-- **Current:** Manual fulfillment via Square Dashboard.
-- **Planned:** Shippo Automation.
-    - *Strategy:* Webhooks trigger label creation -> PDF emailed to Ra.
-    - *Cost:* Self-fulfillment cheaper until ~100 orders/mo.
+### 6. Ad Network Integration (Meta)
+**Status:** ✅ **LIVE (API Connected)**
+- **Integration:** Direct API connection to "26 HM" Ad Account (`act_789466743256239`).
+- **Capabilities:** Programmatic campaign creation, performance monitoring (Spend, ROAS, CTR), and management.
+- **Tools:** Custom scripts in `scripts/meta/` for account checks and token management.
+- **Agent Skill:** `.factory/skills/meta-ads/SKILL.md` enables natural language ad management.
 - **Reference Docs:**
-    - `docs/shippo/SHIPPO_AUTOMATION_IMPLEMENTATION.md`
+    - `sessions/2025-11-25_10-54-08_meta-ads-integration.md`
 
 ---
 
@@ -129,10 +128,27 @@ This project has transitioned from a simple landing page with external Shopify c
 - **Technical Fixes:** Resolved critical CSS compilation failure and mobile responsive issues.
 - **Artifacts:** Created `BLACK_FRIDAY_REVERT_PLAN.md` and backed up original landers to `src/app/*-lander/`.
 
-### Phase 7: Analytics & Intelligence (Nov 24, 2025)
+### Phase 7: Analytics & Checkout Finalization (Nov 24, 2025)
 - **GA4 E-Commerce:** Implemented complete event tracking (view_item, begin_checkout, add_shipping_info, add_payment_info, purchase).
-- **Agent Integration:** Created `docs/AGENT_GA4_ACCESS.md` enabling agents to query analytics via natural language.
+- **Agent Integration:** Created `docs/AGENT_GA4_ACCESS.md`.
 - **Revenue Accuracy:** Fixed tracking to include item-level discounts and correct transaction totals.
+- **Receipts:** Implemented transactional receipt emails via Brevo (`/api/brevo/send-receipt`).
+- **Square Fix:** Fixed "Payment total does not match order total" error by applying proper discount objects to Square orders.
+
+### Phase 8: Black Friday Launch & Pivot (Nov 25, 2025)
+- **Launch Attempt:** Initiated Zoho email campaign to 1,180 customers.
+- **Blocker:** Zoho blocked sending after 42 emails (Spam Detection 550 5.4.6).
+- **Pivot to Brevo:**
+    - Migrated contact list from Supabase to Brevo ("Black Friday 2025" list).
+    - Created new scripts: `sync-contacts-to-brevo.js`, `create-brevo-campaign.js`, `check-brevo-stats.js`.
+    - Launched Brevo Marketing Campaign.
+    - **Result:** 298 emails sent on Day 1 (hitting 300/day limit). Remaining ~840 scheduled for subsequent days.
+    - **Strategy:** Uses Brevo's superior reputation management and throttling.
+
+### Phase 9: Ad Network Integration (Nov 25, 2025)
+- **Meta Ads API:** Established connection to "26 HM" ad account.
+- **Capabilities:** Enabled programmatic campaign creation and performance monitoring.
+- **Tooling:** Added scripts for token exchange and account status checks.
 
 ---
 
@@ -151,10 +167,10 @@ This project has transitioned from a simple landing page with external Shopify c
     - Prices require `BigInt` serialization (handle with care in JSON responses).
     - Product Images: SDK has a bug. Use direct `fetch` with `FormData` (see `scripts/upload-product-images.js`).
 
-4.  **Brevo vs. Zoho Strategy:**
-    - **Zoho:** Transactional/Cold/Win-back. Manual CSV uploads. API: `/api/campaign/*`.
-    - **Brevo:** Marketing Automation/Behavioral. Triggered by API calls. API: `/api/brevo/*`.
-    - *Do not confuse the two.* Zoho drives traffic; Brevo nurtures it.
+4.  **Brevo vs. Zoho Strategy (UPDATED):**
+    - **Zoho:** **DEPRECATED/FALLBACK**. Do not use for bulk sends.
+    - **Brevo:** **PRIMARY** for both Marketing Campaigns and Transactional emails.
+    - *Note:* Brevo Free Tier is limited to 300 emails/day.
 
 5.  **Mobile First:**
     - All UI components (Checkout, Landing Pages) use progressive styling (`text-3xl sm:text-4xl`) to ensure no horizontal scrolling on mobile.
@@ -162,11 +178,12 @@ This project has transitioned from a simple landing page with external Shopify c
 6.  **Agent Skills & GA4:**
     - Use `.claude/skills/zoho-email-campaign/` for email operations.
     - Use `docs/AGENT_GA4_ACCESS.md` for instructions on querying Google Analytics data.
+    - Use `.factory/skills/meta-ads/SKILL.md` for Meta Ads management.
 
 ---
 
 ## 🔮 Next Steps (Roadmap)
 
-1.  **Shippo Automation:** Implement the planned webhook system (`docs/shippo/SHIPPO_AUTOMATION_IMPLEMENTATION.md`).
-2.  **Email Sequences:** Manually build the Brevo automation workflows (Logic is ready, content needed).
-3.  **Analytics:** Monitor the "Stop Switch" and conversion rates on the new Mucus funnel.
+1.  **Monitor Black Friday Campaign:** Ensure Brevo daily limits reset and remaining emails are sent.
+2.  **Meta Ads Scaling:** Create Dr. Sebi Approved traffic campaigns and set up pixel tracking.
+3.  **Shippo Automation:** Implement the planned webhook system (`docs/shippo/SHIPPO_AUTOMATION_IMPLEMENTATION.md`).

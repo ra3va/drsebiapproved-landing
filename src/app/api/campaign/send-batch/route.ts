@@ -71,7 +71,7 @@ function getTemplateForStage(stage: number, customerName: string | null, custome
 </div>
       `.trim();
       return {
-        subject: `Dr. Sebi's greatest formula is 30% off`,
+        subject: `Dr. Sebi's greatest formula is 30% off!`,
         htmlContent: wrapAllLinks(stage1Html, customerEmail, campaignId, stage)
       };
 

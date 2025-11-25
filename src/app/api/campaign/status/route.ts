@@ -210,7 +210,7 @@ export async function GET(request: Request) {
 
     // Fetch a small sample of pending records for "Next Up" preview
     // We only need enough to fill the batch size
-    const batchSize = 75;
+    const batchSize = 200;
     const remainingSlots = Math.max(0, batchSize - followUpsCount);
 
     let nextBatchRecords: any[] = [...(followUps || [])];
