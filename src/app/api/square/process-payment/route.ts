@@ -154,6 +154,25 @@ export async function POST(request: NextRequest) {
       orderRequest.order.metadata = {
         coupon_code: couponCode
       }
+      
+      // Calculate and apply discount to match the payment amount
+      const subtotal = cartItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0) + shippingCost
+      const discountAmount = subtotal - amount
+      
+      if (discountAmount > 0) {
+        orderRequest.order.discounts = [
+          {
+            name: `Discount (${couponCode})`,
+            type: 'FIXED_AMOUNT',
+            amount_money: {
+              amount: discountAmount,
+              currency: 'USD'
+            },
+            scope: 'ORDER'
+          }
+        ]
+        console.log(`💸 Applied discount: $${(discountAmount / 100).toFixed(2)} (code: ${couponCode})`)
+      }
     }
 
     // Add fulfillment details (shipping)
