@@ -63,21 +63,40 @@ export default function CheckoutSuccessPage() {
           orderValue: orderData.finalTotal / 100,
           orderId: orderData.orderId,
           shippingAddress: orderData.address,
-          phone: orderData.phone || undefined  // NEW: Include phone for SMS marketing
+          phone: orderData.phone || undefined
         })
       })
       .then(res => res.json())
       .then(data => {
         console.log('Purchase tracked in Brevo:', data)
         setPurchaseTracked(true)
-        // Clear order data after tracking
         localStorage.removeItem('lastOrder')
       })
       .catch(error => {
         console.error('Brevo purchase tracking error:', error)
-        // Still mark as tracked to prevent retries
         setPurchaseTracked(true)
       })
+
+      // Send order receipt email
+      fetch('/api/brevo/send-receipt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: orderData.email,
+          customerName: orderData.fullName,
+          orderId: orderData.orderId,
+          cartItems: orderData.cartItems,
+          subtotal: orderData.subtotal,
+          shippingCost: orderData.shippingCost || 0,
+          discount: orderData.discount || 0,
+          couponCode: orderData.couponCode || null,
+          total: orderData.finalTotal,
+          shippingAddress: orderData.address
+        })
+      })
+      .then(res => res.json())
+      .then(data => console.log('Receipt email sent:', data))
+      .catch(error => console.error('Receipt email error:', error))
 
     } catch (error) {
       console.error('Error parsing order data:', error)
