@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script'
 import BlackFridayBanner from '@/components/BlackFridayBanner'
+import FacebookPixelRouteTracker from '@/components/analytics/FacebookPixelRouteTracker'
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -81,30 +82,6 @@ export default function RootLayout({
         <Script
           strategy="afterInteractive"
         />
-        <Script id="meta-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1757625231633648');
-            fbq('track', 'PageView');
-          `}
-        </Script>
-        <noscript>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1757625231633648&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
 
         {/* Brevo Behavioral Tracking */}
         <Script src="https://cdn.brevo.com/js/sdk-loader.js" async />
@@ -121,8 +98,24 @@ export default function RootLayout({
             ]);
           `}
         </Script>
+
+        {/* Facebook Pixel - in head to prevent hydration double-fire */}
+        <Script id="fb-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
+            n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window,document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init','1098386598872178');
+            fbq('track','PageView');
+          `}
+        </Script>
       </head>
       <body className={inter.className}>
+        <FacebookPixelRouteTracker />
         <BlackFridayBanner />
         {children}
       </body>

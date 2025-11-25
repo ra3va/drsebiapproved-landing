@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react'
+import * as fpixel from '@/lib/fpixel'
 
 interface CartItem {
   id: string
@@ -179,7 +180,7 @@ export default function SquareCheckout({
     if (initialFirstName && !fullName) {
       setFullName(initialFirstName)
     }
-  }, [initialEmail, initialFirstName]) // Only run on mount or when props change
+  }, [initialEmail, initialFirstName, email, fullName]) // Only run on mount or when props change
 
   // Auto-apply coupon from URL parameter
   useEffect(() => {
@@ -310,12 +311,17 @@ export default function SquareCheckout({
     }
   }, [cardInitialized])
 
+  const paymentStepTracked = useRef(false)
+
   useEffect(() => {
     // Only initialize Square when we reach step 3
-    if (currentStep !== 3) return
+    if (currentStep !== 3) {
+      paymentStepTracked.current = false
+      return
+    }
 
     // Track GA4 add_payment_info event (user reached payment step)
-    if (typeof window !== 'undefined' && window.gtag) {
+    if (!paymentStepTracked.current && typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'add_payment_info', {
         currency: 'USD',
         value: finalTotal / 100,
@@ -329,6 +335,7 @@ export default function SquareCheckout({
           quantity: item.quantity
         }))
       });
+      paymentStepTracked.current = true
     }
 
     // Check if Square is already loaded
@@ -358,7 +365,7 @@ export default function SquareCheckout({
         document.body.removeChild(script)
       }
     }
-  }, [currentStep, initializeSquare])
+  }, [cartItems, couponCode, currentStep, finalTotal, initializeSquare])
 
   // Step validation
   const validateStep = (step: number): boolean => {
@@ -426,6 +433,16 @@ export default function SquareCheckout({
               source: source
             })
           });
+
+          // Track InitiateCheckout event on Facebook Pixel
+          fpixel.event('InitiateCheckout', {
+            content_name: productName,
+            content_ids: cartItems.map(item => item.id),
+            content_type: 'product',
+            value: finalTotal / 100,
+            currency: 'USD',
+            num_items: cartItems.reduce((sum, item) => sum + item.quantity, 0)
+          });
         } catch (error) {
           console.error('Checkout tracking failed:', error);
           // Don't block checkout flow
@@ -469,6 +486,14 @@ export default function SquareCheckout({
               },
               checkoutStep: 'shipping_info'
             })
+          });
+
+          // Track AddPaymentInfo event on Facebook Pixel (shipping info entered = ready for payment)
+          fpixel.event('AddPaymentInfo', {
+            content_ids: cartItems.map(item => item.id),
+            content_type: 'product',
+            value: finalTotal / 100,
+            currency: 'USD'
           });
         } catch (error) {
           console.error('Shipping tracking failed:', error);

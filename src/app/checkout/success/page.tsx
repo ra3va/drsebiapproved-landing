@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { CheckCircle, Package, Mail, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import * as fpixel from '@/lib/fpixel'
 
 export default function CheckoutSuccessPage() {
   const [purchaseTracked, setPurchaseTracked] = useState(false)
@@ -66,6 +67,16 @@ export default function CheckoutSuccessPage() {
           product_count: orderData.cartItems.length
         }]);
       }
+
+      // Track Purchase event on Facebook Pixel
+      fpixel.event('Purchase', {
+        content_ids: orderData.cartItems.map((item: any) => item.id || item.variationId),
+        content_type: 'product',
+        content_name: orderData.cartItems.map((item: any) => item.name).join(', '),
+        currency: 'USD',
+        value: orderData.finalTotal / 100, // Actual revenue after discount
+        num_items: orderData.cartItems.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0)
+      });
 
       // Mark as converted in Zoho campaign (if they came from email)
       fetch('/api/campaign/mark-converted', {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import * as fpixel from '@/lib/fpixel'
 
 interface WinBackOptInProps {
   onSuccess?: (discountCode: string) => void;
@@ -36,6 +37,14 @@ export default function WinBackOptIn({ onSuccess, className = '' }: WinBackOptIn
       const result = await response.json();
 
       if (result.success) {
+        // Track Lead event on Facebook Pixel
+        fpixel.event('Lead', {
+          content_name: 'Win-Back Campaign Opt-In',
+          content_category: 'Lead Generation',
+          value: 0,
+          currency: 'USD'
+        });
+
         // Identify user for behavioral tracking
         if ((window as any).Brevo) {
           (window as any).Brevo.push(['identify', {

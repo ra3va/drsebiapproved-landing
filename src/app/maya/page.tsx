@@ -6,6 +6,7 @@ import { CheckCircle, Star, ShoppingCart, Gift, Users, TrendingUp, Award, Shield
 import Image from "next/image"
 import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
+import * as fpixel from '@/lib/fpixel'
 
 export default function MayaBlackFridayPDP() {
   const [quantity, setQuantity] = useState(1);
@@ -30,6 +31,16 @@ export default function MayaBlackFridayPDP() {
         }]
       });
     }
+
+    // Track ViewContent on Facebook Pixel
+    fpixel.event('ViewContent', {
+      content_ids: ['maya-formula-bf'],
+      content_type: 'product',
+      content_name: 'Maya Formula - Black Friday',
+      content_category: 'Iron Support',
+      value: salePrice,
+      currency: 'USD'
+    });
 
     // Random number between 1.8K - 2.3K for cart count
     const baseCartCount = 1800 + Math.floor(Math.random() * 500);
@@ -84,6 +95,15 @@ export default function MayaBlackFridayPDP() {
         coupon: 'BLACKFRIDAY30'
       });
     }
+
+    // Track AddToCart on Facebook Pixel
+    fpixel.event('AddToCart', {
+      content_ids: ['maya-formula-bf'],
+      content_type: 'product',
+      content_name: 'Maya Formula - Black Friday',
+      value: salePrice * quantity,
+      currency: 'USD'
+    });
 
     // Redirect to checkout
     window.location.href = `/checkout?product=maya&quantity=${quantity}&coupon=BLACKFRIDAY30`;

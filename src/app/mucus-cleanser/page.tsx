@@ -6,6 +6,7 @@ import { CheckCircle, Star, ShoppingCart, Gift, Users, TrendingUp, Award, Shield
 import Image from "next/image"
 import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
+import * as fpixel from '@/lib/fpixel'
 
 export default function MucusCleanserBlackFridayPDP() {
   const [quantity, setQuantity] = useState(1);
@@ -30,6 +31,16 @@ export default function MucusCleanserBlackFridayPDP() {
         }]
       });
     }
+
+    // Track ViewContent on Facebook Pixel
+    fpixel.event('ViewContent', {
+      content_ids: ['mucus-cleanser-bf'],
+      content_type: 'product',
+      content_name: 'Mucus Cleanser - Black Friday',
+      content_category: 'Respiratory Support',
+      value: salePrice,
+      currency: 'USD'
+    });
 
     // Random number between 2.3K - 2.8K for cart count
     const baseCartCount = 1400 + Math.floor(Math.random() * 350);
@@ -84,6 +95,15 @@ export default function MucusCleanserBlackFridayPDP() {
         coupon: 'BLACKFRIDAY30'
       });
     }
+
+    // Track AddToCart on Facebook Pixel
+    fpixel.event('AddToCart', {
+      content_ids: ['mucus-cleanser-bf'],
+      content_type: 'product',
+      content_name: 'Mucus Cleanser - Black Friday',
+      value: salePrice * quantity,
+      currency: 'USD'
+    });
 
     // Redirect to checkout
     window.location.href = `/checkout?product=mucus-cleanser&quantity=${quantity}&coupon=BLACKFRIDAY30`;

@@ -6,6 +6,7 @@ import { CheckCircle, Star, ShoppingCart, Gift, Users, TrendingUp, Award, Shield
 import Image from "next/image"
 import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
+import * as fpixel from '@/lib/fpixel'
 
 export default function ParaCleanseBlackFridayPDP() {
   const [quantity, setQuantity] = useState(1);
@@ -30,6 +31,16 @@ export default function ParaCleanseBlackFridayPDP() {
         }]
       });
     }
+
+    // Track ViewContent event on Facebook Pixel
+    fpixel.event('ViewContent', {
+      content_ids: ['paracleanse-elite-bf'],
+      content_type: 'product',
+      content_name: 'ParaCleanse Elite - Black Friday',
+      content_category: 'Parasite Cleanse',
+      value: salePrice,
+      currency: 'USD'
+    });
 
     // Random number between 2.3K - 2.8K for cart count
     const baseCartCount = 2300 + Math.floor(Math.random() * 500);
@@ -84,6 +95,15 @@ export default function ParaCleanseBlackFridayPDP() {
         coupon: 'BLACKFRIDAY30'
       });
     }
+
+    // Track AddToCart on Facebook Pixel
+    fpixel.event('AddToCart', {
+      content_ids: ['paracleanse-elite-bf'],
+      content_type: 'product',
+      content_name: 'ParaCleanse Elite - Black Friday',
+      value: salePrice * quantity,
+      currency: 'USD'
+    });
 
     // Redirect to checkout
     window.location.href = `/checkout?product=paracleanse&quantity=${quantity}&coupon=BLACKFRIDAY30`;

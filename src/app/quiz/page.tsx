@@ -8,6 +8,7 @@ import { useState } from "react"
 import { ArrowLeft, ArrowRight, Leaf, Shield, Brain, Battery, Coffee, Moon, Heart, Mail, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import * as fpixel from '@/lib/fpixel'
 
 const questions = [
   {
@@ -226,6 +227,14 @@ export default function QuizPage() {
       const result = await response.json()
 
       if (result.success) {
+        // Track Lead event on Facebook Pixel
+        fpixel.event('Lead', {
+          content_name: 'Health Assessment Quiz',
+          content_category: 'Lead Generation',
+          value: 0,
+          currency: 'USD'
+        });
+
         // Identify user for behavioral tracking
         if (typeof window !== 'undefined' && (window as any).Brevo) {
           (window as any).Brevo.push(['identify', {
