@@ -19,69 +19,92 @@ import { wrapAllLinks } from '@/lib/email-tracking';
 function getTemplateForStage(stage: number, customerName: string | null, customerEmail: string, campaignId: string = 'winback-2025') {
   const firstName = customerName?.split(' ')[0] || 'Friend';
 
-  // Base HTML templates WITHOUT tracking (tracking will be added by wrapAllLinks)
+  // Plain text style templates - minimal HTML to avoid spam filters
+  // Black Friday Sale: BLACKFRIDAY30 = 30% off, ends Nov 30
   switch (stage) {
-    case 1: // Intro / Win-Back
+    case 1: // Black Friday Announcement
       const stage1Html = `
-        <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #2D5016;">Welcome Back, ${firstName}!</h1>
-          <p>It's been a while since we've seen you. Your health journey matters to us, and we'd love to support you again.</p>
-          <div style="background: #f4f4f4; padding: 20px; border-left: 4px solid #4A7C2F; margin: 20px 0;">
-            <h2 style="margin: 0; color: #2D5016;">20% OFF EVERYTHING</h2>
-            <p style="margin: 5px 0;">Code: <strong>WELCOME20</strong></p>
-          </div>
-          <p>Restock your favorites like ParaCleanse Elite or Sea Moss today.</p>
-          <a href="/paracleanse" style="display: inline-block; background: #4A7C2F; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">Shop Now & Save 20%</a>
-          <p style="font-size: 12px; color: #666; margin-top: 30px;">
-            <a href="/unsubscribe">Unsubscribe</a>
-          </p>
-        </div>
-      `;
+${firstName},
+
+Our biggest sale of the year is LIVE.
+
+BLACK FRIDAY SALE - 30% OFF EVERYTHING
+
+Use code: BLACKFRIDAY30 at checkout
+
+Shop our most popular products:
+
+- ParaCleanse Elite (90 capsules) - $59.99 (was $85.70)
+  https://drsebiapproved.com/go/paracleanse
+
+- Maya Formula (60 capsules) - $41.99 (was $59.99)
+  https://drsebiapproved.com/go/maya
+
+- Sea Moss Capsules (60ct) - $27.99 (was $39.99)
+  https://drsebiapproved.com/go/seamoss
+
+- Mucus Cleanser (60 capsules) - $27.99 (was $39.99)
+  https://drsebiapproved.com/go/mucus
+
+Sale ends November 30th.
+
+- Dr. Sebi Approved Team
+info@drsebiapproved.com
+
+To unsubscribe: https://drsebiapproved.com/unsubscribe
+      `.trim();
       return {
-        subject: `${firstName}, we miss you! Here's 20% off your favorite Dr. Sebi products`,
-        htmlContent: wrapAllLinks(stage1Html, customerEmail, campaignId, stage)
+        subject: `${firstName}, Black Friday Sale is LIVE - 30% Off Everything`,
+        htmlContent: wrapAllLinks(`<pre style="font-family: Arial, sans-serif; white-space: pre-wrap;">${stage1Html}</pre>`, customerEmail, campaignId, stage)
       };
 
-    case 2: // Follow-Up (Value)
+    case 2: // Reminder
       const stage2Html = `
-        <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
-          <p>Hi ${firstName},</p>
-          <p>Just wanted to make sure you saw the special 20% discount we sent earlier. We know life gets busy!</p>
-          <p>The <strong>ParaCleanse Elite</strong> is currently our top-rated product for a reason—it works.</p>
-          <a href="/paracleanse" style="color: #4A7C2F; font-weight: bold;">Claim your 20% off here »</a>
-          <p>Best,<br>The Dr. Sebi Approved Team</p>
-          <p style="font-size: 12px; color: #666; margin-top: 30px;">
-            <a href="/unsubscribe">Unsubscribe</a>
-          </p>
-        </div>
-      `;
+${firstName},
+
+Quick reminder - our Black Friday sale is still going.
+
+30% OFF with code BLACKFRIDAY30
+
+If you've been thinking about trying ParaCleanse or restocking your Sea Moss, now's the time.
+
+Shop here: https://drsebiapproved.com/go/paracleanse
+
+Sale ends November 30th.
+
+- Dr. Sebi Approved Team
+
+To unsubscribe: https://drsebiapproved.com/unsubscribe
+      `.trim();
       return {
-        subject: `Did you see this, ${firstName}? (Your 20% off is waiting)`,
-        htmlContent: wrapAllLinks(stage2Html, customerEmail, campaignId, stage)
+        subject: `Reminder: 30% off ends soon`,
+        htmlContent: wrapAllLinks(`<pre style="font-family: Arial, sans-serif; white-space: pre-wrap;">${stage2Html}</pre>`, customerEmail, campaignId, stage)
       };
 
-    case 3: // Urgency
+    case 3: // Last Chance
       const stage3Html = `
-        <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #d9534f;">Don't miss out, ${firstName}</h2>
-          <p>Your <strong>WELCOME20</strong> code is set to expire soon.</p>
-          <p>Don't let your health goals wait another day.</p>
-          <a href="/shop" style="display: inline-block; background: #d9534f; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">Shop Before It Expires</a>
-          <p style="font-size: 12px; color: #666; margin-top: 30px;">
-            <a href="/unsubscribe">Unsubscribe</a>
-          </p>
-        </div>
-      `;
+${firstName},
+
+Last call - Black Friday ends tomorrow.
+
+After November 30th, prices go back to normal.
+
+Use BLACKFRIDAY30 for 30% off: https://drsebiapproved.com/go/paracleanse
+
+- Dr. Sebi Approved Team
+
+To unsubscribe: https://drsebiapproved.com/unsubscribe
+      `.trim();
       return {
-        subject: `Last chance: Your code expires in 48 hours`,
-        htmlContent: wrapAllLinks(stage3Html, customerEmail, campaignId, stage)
+        subject: `Last chance: Black Friday ends tomorrow`,
+        htmlContent: wrapAllLinks(`<pre style="font-family: Arial, sans-serif; white-space: pre-wrap;">${stage3Html}</pre>`, customerEmail, campaignId, stage)
       };
 
     default:
-      const defaultHtml = `<p>Visit <a href="/shop">Dr. Sebi Approved</a></p>`;
+      const defaultHtml = `Visit Dr. Sebi Approved: https://drsebiapproved.com`;
       return {
         subject: `Special Offer for ${firstName}`,
-        htmlContent: wrapAllLinks(defaultHtml, customerEmail, campaignId, stage)
+        htmlContent: wrapAllLinks(`<pre style="font-family: Arial, sans-serif; white-space: pre-wrap;">${defaultHtml}</pre>`, customerEmail, campaignId, stage)
       };
   }
 }
@@ -166,10 +189,12 @@ export async function POST(request: NextRequest) {
     }
 
     // 3. BUILD QUERY WITH CAMPAIGN FILTER
+    // Follow-ups: 'sent' status customers due for next email stage
     const baseFollowUpQuery = supabaseAdmin
       .from('reengagement_campaign')
       .select('*')
-      .eq('status', 'active')
+      .eq('status', 'sent')
+      .lt('campaign_stage', 4) // Not yet completed all 3 stages
       .lte('next_action_date', new Date().toISOString());
 
     const followUpQuery = targetCampaign
@@ -234,7 +259,7 @@ export async function POST(request: NextRequest) {
 
       // Max stages = 3 for now
       const isComplete = nextStage > 3;
-      const newStatus = isComplete ? 'completed' : 'active';
+      const newStatus = isComplete ? 'sent' : 'sent'; // DB constraint: pending, sent, failed, bounced, clicked, converted
 
       try {
         console.log(`[${i + 1}/${batch.length}] Sending Stage ${currentStage} to ${customer.customer_email}`);
@@ -252,16 +277,17 @@ export async function POST(request: NextRequest) {
           });
 
           // Update DB using admin client to bypass RLS
-          await supabaseAdmin.from('reengagement_campaign').update({
+          const { error: updateError } = await supabaseAdmin.from('reengagement_campaign').update({
             status: newStatus,
-            // Actually, let's store the stage we JUST sent, or the one pending?
-            // Let's say it tracks the one currently active.
-            // So if we just sent Stage 1, we update to Stage 2 for next time.
             campaign_stage: nextStage,
             next_action_date: nextDate.toISOString(),
             sent_at: new Date().toISOString(),
-            zoho_message_id: result.data?.messageId
+            zoho_message_id: result?.data?.messageId || result?.messageId || 'sent'
           }).eq('id', customer.id);
+
+          if (updateError) {
+            console.error(`DB update failed for ${customer.customer_email}:`, updateError);
+          }
 
           results.sent++;
         } else {

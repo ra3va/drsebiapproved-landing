@@ -22,19 +22,39 @@ export default function CheckoutSuccessPage() {
     try {
       const orderData = JSON.parse(orderDataStr)
 
-      // Track conversion with GTM
+      // Track conversion with GTM - CRITICAL: value = actual revenue after discount
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'purchase', {
           transaction_id: orderData.orderId || Date.now().toString(),
-          value: orderData.finalTotal / 100,
+          value: orderData.finalTotal / 100, // ACTUAL revenue after coupon discount
           currency: 'USD',
-          items: orderData.cartItems.map((item: any) => ({
-            item_name: item.name,
-            category: 'Health Supplements',
-            price: item.price / 100,
-            quantity: item.quantity || 1
-          }))
+          coupon: orderData.couponCode || undefined,
+          shipping: (orderData.shippingCost || 0) / 100,
+          tax: 0,
+          items: orderData.cartItems.map((item: any) => {
+            // Calculate per-item discount proportionally
+            const itemSubtotal = (item.price * item.quantity) / 100;
+            const discountRatio = orderData.discount > 0 ? orderData.discount / orderData.subtotal : 0;
+            const itemDiscount = itemSubtotal * discountRatio;
+
+            return {
+              item_id: item.id || item.variationId,
+              item_name: item.name,
+              item_category: 'Health Supplements',
+              item_brand: 'Dr. Sebi Approved',
+              price: item.price / 100, // Original price per unit
+              quantity: item.quantity || 1,
+              discount: itemDiscount // Per-item discount amount
+            };
+          })
         })
+
+        console.log('GA4 Purchase tracked:', {
+          revenue: orderData.finalTotal / 100,
+          items: orderData.cartItems.length,
+          discount: orderData.discount / 100,
+          coupon: orderData.couponCode
+        });
       }
 
       // Track with Brevo behavioral tracking
@@ -46,6 +66,13 @@ export default function CheckoutSuccessPage() {
           product_count: orderData.cartItems.length
         }]);
       }
+
+      // Mark as converted in Zoho campaign (if they came from email)
+      fetch('/api/campaign/mark-converted', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: orderData.email })
+      }).catch(err => console.log('Campaign conversion tracking:', err.message))
 
       // Send to Brevo API for customer list management
       fetch('/api/brevo/purchase-complete', {
@@ -66,16 +93,16 @@ export default function CheckoutSuccessPage() {
           phone: orderData.phone || undefined
         })
       })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Purchase tracked in Brevo:', data)
-        setPurchaseTracked(true)
-        localStorage.removeItem('lastOrder')
-      })
-      .catch(error => {
-        console.error('Brevo purchase tracking error:', error)
-        setPurchaseTracked(true)
-      })
+        .then(res => res.json())
+        .then(data => {
+          console.log('Purchase tracked in Brevo:', data)
+          setPurchaseTracked(true)
+          localStorage.removeItem('lastOrder')
+        })
+        .catch(error => {
+          console.error('Brevo purchase tracking error:', error)
+          setPurchaseTracked(true)
+        })
 
       // Send order receipt email
       fetch('/api/brevo/send-receipt', {
@@ -94,9 +121,9 @@ export default function CheckoutSuccessPage() {
           shippingAddress: orderData.address
         })
       })
-      .then(res => res.json())
-      .then(data => console.log('Receipt email sent:', data))
-      .catch(error => console.error('Receipt email error:', error))
+        .then(res => res.json())
+        .then(data => console.log('Receipt email sent:', data))
+        .catch(error => console.error('Receipt email error:', error))
 
     } catch (error) {
       console.error('Error parsing order data:', error)
@@ -122,7 +149,7 @@ export default function CheckoutSuccessPage() {
         {/* Order Details Card */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">What Happens Next?</h2>
-          
+
           <div className="space-y-6">
             {/* Step 1 */}
             <div className="flex gap-4">

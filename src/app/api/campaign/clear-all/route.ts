@@ -13,7 +13,15 @@ import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+export async function POST(request: NextRequest) {
+  return handleClearAll(request);
+}
+
 export async function DELETE(request: NextRequest) {
+  return handleClearAll(request);
+}
+
+async function handleClearAll(request: NextRequest) {
   try {
     if (!isSupabaseConfigured()) {
       return NextResponse.json(
@@ -22,11 +30,12 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Optional: Check for confirmation parameter
+    // Optional: Check for confirmation parameter (skip for POST from dashboard)
     const { searchParams } = new URL(request.url);
     const confirmed = searchParams.get('confirmed') === 'true';
+    const isPost = request.method === 'POST';
 
-    if (!confirmed) {
+    if (!confirmed && !isPost) {
       return NextResponse.json(
         {
           error: 'Confirmation required',
@@ -78,7 +87,19 @@ export async function DELETE(request: NextRequest) {
       .delete()
       .neq('id', 0); // Delete all (legacy table uses integer IDs)
 
-    console.log(`✅ [Clear All] Deleted ${beforeCount || 0} campaign records, ${clicksBefore || 0} click records`);
+    // Clear today's batch send logs (reset daily limit)
+    const today = new Date().toISOString().split('T')[0];
+    const { count: logsBefore } = await supabaseAdmin
+      .from('batch_send_log')
+      .select('*', { count: 'exact', head: true })
+      .eq('sent_date', today);
+
+    await supabaseAdmin
+      .from('batch_send_log')
+      .delete()
+      .eq('sent_date', today);
+
+    console.log(`✅ [Clear All] Deleted ${beforeCount || 0} campaign records, ${clicksBefore || 0} click records, ${logsBefore || 0} send logs`);
 
     return NextResponse.json({
       success: true,
@@ -86,6 +107,7 @@ export async function DELETE(request: NextRequest) {
       deleted: {
         campaigns: beforeCount || 0,
         clicks: clicksBefore || 0,
+        sendLogs: logsBefore || 0,
       },
     });
 

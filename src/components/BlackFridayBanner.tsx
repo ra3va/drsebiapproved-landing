@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 interface TimeLeft {
@@ -13,6 +14,12 @@ interface TimeLeft {
 export default function BlackFridayBanner() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
+
+  // Hide on admin pages
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   useEffect(() => {
     // PREVIEW MODE: Set to true to always show banner for testing

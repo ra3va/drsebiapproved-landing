@@ -76,7 +76,7 @@ export async function GET(request: Request) {
 
         const status = row.status || 'pending';
         if (status === 'pending') aggregate.pending += 1;
-        if (status === 'active') aggregate.active += 1;
+        if (status === 'sent') aggregate.active += 1; // 'sent' = actively in campaign
         if (status === 'failed') aggregate.failed += 1;
         if (status === 'bounced') aggregate.bounced += 1;
 
@@ -191,12 +191,14 @@ export async function GET(request: Request) {
       ? supabaseAdmin.from('reengagement_campaign')
         .select('*')
         .eq('campaign_name', selectedCampaign)
-        .eq('status', 'active')
+        .eq('status', 'sent')
+        .lt('campaign_stage', 4)
         .lte('next_action_date', new Date().toISOString())
         .range(0, 9999)
       : supabaseAdmin.from('reengagement_campaign')
         .select('*')
-        .eq('status', 'active')
+        .eq('status', 'sent')
+        .lt('campaign_stage', 4)
         .lte('next_action_date', new Date().toISOString())
         .range(0, 9999);
 
