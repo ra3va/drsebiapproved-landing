@@ -64,7 +64,18 @@ This project has transitioned from a simple landing page with external Shopify c
     - `docs/zoho/ZOHO_SETUP_INSTRUCTIONS.md`
     - Agent Skill: `.claude/skills/zoho-email-campaign/`
 
-### 4. Shipping & Fulfillment
+### 4. Analytics & Intelligence (GA4)
+**Status:** ✅ **LIVE (E-commerce Enhanced)**
+- **Tracking:** Full funnel visibility (View Item -> Begin Checkout -> Add Shipping -> Add Payment -> Purchase).
+- **Features:** 
+    - Accurate revenue tracking (discounts & coupons included).
+    - Bundle/Upsell tracking in checkout.
+    - Agent access enabled via `docs/AGENT_GA4_ACCESS.md`.
+- **Reference Docs:**
+    - `docs/AGENT_GA4_ACCESS.md`
+    - `docs/GA4_TRACKING_AUDIT.md`
+
+### 5. Shipping & Fulfillment
 **Status:** 🚧 **Planning / In Progress**
 - **Current:** Manual fulfillment via Square Dashboard.
 - **Planned:** Shippo Automation.
@@ -114,8 +125,14 @@ This project has transitioned from a simple landing page with external Shopify c
 - **PDP Transformation:** Converted educational landers to high-conversion E-commerce Product Detail Pages (PDPs) with dynamic social proof ("2.5K in carts") and quantity selectors.
 - **Checkout Optimization:** Added "Premium Urgency Accents", savings banners, and fixed quantity/coupon pre-fill logic.
 - **Pricing & Coupons:** Integrated `BLACKFRIDAY30` (30% off). Updated catalog pricing across the board.
+- **Compliance:** Added `/terms`, `/refund-policy`, and `/disclaimer` pages for ad compliance.
 - **Technical Fixes:** Resolved critical CSS compilation failure and mobile responsive issues.
 - **Artifacts:** Created `BLACK_FRIDAY_REVERT_PLAN.md` and backed up original landers to `src/app/*-lander/`.
+
+### Phase 7: Analytics & Intelligence (Nov 24, 2025)
+- **GA4 E-Commerce:** Implemented complete event tracking (view_item, begin_checkout, add_shipping_info, add_payment_info, purchase).
+- **Agent Integration:** Created `docs/AGENT_GA4_ACCESS.md` enabling agents to query analytics via natural language.
+- **Revenue Accuracy:** Fixed tracking to include item-level discounts and correct transaction totals.
 
 ---
 
@@ -142,8 +159,9 @@ This project has transitioned from a simple landing page with external Shopify c
 5.  **Mobile First:**
     - All UI components (Checkout, Landing Pages) use progressive styling (`text-3xl sm:text-4xl`) to ensure no horizontal scrolling on mobile.
 
-6.  **Agent Skills:**
-    - Use `.claude/skills/zoho-email-campaign/` for email operations (sending batches, checking status, cleaning test emails).
+6.  **Agent Skills & GA4:**
+    - Use `.claude/skills/zoho-email-campaign/` for email operations.
+    - Use `docs/AGENT_GA4_ACCESS.md` for instructions on querying Google Analytics data.
 
 ---
 

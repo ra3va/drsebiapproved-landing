@@ -15,6 +15,22 @@ export default function ParaCleanseBlackFridayPDP() {
 
   // Simulate realistic dynamic numbers
   useEffect(() => {
+    // Track GA4 view_item event on page load
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'view_item', {
+        currency: 'USD',
+        value: salePrice,
+        items: [{
+          item_id: 'paracleanse-elite-bf',
+          item_name: 'ParaCleanse Elite - Black Friday',
+          item_category: 'Parasite Cleanse',
+          price: salePrice,
+          discount: originalPrice - salePrice,
+          item_brand: 'Dr. Sebi Approved'
+        }]
+      });
+    }
+
     // Random number between 2.3K - 2.8K for cart count
     const baseCartCount = 2300 + Math.floor(Math.random() * 500);
     setInCartCount(baseCartCount);
@@ -52,6 +68,20 @@ export default function ParaCleanseBlackFridayPDP() {
           price: salePrice,
           quantity: quantity
         }]
+      });
+
+      // Track begin_checkout (user initiated checkout flow)
+      window.gtag('event', 'begin_checkout', {
+        currency: 'USD',
+        value: salePrice * quantity,
+        items: [{
+          item_id: 'paracleanse-elite-bf',
+          item_name: 'ParaCleanse Elite - Black Friday',
+          item_category: 'Parasite Cleanse',
+          price: salePrice,
+          quantity: quantity
+        }],
+        coupon: 'BLACKFRIDAY30'
       });
     }
 

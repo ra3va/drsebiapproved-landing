@@ -15,6 +15,22 @@ export default function MucusCleanserBlackFridayPDP() {
 
   // Simulate realistic dynamic numbers
   useEffect(() => {
+    // Track GA4 view_item event
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'view_item', {
+        currency: 'USD',
+        value: salePrice,
+        items: [{
+          item_id: 'mucus-cleanser-bf',
+          item_name: 'Mucus Cleanser - Black Friday',
+          item_category: 'Respiratory Support',
+          price: salePrice,
+          discount: originalPrice - salePrice,
+          item_brand: 'Dr. Sebi Approved'
+        }]
+      });
+    }
+
     // Random number between 2.3K - 2.8K for cart count
     const baseCartCount = 1400 + Math.floor(Math.random() * 350);
     setInCartCount(baseCartCount);
@@ -52,6 +68,20 @@ export default function MucusCleanserBlackFridayPDP() {
           price: salePrice,
           quantity: quantity
         }]
+      });
+
+      // Track begin_checkout
+      window.gtag('event', 'begin_checkout', {
+        currency: 'USD',
+        value: salePrice * quantity,
+        items: [{
+          item_id: 'mucus-cleanser-bf',
+          item_name: 'Mucus Cleanser - Black Friday',
+          item_category: 'Respiratory Support',
+          price: salePrice,
+          quantity: quantity
+        }],
+        coupon: 'BLACKFRIDAY30'
       });
     }
 
@@ -186,16 +216,14 @@ export default function MucusCleanserBlackFridayPDP() {
                     {/* Buy 1 */}
                     <button
                       onClick={() => setQuantity(1)}
-                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
-                        quantity === 1
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${quantity === 1
                           ? 'border-yellow-350 bg-yellow-50'
                           : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          quantity === 1 ? 'border-yellow-350' : 'border-gray-300'
-                        }`}>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${quantity === 1 ? 'border-yellow-350' : 'border-gray-300'
+                          }`}>
                           {quantity === 1 && <div className="w-3 h-3 rounded-full bg-yellow-350" />}
                         </div>
                         <span className="font-semibold">Buy 1</span>
@@ -206,16 +234,14 @@ export default function MucusCleanserBlackFridayPDP() {
                     {/* Buy 2 Get 1 Free */}
                     <button
                       onClick={() => setQuantity(2)}
-                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all relative ${
-                        quantity === 2
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all relative ${quantity === 2
                           ? 'border-yellow-350 bg-yellow-50'
                           : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          quantity === 2 ? 'border-yellow-350' : 'border-gray-300'
-                        }`}>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${quantity === 2 ? 'border-yellow-350' : 'border-gray-300'
+                          }`}>
                           {quantity === 2 && <div className="w-3 h-3 rounded-full bg-yellow-350" />}
                         </div>
                         <div className="flex flex-col items-start">

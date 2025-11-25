@@ -52,3 +52,7 @@ query-db-direct.js
 reset-test-email.js
 test-supabase-permissions.js
 verify-schema.js
+# Google Cloud Service Account Keys
+keys/
+*.json
+docs/GA4_QUICK_START.md
