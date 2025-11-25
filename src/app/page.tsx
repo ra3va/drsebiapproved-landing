@@ -743,18 +743,18 @@ export default function Home() {
               <h3 className="font-semibold mb-4 text-yellow-400">Support</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#">
-                    Shipping Policy
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/refund-policy">
+                    Shipping & Refund Policy
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#">
-                    Return Policy
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/terms">
+                    Terms of Service
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="#">
-                    FAQ
+                  <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/disclaimer">
+                    Health Disclaimer
                   </Link>
                 </li>
               </ul>
@@ -787,14 +787,14 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex gap-4">
-                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
-                  Privacy Policy
+                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="/refund-policy">
+                  Refund Policy
                 </Link>
-                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="/terms">
                   Terms of Service
                 </Link>
-                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="#">
-                  Legal
+                <Link className="text-xs text-gray-400 hover:text-yellow-400 transition-colors" href="/disclaimer">
+                  Disclaimer
                 </Link>
               </div>
             </div>
