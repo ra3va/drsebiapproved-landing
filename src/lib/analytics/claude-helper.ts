@@ -5,8 +5,6 @@
  * directly through natural language commands.
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Execute a GA4 command through the Claude interface
  */

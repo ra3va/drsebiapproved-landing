@@ -5,8 +5,6 @@
  * with intelligent error handling, rate limiting, and response parsing.
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { AnalyticsAdminServiceClient } from '@google-analytics/admin';
 

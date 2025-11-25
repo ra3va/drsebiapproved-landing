@@ -16,12 +16,13 @@ export default function BlackFridayBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
 
-  // Hide on admin pages
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
-
   useEffect(() => {
+    // Hide on admin pages
+    if (pathname?.startsWith('/admin')) {
+      setIsVisible(false);
+      return;
+    }
+
     // PREVIEW MODE: Set to true to always show banner for testing
     const PREVIEW_MODE = true;
 
@@ -56,7 +57,7 @@ export default function BlackFridayBanner() {
 
       return () => clearInterval(timer);
     }
-  }, []);
+  }, [pathname]);
 
   if (!isVisible) return null;
 
