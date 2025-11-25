@@ -19,43 +19,60 @@ import { wrapAllLinks } from '@/lib/email-tracking';
 function getTemplateForStage(stage: number, customerName: string | null, customerEmail: string, campaignId: string = 'winback-2025') {
   const firstName = customerName?.split(' ')[0] || 'Friend';
 
-  // Plain text style templates - minimal HTML to avoid spam filters
+  // Light HTML styling - spam-safe inline CSS only
   // Black Friday Sale: BLACKFRIDAY30 = 30% off, ends Nov 30
   switch (stage) {
     case 1: // Black Friday Announcement
       const stage1Html = `
-${firstName},
-
-Our biggest sale of the year is LIVE.
-
-BLACK FRIDAY SALE - 30% OFF EVERYTHING
-
-Use code: BLACKFRIDAY30 at checkout
-
-Shop our most popular products:
-
-- ParaCleanse Elite (90 capsules) - $59.99 (was $85.70)
-  https://drsebiapproved.com/go/paracleanse
-
-- Maya Formula (60 capsules) - $41.99 (was $59.99)
-  https://drsebiapproved.com/go/maya
-
-- Sea Moss Capsules (60ct) - $27.99 (was $39.99)
-  https://drsebiapproved.com/go/seamoss
-
-- Mucus Cleanser (60 capsules) - $27.99 (was $39.99)
-  https://drsebiapproved.com/go/mucus
-
-Sale ends November 30th.
-
-- Dr. Sebi Approved Team
-info@drsebiapproved.com
-
-To unsubscribe: https://drsebiapproved.com/unsubscribe
+<div style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333;">
+  <p style="margin: 0 0 16px 0;">${firstName},</p>
+  
+  <p style="margin: 0 0 16px 0;">Dr. Sebi once said Maya was the greatest formula he ever created.</p>
+  
+  <p style="margin: 0 0 16px 0;">We still make it the same way. Same herbs. Sourced directly from Honduras - the exact region Sebi himself traveled to.</p>
+  
+  <p style="margin: 0 0 16px 0;">This week, it's 30% off. Everything is.</p>
+  
+  <p style="margin: 0 0 20px 0;"><strong>Use code BLACKFRIDAY30 at checkout.</strong></p>
+  
+  <p style="margin: 0 0 12px 0;"><strong>Here's what's on sale:</strong></p>
+  
+  <p style="margin: 0 0 16px 0;">
+    <strong>Maya Formula - $41.99</strong> (normally $59.99)<br>
+    Dr. Sebi's masterpiece. For energy, vitality, and overall wellness.<br>
+    <a href="https://drsebiapproved.com/go/maya" style="color: #2563eb;">https://drsebiapproved.com/go/maya</a>
+  </p>
+  
+  <p style="margin: 0 0 16px 0;">
+    <strong>Sea Moss Capsules - $27.99</strong> (normally $39.99)<br>
+    92 minerals your body craves. No prep, no blending.<br>
+    <a href="https://drsebiapproved.com/go/seamoss" style="color: #2563eb;">https://drsebiapproved.com/go/seamoss</a>
+  </p>
+  
+  <p style="margin: 0 0 16px 0;">
+    <strong>Mucus Cleanser - $27.99</strong> (normally $39.99)<br>
+    Clear the pathways. Breathe easier.<br>
+    <a href="https://drsebiapproved.com/go/mucus" style="color: #2563eb;">https://drsebiapproved.com/go/mucus</a>
+  </p>
+  
+  <p style="margin: 0 0 20px 0;">
+    <strong>ParaCleanse Elite - $62.99</strong> (normally $89.99)<br>
+    The deep clean. 90 capsules, 30-day protocol.<br>
+    <a href="https://drsebiapproved.com/go/paracleanse" style="color: #2563eb;">https://drsebiapproved.com/go/paracleanse</a>
+  </p>
+  
+  <p style="margin: 0 0 20px 0;">Sale ends November 30th.</p>
+  
+  <p style="margin: 0 0 8px 0;">- The Dr. Sebi Approved Team</p>
+  
+  <p style="margin: 24px 0 0 0; font-size: 12px; color: #888;">
+    <a href="https://drsebiapproved.com/unsubscribe" style="color: #888;">Unsubscribe</a>
+  </p>
+</div>
       `.trim();
       return {
-        subject: `${firstName}, Black Friday Sale is LIVE - 30% Off Everything`,
-        htmlContent: wrapAllLinks(`<pre style="font-family: Arial, sans-serif; white-space: pre-wrap;">${stage1Html}</pre>`, customerEmail, campaignId, stage)
+        subject: `Dr. Sebi's greatest formula is 30% off`,
+        htmlContent: wrapAllLinks(stage1Html, customerEmail, campaignId, stage)
       };
 
     case 2: // Reminder
@@ -121,7 +138,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json().catch(() => ({}));
     const {
-      batchSize = 75, // Changed default from 50 to 75
+      batchSize = 200, // Bumped for Black Friday push (Zoho limit: 300/day)
       delaySeconds = 120,
       dryRun = false,
       campaignName = null, // NEW: Optional campaign filter

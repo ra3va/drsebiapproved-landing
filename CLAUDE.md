@@ -8,6 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Next.js-based landing page for Dr. Sebi's Original Products & Systems. This is a premium wellness brand focused on authentic, natural healing products. **Sales and fulfillment handled via Square + Shippo integration**, while this site serves as the e-commerce frontend with **dual email infrastructure: Zoho for transactional/manual campaigns and Brevo for marketing automation**.
 
+### Current Phase: PHASE 2 - Traffic & Marketing (as of Nov 25, 2025)
+Phase 1 (Foundation) complete: website, analytics, checkout, PDPs, automation setup, tracking.
+Phase 2 focus: Email marketing campaigns, Meta ad content, SEO optimization, split testing for conversions/AOV/LTV.
+**Active Campaign**: Black Friday 2025 (Nov 25-30) - 1,180 customer win-back via Zoho.
+
 ## Commands
 
 ### Development

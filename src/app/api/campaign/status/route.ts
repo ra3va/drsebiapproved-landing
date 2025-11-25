@@ -159,15 +159,15 @@ export async function GET(request: Request) {
       .eq('sent_date', today);
 
     const sentToday = dailyLogs?.reduce((sum, log) => sum + (log.emails_sent || 0), 0) || 0;
-    // Use the limit from the most recent log, or default to 75
-    const dailyLimit = dailyLogs && dailyLogs.length > 0 ? dailyLogs[dailyLogs.length - 1].batch_size_limit : 75;
+    // Use the limit from the most recent log, or default to 200 (Black Friday push)
+    const dailyLimit = dailyLogs && dailyLogs.length > 0 ? dailyLogs[dailyLogs.length - 1].batch_size_limit : 200;
     const remaining = Math.max(0, dailyLimit - sentToday);
     const canSendAgain = remaining > 0 || (dailyLogs && dailyLogs.some(l => l.override_limit));
 
     // 3. ENHANCED CLICK TRACKING (with email stage)
     const clickQuery = selectedCampaign
-      ? supabaseAdmin.from('campaign_clicks').select('*').eq('campaign_name', selectedCampaign).range(0, 9999)
-      : supabaseAdmin.from('campaign_clicks').select('*').range(0, 9999);
+      ? supabaseAdmin.from('campaign_clicks').select('*').eq('campaign_name', selectedCampaign).order('clicked_at', { ascending: false }).limit(100)
+      : supabaseAdmin.from('campaign_clicks').select('*').order('clicked_at', { ascending: false }).limit(100);
 
     const { data: clickRecords } = await clickQuery;
 

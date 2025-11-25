@@ -36,9 +36,9 @@ export default function CampaignDashboard() {
 
     // Settings
     const [settings, setSettings] = useState({
-        batchSize: 75,
+        batchSize: 200,
         delaySeconds: 120,
-        globalLimit: 75
+        globalLimit: 200
     });
 
     // ESC key to close modals

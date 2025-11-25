@@ -92,6 +92,9 @@ export default function CampaignSettings({ isOpen, onClose, settings, onSave, on
                             id="globalLimit"
                             type="number"
                             value={localSettings.globalLimit}
+                            onChange={(e) => setLocalSettings({ ...localSettings, globalLimit: parseInt(e.target.value) })}
+                            min="1"
+                            max="300"
                             className="bg-black/50 border-white/10 text-white focus:ring-green-500"
                         />
                         <p className="text-[10px] text-gray-500">

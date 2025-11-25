@@ -28,8 +28,16 @@ export async function DELETE(request: NextRequest) {
 
         console.log(`[Delete Campaign] Removing campaign "${decodedName}"...`);
 
-        // Delete from campaign table
-        const { data, error: deleteError, count } = await supabaseAdmin
+        // IMPORTANT: Delete clicks FIRST (foreign key constraint)
+        const { count: clicksDeleted } = await supabaseAdmin
+            .from('campaign_clicks')
+            .delete({ count: 'exact' })
+            .eq('campaign_name', decodedName);
+
+        console.log(`[Delete Campaign] Deleted ${clicksDeleted || 0} click records`);
+
+        // Now delete campaign records
+        const { error: deleteError, count } = await supabaseAdmin
             .from('reengagement_campaign')
             .delete({ count: 'exact' })
             .eq('campaign_name', decodedName);
@@ -42,7 +50,7 @@ export async function DELETE(request: NextRequest) {
             );
         }
 
-        console.log(`✅ [Delete Campaign] Removed ${count} records for campaign "${decodedName}"`);
+        console.log(`✅ [Delete Campaign] Removed ${count} campaign records, ${clicksDeleted || 0} clicks for "${decodedName}"`);
 
         return NextResponse.json({
             success: true,

@@ -6,6 +6,11 @@ This file provides guidance to any AI Agent when working with code in this repos
 
 Dr. Sebi Approved is a Next.js-based landing page for Dr. Sebi's Original Wellness Systems and Products. This is a premium wellness brand focused on authentic, natural healing products. **Sales are handled via Square API**, while this site serves as marketing/content hub with email campaign management via Zoho Mail API.
 
+### Current Phase: PHASE 2 - Traffic & Marketing (as of Nov 25, 2025)
+Phase 1 (Foundation) complete: website, analytics, checkout, PDPs, automation setup, tracking.
+Phase 2 focus: Email marketing campaigns, Meta ad content, SEO optimization, split testing for conversions/AOV/LTV.
+**Active Campaign**: Black Friday 2025 (Nov 25-30) - 1,180 customer win-back via Zoho.
+
 email: info@drsebiapproved.com
 website: https://drsebiapproved.com
 send all test emails to: kingthriva@gmail.com, carljoseph@mogulmedianyc.biz, themindsetmarkter@gmail.com, artofthedigitalhustle@gmail.com

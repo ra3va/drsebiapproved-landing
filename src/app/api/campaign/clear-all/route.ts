@@ -47,15 +47,29 @@ async function handleClearAll(request: NextRequest) {
 
     console.log('[Clear All] Deleting all campaign records...');
 
-    // First, count records to track what we're deleting
+    // IMPORTANT: Delete clicks FIRST (foreign key constraint)
+    const { count: clicksBefore } = await supabaseAdmin
+      .from('campaign_clicks')
+      .select('*', { count: 'exact', head: true });
+
+    const { error: clicksError } = await supabaseAdmin
+      .from('campaign_clicks')
+      .delete()
+      .not('customer_email', 'eq', 'this-email-will-never-exist@invalid-domain-9999.com');
+
+    if (clicksError) {
+      console.error('[Clear All] Clicks deletion error:', clicksError);
+    }
+
+    console.log(`[Clear All] Deleted ${clicksBefore || 0} click records`);
+
+    // Now delete campaign records (no FK constraint blocking)
     const { count: beforeCount } = await supabaseAdmin
       .from('reengagement_campaign')
       .select('*', { count: 'exact', head: true });
 
-    console.log(`[Clear All] Found ${beforeCount || 0} records to delete`);
+    console.log(`[Clear All] Found ${beforeCount || 0} campaign records to delete`);
 
-    // Delete ALL records using a simple "not equal" to a value that never exists
-    // This works for both integer and UUID types
     const { error: campaignError } = await supabaseAdmin
       .from('reengagement_campaign')
       .delete()
@@ -70,16 +84,6 @@ async function handleClearAll(request: NextRequest) {
     }
 
     console.log('[Clear All] Campaign records deleted successfully');
-
-    // Clear click tracking data
-    const { count: clicksBefore } = await supabaseAdmin
-      .from('campaign_clicks')
-      .select('*', { count: 'exact', head: true });
-
-    await supabaseAdmin
-      .from('campaign_clicks')
-      .delete()
-      .not('customer_email', 'eq', 'this-email-will-never-exist@invalid-domain-9999.com');
 
     // Try clearing legacy discount_clicks table
     await supabaseAdmin
