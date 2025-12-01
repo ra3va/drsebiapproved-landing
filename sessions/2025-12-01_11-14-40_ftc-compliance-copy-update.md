@@ -9,7 +9,7 @@
 - Audited all key sales surfaces (PDPs, landers, checkout, Square catalog, emails, lead magnet funnel, blog highlights) for parasite/biofilm/disease-style claims that could trigger FTC, Square, or ad-network issues.
 - Softened or removed high-risk health claims (e.g., “eliminates parasites,” “eliminates excess mucus,” “biofilm disruptor,” “parasite cleanse”) on product-facing and transaction-facing pages.
 - Preserved “sharp” copy by shifting to emotional, experiential, and support-oriented language instead of direct treatment promises.
-- Added a reusable compliance playbook (`docs/COMPLIANCE_AGENT.md`) so future agents can run this audit quickly and consistently.
+- Added a reusable compliance playbook (`docs/compliance/COMPLIANCE_AGENT.md`) so future agents can run this audit quickly and consistently.
 
 ## Key Issues Resolved
 - **Square / Processor Risk**: Catalog descriptions and checkout data structures previously described ParaCleanse and Mucus Cleanser as “parasite cleansing” or “eliminates mucus” solutions, which is exactly the language that triggered the original `/paracleanse` flag.
@@ -138,7 +138,7 @@
 ## Files Modified/Created
 
 **New:**
-- `docs/COMPLIANCE_AGENT.md` – Detailed playbook for future AI agents to audit compliance and sharpen copy safely.
+- `docs/compliance/COMPLIANCE_AGENT.md` – Detailed playbook for future AI agents to audit compliance and sharpen copy safely.
 - `sessions/2025-12-01_11-14-40_ftc-compliance-copy-update.md` – This session log.
 
 **Modified (high level):**
@@ -175,7 +175,7 @@
 - Clear separation between:
   - **Sales surfaces** (PDPs, checkout, emails) → conservative, support-oriented language.
   - **Educational surfaces** (guides, blog) → can discuss parasites/biofilms within a framed, qualified, and disclaimer-backed context.
-- A documented compliance workflow for future AI agents via `docs/COMPLIANCE_AGENT.md`.
+- A documented compliance workflow for future AI agents via `docs/compliance/COMPLIANCE_AGENT.md`.
 
 ## Next Steps & Recommendations
 1. Run a manual visual review of key pages in production once deployed:
@@ -183,7 +183,7 @@
    - `/hidden-parasite-crisis`, `/gut-health-guide`, `/download/gut-health-guide`
    - `/checkout?product=paracleanse`, `/checkout?product=mucus-cleanser`
 2. Update any external ad or email copy (Meta/Google/Zoho/Brevo templates) to mirror the new “supportive, gut-focused” language.
-3. For future experiments, use `docs/COMPLIANCE_AGENT.md` as the base prompt for any AI-based copy or code changes touching regulated surfaces.
+3. For future experiments, use `docs/compliance/COMPLIANCE_AGENT.md` as the base prompt for any AI-based copy or code changes touching regulated surfaces.
 
 ## Session Outcome
 **Status:** Completed and ready for production deployment.  
@@ -191,4 +191,3 @@ All known high-risk parasite/mucus/biofilm elimination claims have been removed 
 
 ---
 *End of Session: 2025-12-01 11:14:40 CST*
-

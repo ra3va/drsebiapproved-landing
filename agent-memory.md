@@ -1,7 +1,7 @@
 # Project Memory: Dr. Sebi Approved (Parasite Cleanse Landing)
 
-**Last Updated:** December 1, 2025 10:35 CST
-**Status:** Production Ready / Active Marketing Phase (Black Friday Sale) - FTC Compliance Audit in Progress
+**Last Updated:** December 1, 2025 11:20 CST
+**Status:** Production Ready / Active Marketing Phase (Black Friday Sale) - FTC Compliance Overhaul Completed
 **URL:** https://drsebiapproved.com
 **Tech Stack:** Next.js 14, Tailwind, Square (Payments), Brevo (Marketing Campaigns & Transactional), Zoho Mail (Deprecated/Fallback for Cold), Supabase (Campaign Database), Render (Hosting).
 
@@ -19,6 +19,7 @@ This project has transitioned from a simple landing page with external Shopify c
     - **Transactional:** Receipt emails and system notifications.
 3.  **Outreach Engine (Zoho):** *Legacy/Fallback*. Infrastructure exists but was blocked by spam filters during Black Friday launch. Now using Brevo Marketing Campaigns.
 4.  **Content Funnel:** E-commerce PDPs (Black Friday mode) and SEO-optimized blog driving traffic.
+5.  **Compliance:** Strict adherence to FTC guidelines via `docs/compliance/COMPLIANCE_AGENT.md`.
 
 ---
 
@@ -70,7 +71,8 @@ This project has transitioned from a simple landing page with external Shopify c
 - **Reference Docs:**
     - `docs/square/SQUARE_SETUP.md`
     - `BLACK_FRIDAY_REVERT_PLAN.md`
-    - `FTC_COMPLIANCE_AUDIT.md` (Local)
+    - `docs/compliance/FTC_COMPLIANCE_AUDIT.md`
+    - `docs/compliance/COMPLIANCE_AGENT.md`
 
 ### 2. Marketing Automation & Campaigns (Brevo)
 **Status:** ✅ **LIVE (Primary Engine)**
@@ -192,6 +194,16 @@ This project has transitioned from a simple landing page with external Shopify c
     - **Action:** Audited and updated content to remove disease claims (e.g., "Eliminates parasites" → "Internal Cleansing").
     - **Social Proof:** Removed unverified "live cart" counters and "purchased in last 24h" widgets to comply with deceptive advertising regulations.
     - **Status:** Changes applied locally to `src/app/paracleanse/page.tsx` (and others), pending push.
+
+### Phase 11: Comprehensive FTC Compliance Overhaul (Dec 1, 2025)
+- **Scope:** Full audit of all sales surfaces (PDPs, Landers, Checkout, Emails) to remove high-risk "disease claim" language.
+- **Actions:**
+    - **PDPs:** Softened "Eliminates Parasites" to "Internal Cleansing System". Removed fake social proof counters.
+    - **Square Catalog:** Updated product descriptions to be processor-safe (avoiding "biofilm disruption" claims).
+    - **Funnel:** Reframed "Hidden Parasite Crisis" as educational "Gut Health Guide".
+    - **SEO:** Updated metadata to focus on "digestive wellness" rather than "parasite removal".
+    - **Artifacts:** Created `docs/compliance/COMPLIANCE_AGENT.md` as a reusable playbook.
+- **Status:** Completed and ready for deployment.
 
 ---
 

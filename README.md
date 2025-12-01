@@ -77,6 +77,10 @@ src/
 │   └── brevo-client.js           # Brevo Client
 
 docs/
+├── compliance/                   # FTC/compliance audits & AI playbooks
+│   ├── FTC_COMPLIANCE_AUDIT.md   # Human checklist for site copy compliance
+│   ├── FTC_QUICK_FIXES.md        # Quick, high-priority fixes by surface
+│   └── COMPLIANCE_AGENT.md       # Agent playbook for automated compliance audits
 ├── brevo/                        # Marketing Automation Docs
 ├── square/                       # Payment Integration Docs
 └── archive/                      # Legacy Docs
