@@ -122,7 +122,7 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
                   </h3>
                   
                   <p className="text-gray-600 text-lg leading-relaxed">
-                    <strong>Dr. Sebi's Complete Guide to Eliminate Silent Invaders and Reclaim Your Health.</strong> Discover why millions suffer from unexplained symptoms and the 2-phase protocol that actually works.
+                    <strong>Dr. Sebi&apos;s educational guide on hidden gut imbalances and internal cleansing.</strong> Discover why so many people experience unexplained symptoms and explore a gentle two-phase herbal approach to supporting gut health.
                   </p>
 
                   <div className="pt-2">
@@ -183,7 +183,7 @@ export default function GutHealthLeadMagnet({ className = "", onClose }: GutHeal
                   <h3 className="text-2xl font-bold text-gray-900">Check Your Email{firstName && `, ${firstName}`}!</h3>
                   <p className="text-gray-600 max-w-md mx-auto">
                     We've sent "The Hidden Parasite Crisis" guide to <strong>{email}</strong>. 
-                    Check your inbox (and spam folder) to discover the truth about parasites and Dr. Sebi's elimination protocol.
+                    Check your inbox (and spam folder) to dive deeper into gut health and Dr. Sebi&apos;s two-phase cleansing approach.
                   </p>
                   <Button
                     onClick={() => {

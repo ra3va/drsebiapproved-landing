@@ -85,7 +85,7 @@ export default async function handler(req, res) {
             
             <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center;">
               <h3 style="color: #15803d; margin-top: 0;">🎯 Your Free Gut Health Guide</h3>
-              <p style="margin: 15px 0;">Discover the natural path to remove parasites and restore your digestive health with this comprehensive guide based on Dr. Sebi's proven methods.</p>
+              <p style="margin: 15px 0;">Discover holistic ways to support your digestive wellness and learn how Dr. Sebi&apos;s traditional methods approach internal cleansing in this comprehensive guide.</p>
               
               <div style="margin: 20px 0;">
                 <a href="${process.env.NODE_ENV === 'production' ? 'https://drsebiapproved.com' : 'http://localhost:3000'}/download/gut-health-guide" 
@@ -102,11 +102,11 @@ export default async function handler(req, res) {
             
             <p><strong>What's inside your guide:</strong></p>
             <ul style="color: #374151;">
-              <li>🔍 Signs you may have parasites (many people don't realize)</li>
-              <li>🌱 Dr. Sebi's natural parasite removal protocols</li>
-              <li>🍃 Foods that create an inhospitable environment for parasites</li>
+              <li>🔍 Signs your gut may be out of balance (many people don't realize)</li>
+              <li>🌱 How Dr. Sebi&apos;s natural approach supports internal cleansing and overall wellness</li>
+              <li>🍃 Foods and habits that help create a more balanced inner environment</li>
               <li>💪 How to rebuild your gut health naturally</li>
-              <li>📅 Step-by-step 30-day cleanse protocol</li>
+              <li>📅 A gentle, step-by-step 30-day cleansing framework</li>
             </ul>
             
             <div style="background: #eff6ff; padding: 15px; border-radius: 8px; margin: 20px 0;">

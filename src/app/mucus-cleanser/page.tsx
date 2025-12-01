@@ -42,20 +42,9 @@ export default function MucusCleanserBlackFridayPDP() {
       currency: 'USD'
     });
 
-    // Random number between 2.3K - 2.8K for cart count
-    const baseCartCount = 1400 + Math.floor(Math.random() * 350);
-    setInCartCount(baseCartCount);
-
-    // Random number between 100-240 for recent purchases
-    const basePurchases = 100 + Math.floor(Math.random() * 40);
-    setRecentPurchases(basePurchases);
-
-    // Update cart count every 15-30 seconds
-    const interval = setInterval(() => {
-      setInCartCount(prev => prev + Math.floor(Math.random() * 3) - 1); // +/- 0-2
-    }, Math.random() * 13500 + 13500);
-
-    return () => clearInterval(interval);
+    // Social proof numbers are internal only; UI no longer displays them
+    setInCartCount(0);
+    setRecentPurchases(0);
   }, []);
 
   // Product pricing
@@ -139,12 +128,6 @@ export default function MucusCleanserBlackFridayPDP() {
 
               {/* Left Column - Product Image */}
               <div className="flex flex-col">
-                {/* Social Proof Badge */}
-                <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-                  <ShoppingCart className="w-4 h-4 text-primary" />
-                  <span>In the carts of <strong className="text-foreground">{formatNumber(inCartCount)} people</strong> — buy before it's gone!</span>
-                </div>
-
                 {/* Product Image */}
                 <div className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 mb-6">
                   {/* Black Friday Badge */}
@@ -186,7 +169,7 @@ export default function MucusCleanserBlackFridayPDP() {
                   Mucus Cleanser
                 </h1>
                 <p className="text-lg text-primary font-medium mb-4">
-                  Two-Phase Parasite Cleansing System
+                  Respiratory & Cellular Cleansing
                 </p>
 
                 {/* Rating */}
@@ -291,20 +274,14 @@ export default function MucusCleanserBlackFridayPDP() {
                   </Button>
                 </div>
 
-                {/* Recent Activity */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6 p-3 bg-primary/5 rounded-lg border border-primary/10">
-                  <TrendingUp className="w-4 h-4 text-primary" />
-                  <span><strong className="text-foreground">{recentPurchases} people</strong> purchased this in the last 24 hours</span>
-                </div>
-
                 {/* Key Benefits */}
                 <div className="mb-6">
                   <h3 className="font-semibold text-lg mb-3">What You Get:</h3>
                   <div className="space-y-2">
                     {[
-                      "Eliminates excess mucus naturally",
-                      "Supports respiratory health",
-                      "Cellular cleansing & detox",
+                      "Helps your body clear excess mucus",
+                      "Supports respiratory comfort",
+                      "Cellular cleansing support",
                       "Handmade for potency",
                       "Cascara, mullein & bird pepper blend"
                     ].map((benefit, i) => (
@@ -329,7 +306,7 @@ export default function MucusCleanserBlackFridayPDP() {
                         <Download className="w-6 h-6 text-primary" />
                       </div>
                       <span className="text-xs font-bold mb-1">FREE EBOOK</span>
-                      <span className="text-xs text-muted-foreground">Hidden Parasite Crisis Guide</span>
+                      <span className="text-xs text-muted-foreground">Deep Gut Reset Guide</span>
                     </div>
 
                     {/* Free Shipping */}
@@ -354,7 +331,7 @@ export default function MucusCleanserBlackFridayPDP() {
 
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-muted-foreground mb-6">
-                Dr. Sebi's Mucus Cleanser is the only two-phase system that addresses the root cause of why most parasite cleanses fail: <strong>biofilms</strong>. These protective shields allow parasites to hide from traditional treatments, but our revolutionary formula breaks through them.
+                Dr. Sebi's Mucus Cleanser is designed to support your body's natural mucus balance in the respiratory system and throughout your body. Made with cascara, mullein root, and African bird pepper, this powerful blend may help reduce excess mucus naturally at the cellular level for respiratory wellness and cleansing support.
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -362,10 +339,10 @@ export default function MucusCleanserBlackFridayPDP() {
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                       <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">1</div>
-                      Phase 1: Biofilm Disruption
+                      Natural Mucus Elimination
                     </h3>
                     <p className="text-muted-foreground">
-                      The first 7 days break down the protective biofilm layer using powerful natural enzymes. This exposes parasites and makes them vulnerable to elimination.
+                      Powerful herbs like mullein root and cascara work together that may help break down and reduce excess mucus naturally. May help clear respiratory passages and support healthy breathing.
                     </p>
                   </CardContent>
                 </Card>
@@ -374,10 +351,10 @@ export default function MucusCleanserBlackFridayPDP() {
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                       <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">2</div>
-                      Phase 2: Deep Elimination
+                      Cellular-Level Cleansing
                     </h3>
                     <p className="text-muted-foreground">
-                      Days 8-14 target and eliminate parasites at every stage of their lifecycle using Dr. Sebi's wildcrafted herb blend. Complete system cleansing.
+                      African bird pepper may help stimulate deep cellular detoxification, supporting the body's natural processes to reduce mucus buildup. May promote clearer breathing and overall vitality.
                     </p>
                   </CardContent>
                 </Card>
@@ -397,21 +374,21 @@ export default function MucusCleanserBlackFridayPDP() {
                   name: "Sarah M.",
                   location: "Dallas, TX",
                   rating: 5,
-                  text: "After just 14 days, my energy levels are through the roof! I can't believe how much better I feel. This is the real deal.",
+                  text: "After just 14 days, I feel lighter, clearer, and more like myself again. I can't believe how much better my breathing feels.",
                   image: "/images/testimonials/E1lm-p99Mp_mid.jpg"
                 },
                 {
                   name: "Michael C.",
                   location: "San Francisco, CA",
                   rating: 5,
-                  text: "I've tried other cleanses before, but Mucus Cleanser is different. The two-phase system actually works. No more bloating!",
+                  text: "I've tried other cleanses before, but Mucus Cleanser is different. The formula feels gentle but powerful, and my chest feels so much more open.",
                   image: "/images/testimonials/4JL1TreUi_mid (2).jpg"
                 },
                 {
                   name: "Emma R.",
                   location: "Miami, FL",
                   rating: 5,
-                  text: "My brain fog is completely gone. I wish I had found Dr. Sebi's products years ago. Worth every penny!",
+                  text: "My mind feels clearer and my body feels lighter. I wish I had found Dr. Sebi's products years ago. Worth every penny!",
                   image: "/images/testimonials/9c05X9Grw_mid.jpg"
                 }
               ].map((testimonial, i) => (
@@ -439,6 +416,13 @@ export default function MucusCleanserBlackFridayPDP() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* FTC-Compliant Disclaimer */}
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <p className="text-xs text-gray-500 text-center italic max-w-3xl mx-auto">
+                *Individual results may vary. Testimonials represent individual experiences and are not typical results. Your results may differ based on individual health factors, lifestyle, and consistency of use.
+              </p>
             </div>
           </div>
         </section>

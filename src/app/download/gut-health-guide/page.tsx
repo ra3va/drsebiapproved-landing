@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Download Your Gut Health Guide | Dr. Sebi Approved",
-  description: "Download your free comprehensive gut health guide with Dr. Sebi's natural parasite cleanse protocols.",
+  description: "Download your free comprehensive gut health guide with Dr. Sebi's perspective on internal cleansing and digestive wellness.",
   robots: "noindex, nofollow", // Keep this private for subscribers only
 };
 
@@ -40,7 +40,7 @@ export default function GutHealthGuideDownload() {
                 </h1>
 
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                  Thank you for subscribing! Your comprehensive guide to Dr. Sebi's natural parasite cleanse protocols is ready for download.
+                  Thank you for subscribing! Your comprehensive guide to Dr. Sebi&apos;s natural internal cleansing philosophy and gut health support is ready for download.
                 </p>
 
                 {/* Download Button */}
@@ -62,15 +62,15 @@ export default function GutHealthGuideDownload() {
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-green-800">Hidden signs of parasite infection</span>
+                        <span className="text-green-800">Hidden signs your gut may be out of balance</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-green-800">Dr. Sebi's natural removal protocols</span>
+                        <span className="text-green-800">Dr. Sebi's natural cleansing protocols</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-green-800">Anti-parasitic foods and herbs</span>
+                        <span className="text-green-800">Gut-supportive foods and herbs</span>
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -80,7 +80,7 @@ export default function GutHealthGuideDownload() {
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-green-800">30-day cleanse protocol</span>
+                        <span className="text-green-800">30-day gentle cleanse framework</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />

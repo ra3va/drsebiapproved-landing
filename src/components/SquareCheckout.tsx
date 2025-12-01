@@ -765,7 +765,7 @@ export default function SquareCheckout({
                     <>
                       <li className="flex items-start gap-2 text-xs text-gray-600">
                         <span className="text-green-600 mt-0.5">✓</span>
-                        <span>Phase 1: ParaWash Biofilm Disruptor</span>
+                        <span>Phase 1: ParaWash Digestive Primer</span>
                       </li>
                       <li className="flex items-start gap-2 text-xs text-gray-600">
                         <span className="text-green-600 mt-0.5">✓</span>
@@ -825,7 +825,7 @@ export default function SquareCheckout({
                     <>
                       <li className="flex items-start gap-2 text-xs text-gray-600">
                         <span className="text-green-600 mt-0.5">✓</span>
-                        <span>Eliminates Excess Mucus</span>
+                        <span>Supports Healthy Mucus Levels</span>
                       </li>
                       <li className="flex items-start gap-2 text-xs text-gray-600">
                         <span className="text-green-600 mt-0.5">✓</span>
@@ -833,7 +833,7 @@ export default function SquareCheckout({
                       </li>
                       <li className="flex items-start gap-2 text-xs text-gray-600">
                         <span className="text-green-600 mt-0.5">✓</span>
-                        <span>Cellular Detoxification</span>
+                        <span>Cellular Cleansing Support</span>
                       </li>
                       <li className="flex items-start gap-2 text-xs text-gray-600">
                         <span className="text-green-600 mt-0.5">✓</span>

@@ -15,9 +15,9 @@ const PRODUCTS = {
     price: 8570,  // $85.70 regular
     variationId: '5JV44RI47GC5IMYSENVXMV3D',
     image: '/paracleanse.png',
-    description: 'Two-Phase Parasite Cleansing System',
+    description: 'Two-Phase Internal Cleansing System',
     features: [
-      'Phase 1: ParaWash Biofilm Disruptor',
+      'Phase 1: ParaWash Digestive Primer',
       'Phase 2: Intracellular Body Cleanse',
       '14-Day Supply (Full Treatment)',
       'Detailed Instructions & Protocol'
@@ -59,9 +59,9 @@ const PRODUCTS = {
     image: '/mucus.png',
     description: 'Respiratory & Cellular Cleansing',
     features: [
-      'Eliminates Excess Mucus',
+      'Supports Healthy Mucus Levels',
       'Respiratory Support',
-      'Cellular Detoxification',
+      'Cellular Cleansing Support',
       '30 Capsules'
     ]
   }

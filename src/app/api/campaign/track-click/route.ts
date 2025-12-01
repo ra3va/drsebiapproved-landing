@@ -11,6 +11,10 @@
  * This serves as the re-opt-in signal for Brevo marketing sequences.
  */
 
+// This route is inherently dynamic (per-request tracking + redirects)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase, supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase';
 import { BrevoClient } from '@/lib/brevo-client';

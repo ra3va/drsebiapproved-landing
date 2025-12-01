@@ -89,9 +89,9 @@ export default function MucusWinBackPage() {
                 {/* Product Details */}
                 <div className="space-y-2 sm:space-y-3 w-full max-w-md">
                   {[
-                    { icon: Wind, text: "Eliminates excess mucus naturally" },
+                    { icon: Wind, text: "Supports healthy mucus balance" },
                     { icon: Activity, text: "Supports respiratory health" },
-                    { icon: Droplets, text: "Cellular cleansing & detoxification" },
+                    { icon: Droplets, text: "Cellular cleansing support" },
                     { icon: Award, text: "Handmade for maximum potency" }
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 sm:gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-3 border border-cyan-500/20">
@@ -211,7 +211,7 @@ export default function MucusWinBackPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700">
-                    Remember how it felt to breathe clearly? Eliminate excess mucus before winter congestion hits.
+                    Remember how it felt to breathe clearly? Support healthy mucus levels before winter congestion hits.
                   </p>
                 </CardContent>
               </Card>
@@ -225,7 +225,7 @@ export default function MucusWinBackPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700">
-                    Dr. Sebi taught: "Mucus is the cause of every disease." Address it at the cellular level.
+                    Dr. Sebi taught that excess mucus is at the root of many health challenges. This formula is designed to help you support mucus balance at the cellular level.
                   </p>
                 </CardContent>
               </Card>
@@ -254,7 +254,7 @@ export default function MucusWinBackPage() {
                   <h3 className="font-bold text-lg">Cascara Sagrada</h3>
                 </div>
                 <p className="text-sm text-gray-600 text-center">
-                  Gentle yet powerful bowel cleanser that helps eliminate mucus from digestive tract
+                  Gentle yet powerful bowel cleanser that helps your body clear mucus from the digestive tract
                 </p>
               </div>
 

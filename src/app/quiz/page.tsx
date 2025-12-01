@@ -272,10 +272,10 @@ export default function QuizPage() {
     }
 
     const productDescriptions: Record<string, string> = {
-      paracleanse: "Our two-phase parasite cleansing system breaks down biofilms and eliminates parasites naturally.",
+      paracleanse: "Our two-phase internal cleansing system is designed to support gentle detoxification and digestive wellness.",
       maya: "Dr. Sebi's iron-rich 26-herb formula supports blood, brain, and nervous system health.",
       seamoss: "Wildcrafted sea moss with 92 essential minerals supports thyroid, immunity, and energy.",
-      'mucus-cleanser': "Powerful blend eliminates excess mucus and supports respiratory health."
+      'mucus-cleanser': "Powerful blend supports healthy mucus balance and respiratory wellness."
     }
 
     return {
@@ -289,10 +289,10 @@ export default function QuizPage() {
   const getProductBenefits = (product: string): string[] => {
     const benefits: Record<string, string[]> = {
       paracleanse: [
-        "Breaks down protective biofilms",
-        "Eliminates parasites naturally",
-        "Restores digestive health",
-        "Reduces bloating and discomfort"
+        "Supports your body's natural detoxification processes",
+        "Helps maintain a clean internal environment",
+        "Supports digestive comfort and regularity",
+        "Pairs well with dietary and lifestyle changes"
       ],
       maya: [
         "Increases energy and vitality",
@@ -307,10 +307,10 @@ export default function QuizPage() {
         "Increases natural energy"
       ],
       'mucus-cleanser': [
-        "Eliminates excess mucus",
+        "Supports healthy mucus levels",
         "Supports respiratory health",
-        "Cellular cleansing",
-        "Natural congestion relief"
+        "Cellular cleansing support",
+        "Natural congestion comfort"
       ]
     }
     return benefits[product] || benefits.paracleanse

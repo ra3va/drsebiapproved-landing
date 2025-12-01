@@ -146,11 +146,11 @@ export default function ParaCleansePage() {
                     {/* ParaWash */}
                     <div className="relative group">
                       <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-sm font-medium px-4 py-1 rounded-full shadow-lg">
-                        Phase 1: Biofilm Disruptor
+                        Phase 1: Digestive Primer
                       </div>
                       <Image
                         src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
-                        alt="ParaWash Biofilm Disruptor"
+                        alt="ParaWash Digestive Primer"
                         width={960}
                         height={960}
                         className="w-[250px] sm:w-[300px] h-auto object-contain -rotate-3 hover:scale-105 transition-transform duration-300"
@@ -182,7 +182,7 @@ export default function ParaCleansePage() {
                 </div>
 
                 <p className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-[540px] leading-relaxed">
-                  Experience our powerful two-phase cleanse: ParaWash first dissolves biofilms with our powerful anti-parasite formula, then our intracellular cleanse sweeps parasites away. Dr. Sebi's authentic formula for complete parasite elimination.
+                  Experience our powerful two-phase cleanse: ParaWash helps prepare your digestive system with a gentle herbal blend, then our intracellular cleanse supports deep internal cleansing. Dr. Sebi&apos;s authentic formula is designed to support your body&apos;s natural detoxification processes.
                 </p>
 
                 <BuyButton variant="hero" trackCTAClick={trackCTAClick} />
@@ -209,11 +209,11 @@ export default function ParaCleansePage() {
                   {/* ParaWash */}
                   <div className="relative group">
                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-sm font-medium px-4 py-1 rounded-full shadow-lg">
-                      Phase 1: Biofilm Disruptor
+                      Phase 1: Digestive Primer
                     </div>
                     <Image
                       src="/images/a-professional-product-photograph-of-a-w_zeo86TvIQFau7gWgbBC4-w_CZQgJHF8T3a9i_QJIFkMfQ-removebg-preview.png"
-                      alt="ParaWash Biofilm Disruptor"
+                      alt="ParaWash Digestive Primer"
                       width={960}
                       height={960}
                       className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] h-auto object-contain -rotate-3 hover:scale-105 transition-transform duration-300"
@@ -252,28 +252,28 @@ export default function ParaCleansePage() {
           <div className="container px-4 md:px-6">
             <div className="max-w-3xl mx-auto text-center mb-12">
               <span className="text-red-600 font-medium">⚠️ WARNING SIGNS</span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 text-red-900">Are Hidden Parasites Stealing Your Life Away?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 text-red-900">Are Hidden Gut Issues Stealing Your Life Away?</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                <strong>Every day you wait, parasites multiply and spread deeper</strong> into your system. These silent invaders are robbing you of energy, clouding your mind, and slowly destroying your health from the inside out. <span className="text-red-600 font-semibold">If you're experiencing any of these symptoms, you could be hosting millions of these parasites right now...</span>
+                <strong>Every day you wait, gut imbalances can become more entrenched</strong> in your system. These hidden issues may be robbing you of energy, clouding your mind, and slowly wearing down your health from the inside out. <span className="text-red-600 font-semibold">If you're experiencing any of these symptoms, your body may be asking for a reset...</span>
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
-              {[
-                { 
-                  icon: <Zap className="h-8 w-8 text-red-500" />, 
-                  title: "Crushing Fatigue That Won't Go Away", 
-                  desc: "No matter how much you sleep, you wake up exhausted. Parasites are literally feeding off your nutrients 24/7, leaving you drained and lifeless. Every day feels like you're running on empty." 
-                },
-                { 
-                  icon: <Shield className="h-8 w-8 text-red-500" />, 
-                  title: "Gut-Wrenching Digestive Torture", 
-                  desc: "Constant bloating makes you look pregnant. Painful gas that embarrasses you in public. Unpredictable bathroom emergencies that control your life. Parasites are destroying your digestive system from within." 
-                },
-                { 
-                  icon: <CheckCircle className="h-8 w-8 text-red-500" />, 
-                  title: "Mind-Numbing Brain Fog", 
-                  desc: "You can't think clearly anymore. Simple decisions feel impossible. You forget important things constantly. Parasitic toxins are literally poisoning your brain, making you feel like a shadow of your former self." 
-                },
+                {[
+                  { 
+                    icon: <Zap className="h-8 w-8 text-red-500" />, 
+                    title: "Crushing Fatigue That Won't Go Away", 
+                    desc: "No matter how much you sleep, you wake up exhausted. Your body may not be absorbing nutrients optimally, leaving you drained and lifeless. Every day feels like you're running on empty." 
+                  },
+                  { 
+                    icon: <Shield className="h-8 w-8 text-red-500" />, 
+                    title: "Gut-Wrenching Digestive Torture", 
+                    desc: "Constant bloating makes you look pregnant. Painful gas that embarrasses you in public. Unpredictable bathroom emergencies that control your life. Your digestive system is clearly asking for support." 
+                  },
+                  { 
+                    icon: <CheckCircle className="h-8 w-8 text-red-500" />, 
+                    title: "Mind-Numbing Brain Fog", 
+                    desc: "You can't think clearly anymore. Simple decisions feel impossible. You forget important things constantly. When your gut is out of balance, it can leave your brain feeling like a shadow of its former self." 
+                  },
               ].map((item, i) => (
                 <Card key={i} className="relative overflow-hidden border-2 hover:border-primary transition-colors">
                   <CardHeader>
@@ -292,10 +292,10 @@ export default function ParaCleansePage() {
             <div className="max-w-2xl mx-auto mt-16 text-center">
               <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
                 <h3 className="text-2xl font-bold text-red-900 mb-4">
-                  Don't Let Parasites Rob Another Day of Your Life
+                  Don&apos;t Let Gut Imbalances Rob Another Day of Your Life
                 </h3>
                 <p className="text-red-700 mb-6 text-lg">
-                  Right now, while you're reading this, parasites are multiplying inside you. Every hour you delay treatment, they're getting stronger and harder to eliminate. The longer you wait, the more damage they cause to your body, your energy, and your quality of life.
+                  Right now, while you&apos;re reading this, gut imbalances may be quietly building up. The longer you wait to support your body&apos;s natural cleansing processes, the harder it can feel to regain your energy and quality of life.
                 </p>
                 <p className="text-red-800 font-semibold mb-8">
                   Stop suffering in silence. Take back control of your health TODAY.
@@ -336,30 +336,30 @@ export default function ParaCleansePage() {
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary"></div>
                     </div>
                     <div className="pl-6">
-                      <h3 className="text-2xl font-bold mb-4">Phase 1: ParaWash Biofilm Disruptor</h3>
+                      <h3 className="text-2xl font-bold mb-4">Phase 1: ParaWash Digestive Primer</h3>
                       <p className="text-muted-foreground mb-6">
-                        The critical first phase uses ParaWash to break down protective biofilms, exposing parasites and making them vulnerable:
+                        The critical first phase uses ParaWash to gently prepare your digestive system and support a clean internal environment:
                       </p>
                       <ul className="space-y-4">
                         <li className="flex items-start gap-3">
                           <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                           <div>
-                            <span className="font-medium block mb-1">Biofilm Dissolution</span>
-                            <span className="text-muted-foreground">Dysphania ambrosioides actively breaks down the protective shields that parasites hide behind</span>
+                            <span className="font-medium block mb-1">Digestive Preparation</span>
+                            <span className="text-muted-foreground">Dysphania ambrosioides and other herbs help loosen accumulated waste so your body can begin to clear it more effectively.</span>
                           </div>
                         </li>
                         <li className="flex items-start gap-3">
                           <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                           <div>
-                            <span className="font-medium block mb-1">Paralyzing Action</span>
-                            <span className="text-muted-foreground">Powerful compounds immobilize parasites, preventing them from maintaining their grip</span>
+                            <span className="font-medium block mb-1">Gentle Cleansing Support</span>
+                            <span className="text-muted-foreground">Targeted botanicals support your body&apos;s natural cleansing responses without harsh chemicals.</span>
                           </div>
                         </li>
                         <li className="flex items-start gap-3">
                           <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                           <div>
-                            <span className="font-medium block mb-1">Maximum Potency Formula</span>
-                            <span className="text-muted-foreground">Precisely balanced blend ensures optimal biofilm disruption</span>
+                            <span className="font-medium block mb-1">Balanced Herbal Formula</span>
+                            <span className="text-muted-foreground">Precisely balanced blend designed to work in harmony with your body&apos;s own detox pathways.</span>
                           </div>
                         </li>
                       </ul>
@@ -382,21 +382,21 @@ export default function ParaCleansePage() {
                     <div className="pl-6">
                       <h3 className="text-2xl font-bold mb-4">Phase 2: Intracellular Body Cleanse</h3>
                       <p className="text-muted-foreground mb-6">
-                        Once biofilms are disrupted, our powerful intracellular cleanse sweeps away parasites and restores cellular health:
+                        After your system has been gently prepared, our intracellular cleanse supports deeper internal cleansing and cellular wellness:
                       </p>
                       <ul className="space-y-4">
                         <li className="flex items-start gap-3">
                           <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                           <div>
                             <span className="font-medium block mb-1">Deep Cellular Cleansing</span>
-                            <span className="text-muted-foreground">Penetrates cells to eliminate parasites and their toxins at the source</span>
+                            <span className="text-muted-foreground">Supports your body in clearing internal waste and toxins at the cellular level.</span>
                           </div>
                         </li>
                         <li className="flex items-start gap-3">
                           <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                           <div>
-                            <span className="font-medium block mb-1">Complete Elimination</span>
-                            <span className="text-muted-foreground">Ensures thorough removal of weakened parasites and their waste products</span>
+                            <span className="font-medium block mb-1">Thorough Internal Reset</span>
+                            <span className="text-muted-foreground">Helps your body complete a focused period of cleansing and internal renewal.</span>
                           </div>
                         </li>
                         <li className="flex items-start gap-3">
@@ -453,7 +453,7 @@ export default function ParaCleansePage() {
                         />
                         <div>
                           <h4 className="font-semibold">Phase 1: ParaWash</h4>
-                          <p className="text-sm text-muted-foreground">Biofilm Disruptor Formula</p>
+                          <p className="text-sm text-muted-foreground">Digestive Primer Formula</p>
                         </div>
                       </div>
                       
@@ -520,8 +520,8 @@ export default function ParaCleansePage() {
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
                 What to Expect During Your 14-Day Cleanse
               </h2>
-              <p className="text-lg text-muted-foreground">
-                Experience the progressive benefits as your body eliminates parasites and restores optimal health.
+                <p className="text-lg text-muted-foreground">
+                  Experience the progressive benefits as your body moves through a focused period of cleansing, balance, and renewal.
               </p>
             </div>
 
@@ -534,26 +534,26 @@ export default function ParaCleansePage() {
                   {[
                     {
                       day: "Days 1-3",
-                      title: "Initial Biofilm Disruption",
-                      description: "ParaWash begins breaking down protective biofilms. You may experience mild detox symptoms as parasites are exposed and begin to weaken.",
-                      symptoms: ["Mild headaches possible", "Slight fatigue", "Beginning of parasite die-off"]
+                      title: "Initial Digestive Reset",
+                      description: "ParaWash begins gently supporting digestive cleansing. You may experience mild detox symptoms as your body starts to release stored waste.",
+                      symptoms: ["Mild headaches possible", "Slight fatigue", "Subtle detox sensations"]
                     },
                     {
                       day: "Days 4-7", 
-                      title: "Parasite Elimination Begins",
-                      description: "As biofilms dissolve, parasites lose their protection. The intracellular cleanse begins eliminating weakened parasites from your system.",
+                      title: "Deeper Internal Cleansing",
+                      description: "As your system adjusts, the intracellular cleanse supports deeper internal cleansing and more noticeable shifts.",
                       symptoms: ["Increased energy starting", "Better sleep quality", "Digestive improvements"]
                     },
                     {
                       day: "Days 8-11",
                       title: "Deep Cellular Cleansing", 
-                      description: "Intensive elimination of parasites and toxins. Your body begins recovering and regenerating at the cellular level.",
+                      description: "Intensive cellular-level cleansing support. Your body begins recovering and regenerating at the cellular level.",
                       symptoms: ["Clearer thinking", "Reduced bloating", "Improved bowel movements"]
                     },
                     {
                       day: "Days 12-14",
                       title: "Restoration & Renewal",
-                      description: "Final elimination phase and cellular restoration. Your body completes the cleanse and begins optimal function.",
+                      description: "Final phase of focused cleansing and cellular restoration. Your body completes the cleanse and moves toward a new baseline.",
                       symptoms: ["Dramatically increased energy", "Mental clarity returns", "Overall vitality restored"]
                     }
                   ].map((phase, i) => (
@@ -594,7 +594,7 @@ export default function ParaCleansePage() {
               <div className="bg-primary/5 rounded-2xl p-8 max-w-2xl mx-auto">
                 <h3 className="text-2xl font-bold mb-4">Ready to Start Your Transformation?</h3>
                 <p className="text-muted-foreground mb-6">
-                  Join thousands who have successfully eliminated parasites and reclaimed their health with Dr. Sebi's proven two-phase system.
+                  Join thousands who have embraced Dr. Sebi&apos;s two-phase cleansing philosophy to support their own wellness journeys.
                 </p>
                 <Button
                   size="lg"

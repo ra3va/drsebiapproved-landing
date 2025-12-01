@@ -42,20 +42,9 @@ export default function MayaBlackFridayPDP() {
       currency: 'USD'
     });
 
-    // Random number between 1.8K - 2.3K for cart count
-    const baseCartCount = 1800 + Math.floor(Math.random() * 500);
-    setInCartCount(baseCartCount);
-
-    // Random number between 150-210 for recent purchases
-    const basePurchases = 150 + Math.floor(Math.random() * 60);
-    setRecentPurchases(basePurchases);
-
-    // Update cart count every 15-30 seconds
-    const interval = setInterval(() => {
-      setInCartCount(prev => prev + Math.floor(Math.random() * 3) - 1); // +/- 0-2
-    }, Math.random() * 15000 + 15000);
-
-    return () => clearInterval(interval);
+    // Social proof numbers are internal only; UI no longer displays them
+    setInCartCount(0);
+    setRecentPurchases(0);
   }, []);
 
   // Product pricing
@@ -139,12 +128,6 @@ export default function MayaBlackFridayPDP() {
 
               {/* Left Column - Product Image */}
               <div className="flex flex-col">
-                {/* Social Proof Badge */}
-                <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-                  <ShoppingCart className="w-4 h-4 text-primary" />
-                  <span>In the carts of <strong className="text-foreground">{formatNumber(inCartCount)} people</strong> — buy before it's gone!</span>
-                </div>
-
                 {/* Product Image */}
                 <div className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 mb-6">
                   {/* Black Friday Badge */}
@@ -291,18 +274,12 @@ export default function MayaBlackFridayPDP() {
                   </Button>
                 </div>
 
-                {/* Recent Activity */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6 p-3 bg-primary/5 rounded-lg border border-primary/10">
-                  <TrendingUp className="w-4 h-4 text-primary" />
-                  <span><strong className="text-foreground">{recentPurchases} people</strong> purchased this in the last 24 hours</span>
-                </div>
-
                 {/* Key Benefits */}
                 <div className="mb-6">
                   <h3 className="font-semibold text-lg mb-3">What You Get:</h3>
                   <div className="space-y-2">
                     {[
-                      "Blood purification & iron support",
+                      "Blood wellness & iron support",
                       "Brain & nervous system health",
                       "26 wildcrafted herbs from Honduras",
                       "Made fresh for maximum potency",
@@ -354,7 +331,7 @@ export default function MayaBlackFridayPDP() {
 
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-muted-foreground mb-6">
-                Named after the ancient Mayan civilization, this powerful blend of 26 wildcrafted herbs represents Dr. Sebi's most comprehensive formula for blood purification, iron support, and nervous system health. Made fresh in Honduras using traditional methods for maximum potency.
+                This powerful blend of 26 wildcrafted herbs represents Dr. Sebi's most comprehensive formula that may help support blood wellness, iron levels, and nervous system health. Made fresh in Honduras using traditional methods for maximum potency.
               </p>
 
               <div className="grid md:grid-cols-3 gap-6 mt-8">
@@ -365,7 +342,7 @@ export default function MayaBlackFridayPDP() {
                       Blood & Iron Support
                     </h3>
                     <p className="text-muted-foreground">
-                      Rich in natural iron and blood-purifying herbs that support healthy hemoglobin levels and circulation.
+                      Rich in natural iron and nutrient-dense herbs that may help support healthy hemoglobin levels and circulation wellness.
                     </p>
                   </CardContent>
                 </Card>
@@ -377,7 +354,7 @@ export default function MayaBlackFridayPDP() {
                       Brain Health
                     </h3>
                     <p className="text-muted-foreground">
-                      Supports cognitive function, mental clarity, and nervous system health with nutrient-dense herbs.
+                      May help support cognitive function, mental clarity, and nervous system health with nutrient-dense herbs.
                     </p>
                   </CardContent>
                 </Card>
@@ -409,7 +386,7 @@ export default function MayaBlackFridayPDP() {
                   name: "Lisa T.",
                   location: "Atlanta, GA",
                   rating: 5,
-                  text: "My iron levels have improved dramatically! I have so much more energy and my doctor is amazed at the difference.",
+                  text: "I feel so much more energized since starting Maya Formula! The quality is incredible and I love how I feel. Definitely my go-to supplement now.",
                   image: "/images/testimonials/E1lm-p99Mp_mid.jpg"
                 },
                 {
@@ -451,6 +428,13 @@ export default function MayaBlackFridayPDP() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* FTC-Compliant Disclaimer */}
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <p className="text-xs text-gray-500 text-center italic max-w-3xl mx-auto">
+                *Individual results may vary. Testimonials represent individual experiences and are not typical results. Your results may differ based on individual health factors, lifestyle, and consistency of use.
+              </p>
             </div>
           </div>
         </section>

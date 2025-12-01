@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const products = [
       {
         name: 'ParaCleanse Elite',
-        description: 'Dr. Sebi\'s Two-Phase Parasite Cleansing System - Complete 14-day protocol with biofilm disruption and deep parasite elimination',
+        description: 'Dr. Sebi\'s Two-Phase Internal Cleansing System - Complete 14-day herbal protocol designed to support gentle detoxification and digestive wellness',
         price: 8999, // $89.99
       },
       {
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       },
       {
         name: 'Mucus Cleanser',
-        description: 'Dr. Sebi\'s Respiratory & Cellular Cleansing Formula - Eliminates excess mucus naturally with cascara, mullein, and African bird pepper',
+        description: 'Dr. Sebi\'s Respiratory & Cellular Cleansing Formula - Supports healthy mucus balance and respiratory wellness with cascara, mullein, and African bird pepper',
         price: 5999, // $59.99
       }
     ];

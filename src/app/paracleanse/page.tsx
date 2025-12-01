@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { CheckCircle, Star, ShoppingCart, Gift, Users, TrendingUp, Award, ShieldCheck, Download, Zap } from 'lucide-react'
+import { CheckCircle, Star, ShoppingCart, Gift, Users, Award, ShieldCheck, Download, Zap } from 'lucide-react'
 import Image from "next/image"
 import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
@@ -11,10 +11,8 @@ import * as fpixel from '@/lib/fpixel'
 export default function ParaCleanseBlackFridayPDP() {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [inCartCount, setInCartCount] = useState(0);
-  const [recentPurchases, setRecentPurchases] = useState(0);
 
-  // Simulate realistic dynamic numbers
+  // Track page view events
   useEffect(() => {
     // Track GA4 view_item event on page load
     if (typeof window !== 'undefined' && window.gtag) {
@@ -24,7 +22,7 @@ export default function ParaCleanseBlackFridayPDP() {
         items: [{
           item_id: 'paracleanse-elite-bf',
           item_name: 'ParaCleanse Elite - Black Friday',
-          item_category: 'Parasite Cleanse',
+          item_category: 'Internal Cleanse',
           price: salePrice,
           discount: originalPrice - salePrice,
           item_brand: 'Dr. Sebi Approved'
@@ -37,25 +35,10 @@ export default function ParaCleanseBlackFridayPDP() {
       content_ids: ['paracleanse-elite-bf'],
       content_type: 'product',
       content_name: 'ParaCleanse Elite - Black Friday',
-      content_category: 'Parasite Cleanse',
+      content_category: 'Internal Cleanse',
       value: salePrice,
       currency: 'USD'
     });
-
-    // Random number between 2.3K - 2.8K for cart count
-    const baseCartCount = 2300 + Math.floor(Math.random() * 500);
-    setInCartCount(baseCartCount);
-
-    // Random number between 180-240 for recent purchases
-    const basePurchases = 180 + Math.floor(Math.random() * 60);
-    setRecentPurchases(basePurchases);
-
-    // Update cart count every 15-30 seconds
-    const interval = setInterval(() => {
-      setInCartCount(prev => prev + Math.floor(Math.random() * 3) - 1); // +/- 0-2
-    }, Math.random() * 15000 + 15000);
-
-    return () => clearInterval(interval);
   }, []);
 
   // Product pricing
@@ -75,7 +58,7 @@ export default function ParaCleanseBlackFridayPDP() {
         items: [{
           item_id: 'paracleanse-elite-bf',
           item_name: 'ParaCleanse Elite - Black Friday',
-          item_category: 'Parasite Cleanse',
+          item_category: 'Internal Cleanse',
           price: salePrice,
           quantity: quantity
         }]
@@ -88,7 +71,7 @@ export default function ParaCleanseBlackFridayPDP() {
         items: [{
           item_id: 'paracleanse-elite-bf',
           item_name: 'ParaCleanse Elite - Black Friday',
-          item_category: 'Parasite Cleanse',
+          item_category: 'Internal Cleanse',
           price: salePrice,
           quantity: quantity
         }],
@@ -107,13 +90,6 @@ export default function ParaCleanseBlackFridayPDP() {
 
     // Redirect to checkout
     window.location.href = `/checkout?product=paracleanse&quantity=${quantity}&coupon=BLACKFRIDAY30`;
-  };
-
-  const formatNumber = (num: number) => {
-    if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}K`;
-    }
-    return num.toString();
   };
 
   return (
@@ -139,12 +115,6 @@ export default function ParaCleanseBlackFridayPDP() {
 
               {/* Left Column - Product Image */}
               <div className="flex flex-col">
-                {/* Social Proof Badge */}
-                <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-                  <ShoppingCart className="w-4 h-4 text-primary" />
-                  <span>In the carts of <strong className="text-foreground">{formatNumber(inCartCount)} people</strong> — buy before it's gone!</span>
-                </div>
-
                 {/* Product Image */}
                 <div className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 mb-6">
                   {/* Black Friday Badge */}
@@ -174,7 +144,7 @@ export default function ParaCleanseBlackFridayPDP() {
                   </div>
                   <div className="flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg">
                     <Users className="w-6 h-6 text-primary mb-1" />
-                    <span className="text-xs font-medium">10K+ Reviews</span>
+                    <span className="text-xs font-medium">Trusted Brand</span>
                   </div>
                 </div>
               </div>
@@ -186,7 +156,7 @@ export default function ParaCleanseBlackFridayPDP() {
                   ParaCleanse Elite
                 </h1>
                 <p className="text-lg text-primary font-medium mb-4">
-                  Two-Phase Parasite Cleansing System
+                  Two-Phase Internal Cleansing System
                 </p>
 
                 {/* Rating */}
@@ -196,15 +166,14 @@ export default function ParaCleanseBlackFridayPDP() {
                       <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                     ))}
                   </div>
-                  <span className="text-sm font-semibold">Rated 4.8</span>
-                  <span className="text-sm text-muted-foreground">(3,247 reviews)</span>
-                  <span className="text-sm text-primary font-medium">Happy Customers</span>
+                  <span className="text-sm font-semibold">5-Star Rated</span>
+                  <span className="text-sm text-primary font-medium">Customer Favorite</span>
                 </div>
 
                 {/* Badges */}
                 <div className="flex flex-wrap gap-2 mb-6">
                   <div className="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full border border-red-200">
-                    #1 Best-Selling Parasite Cleanse
+                    Customer Favorite Cleanse
                   </div>
                   <div className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20">
                     Made with Wildcrafted Herbs
@@ -291,22 +260,16 @@ export default function ParaCleanseBlackFridayPDP() {
                   </Button>
                 </div>
 
-                {/* Recent Activity */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6 p-3 bg-primary/5 rounded-lg border border-primary/10">
-                  <TrendingUp className="w-4 h-4 text-primary" />
-                  <span><strong className="text-foreground">{recentPurchases} people</strong> purchased this in the last 24 hours</span>
-                </div>
-
                 {/* Key Benefits */}
                 <div className="mb-6">
                   <h3 className="font-semibold text-lg mb-3">What You Get:</h3>
                   <div className="space-y-2">
                     {[
-                      "Phase 1: Biofilm disruption formula",
-                      "Phase 2: Deep parasite elimination",
+                      "Phase 1: Gentle preparation & digestive support",
+                      "Phase 2: Deep cleansing & intestinal wellness",
                       "Complete 14-day protocol with instructions",
                       "100% natural & wildcrafted ingredients",
-                      "Dr. Sebi's proven methodology"
+                      "Dr. Sebi's traditional herbal methodology"
                     ].map((benefit, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -329,7 +292,7 @@ export default function ParaCleanseBlackFridayPDP() {
                         <Download className="w-6 h-6 text-primary" />
                       </div>
                       <span className="text-xs font-bold mb-1">FREE EBOOK</span>
-                      <span className="text-xs text-muted-foreground">Hidden Parasite Crisis Guide</span>
+                      <span className="text-xs text-muted-foreground">Deep Gut Reset Guide</span>
                     </div>
 
                     {/* Free Shipping */}
@@ -354,7 +317,7 @@ export default function ParaCleanseBlackFridayPDP() {
 
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-muted-foreground mb-6">
-                Dr. Sebi's ParaCleanse Elite is the only two-phase system that addresses the root cause of why most parasite cleanses fail: <strong>biofilms</strong>. These protective shields allow parasites to hide from traditional treatments, but our revolutionary formula breaks through them.
+                Many people experience digestive discomfort, low energy, and bloating without knowing why. Dr. Sebi's ParaCleanse Elite is a gentle, two-phase internal cleansing system using traditional wildcrafted herbs that may help support your body's natural detoxification processes.
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -362,10 +325,10 @@ export default function ParaCleanseBlackFridayPDP() {
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                       <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">1</div>
-                      Phase 1: Biofilm Disruption
+                      Phase 1: Preparation & Support
                     </h3>
                     <p className="text-muted-foreground">
-                      The first 7 days break down the protective biofilm layer using powerful natural enzymes. This exposes parasites and makes them vulnerable to elimination.
+                      The first 7 days may help gently prepare your digestive system using natural herbs traditionally used for internal wellness and cleansing support.
                     </p>
                   </CardContent>
                 </Card>
@@ -374,10 +337,10 @@ export default function ParaCleanseBlackFridayPDP() {
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                       <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">2</div>
-                      Phase 2: Deep Elimination
+                      Phase 2: Deep Cleansing
                     </h3>
                     <p className="text-muted-foreground">
-                      Days 8-14 target and eliminate parasites at every stage of their lifecycle using Dr. Sebi's wildcrafted herb blend. Complete system cleansing.
+                      Days 8-14 may provide deeper cleansing support using Dr. Sebi's wildcrafted herb blend, traditionally used to promote intestinal wellness.
                     </p>
                   </CardContent>
                 </Card>
@@ -397,21 +360,21 @@ export default function ParaCleanseBlackFridayPDP() {
                   name: "Sarah M.",
                   location: "Dallas, TX",
                   rating: 5,
-                  text: "After just 14 days, my energy levels are through the roof! I can't believe how much better I feel. This is the real deal.",
+                  text: "I completed the full 14-day program and I'm so glad I did. The two-phase approach made it easy to follow. Highly recommend!",
                   image: "/images/testimonials/E1lm-p99Mp_mid.jpg"
                 },
                 {
                   name: "Michael C.",
                   location: "San Francisco, CA",
                   rating: 5,
-                  text: "I've tried other cleanses before, but ParaCleanse Elite is different. The two-phase system actually works. No more bloating!",
+                  text: "I've tried other cleanses before, but ParaCleanse Elite is different. The instructions were clear and the herbs are high quality.",
                   image: "/images/testimonials/4JL1TreUi_mid (2).jpg"
                 },
                 {
                   name: "Emma R.",
                   location: "Miami, FL",
                   rating: 5,
-                  text: "My brain fog is completely gone. I wish I had found Dr. Sebi's products years ago. Worth every penny!",
+                  text: "Great product and fast shipping. I appreciate that it uses wildcrafted herbs. Will definitely order again!",
                   image: "/images/testimonials/9c05X9Grw_mid.jpg"
                 }
               ].map((testimonial, i) => (
@@ -439,6 +402,13 @@ export default function ParaCleanseBlackFridayPDP() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* FTC-Compliant Disclaimer */}
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <p className="text-xs text-gray-500 text-center italic max-w-3xl mx-auto">
+                *Individual results may vary. Testimonials represent individual experiences and are not typical results. Your results may differ based on individual health factors, lifestyle, and consistency of use.
+              </p>
             </div>
           </div>
         </section>

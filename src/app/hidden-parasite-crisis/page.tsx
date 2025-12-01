@@ -43,16 +43,16 @@ export default function HiddenParasiteCrisisPage() {
                 </h1>
 
                 <p className="text-xl text-muted-foreground mb-8 max-w-[540px] leading-relaxed">
-                  <strong>Dr. Sebi's Complete Guide to Eliminate Silent Invaders and Reclaim Your Health.</strong> Why millions suffer from unexplained fatigue, brain fog, and digestive issues - and the natural 2-phase solution that actually works.
+                  <strong>Dr. Sebi&apos;s educational guide on hidden gut imbalances and internal cleansing.</strong> Explore why many people experience unexplained fatigue, brain fog, and digestive issues — and a gentle two-phase herbal approach that may support gut health.
                 </p>
 
                 {/* Benefits List */}
                 <div className="grid gap-4 mb-8 w-full max-w-[540px]">
                   {[
-                    "Identify the 7 hidden signs of parasite infection",
-                    "Learn why most parasite cleanses fail completely", 
-                    "Discover Dr. Sebi's biofilm-breaking protocol",
-                    "Get the complete 2-phase elimination system"
+                    "Recognize 7 often-overlooked signs your gut may be out of balance",
+                    "Understand why many quick-fix cleanses don&apos;t deliver lasting results", 
+                    "Learn how Dr. Sebi&apos;s traditional methods view biofilms and gut health",
+                    "Review a gentle, two-phase internal cleansing framework"
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -122,7 +122,7 @@ export default function HiddenParasiteCrisisPage() {
                 What You'll Learn About Hidden Parasites
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                This comprehensive 30-page guide exposes the parasite crisis affecting millions and reveals Dr. Sebi's proven elimination protocol.
+                This comprehensive 30-page guide explores different perspectives on the so-called parasite crisis and outlines Dr. Sebi&apos;s traditional two-phase cleansing philosophy for educational purposes.
               </p>
             </div>
 
@@ -131,27 +131,27 @@ export default function HiddenParasiteCrisisPage() {
                 {
                   icon: <Shield className="h-8 w-8 text-primary" />,
                   title: "Parasite Identification",
-                  description: "Learn to recognize the 7 most common signs of parasitic infection, including subtle symptoms that doctors often miss."
+                  description: "Learn to recognize 7 common signs that your gut may be out of balance, including subtle symptoms that are easy to overlook."
                 },
                 {
                   icon: <Zap className="h-8 w-8 text-primary" />,
                   title: "Biofilm Science",
-                  description: "Understand how parasites protect themselves with biofilms and why breaking these shields is crucial for effective cleansing."
+                  description: "Understand how complex microbial communities (sometimes called biofilms) are thought to affect gut health in natural wellness circles."
                 },
                 {
                   icon: <Leaf className="h-8 w-8 text-primary" />,
                   title: "Dr. Sebi's Method",
-                  description: "Discover the authentic two-phase approach that has helped thousands achieve complete parasite elimination."
+                  description: "Discover the authentic two-phase approach Dr. Sebi used to support internal cleansing and overall wellness."
                 },
                 {
                   icon: <Clock className="h-8 w-8 text-primary" />,
                   title: "14-Day Protocol",
-                  description: "Get a complete day-by-day timeline for your cleanse, including what to expect and how to maximize results."
+                  description: "Get a complete day-by-day timeline for a gentle cleanse, including what to expect and how to support your body throughout."
                 },
                 {
                   icon: <CheckCircle className="h-8 w-8 text-primary" />,
                   title: "Natural Compounds",
-                  description: "Learn about powerful plant-based ingredients that safely eliminate parasites without harsh chemicals."
+                  description: "Learn about powerful plant-based ingredients traditionally used to support cleansing and detoxification, without harsh chemicals."
                 },
                 {
                   icon: <ArrowRight className="h-8 w-8 text-primary" />,
@@ -179,13 +179,13 @@ export default function HiddenParasiteCrisisPage() {
           <div className="container px-4 md:px-6 max-w-[900px] mx-auto text-center">
             <div className="bg-white border-2 border-red-200 rounded-2xl p-8 shadow-lg">
               <h3 className="text-2xl md:text-3xl font-bold text-red-900 mb-4">
-                ⚠️ The Hidden Parasite Crisis Is Real
+                ⚠️ The Hidden Gut Health Crisis
               </h3>
               <p className="text-red-700 mb-6 text-lg leading-relaxed">
-                Right now, millions of people are suffering from unexplained fatigue, brain fog, and digestive issues without knowing the real cause: <strong>hidden parasite infections.</strong> These silent invaders are stealing your nutrients, poisoning your system, and multiplying daily. <strong>The longer they remain undetected, the more damage they cause to your gut, brain, and energy levels.</strong>
+                Many natural health practitioners believe that chronic gut imbalances — sometimes involving parasites and other microbes — can contribute to fatigue, brain fog, and digestive issues. While research is still evolving, there&apos;s growing interest in how supporting gut health may influence how you feel day to day.
               </p>
               <p className="text-red-800 font-semibold mb-8">
-                Stop guessing what's wrong - get the truth about parasites and the solution that actually works.
+                Instead of guessing what&apos;s wrong, educate yourself about different perspectives on gut health so you can have more informed conversations with your healthcare provider.
               </p>
               <Button 
                 size="lg" 
@@ -193,7 +193,7 @@ export default function HiddenParasiteCrisisPage() {
                 onClick={() => setShowLeadMagnet(true)}
               >
                 <Download className="w-5 h-5 mr-2" />
-                Get Your Free Guide - Stop Parasites Now
+                Get Your Free Gut Health Guide
               </Button>
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function HiddenParasiteCrisisPage() {
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  quote: "This guide opened my eyes to symptoms I never connected to parasites. Following the protocols completely changed my energy levels!",
+                  quote: "This guide opened my eyes to symptoms I never connected to my gut. Putting the ideas into practice has completely changed my energy levels!",
                   author: "Jennifer M.",
                   location: "Austin, TX",
                   rating: 5
@@ -264,10 +264,10 @@ export default function HiddenParasiteCrisisPage() {
         <section className="w-full py-20 bg-gradient-to-b from-accent/10 to-white">
           <div className="container px-4 md:px-6 max-w-[800px] mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Eliminate Hidden Parasites For Good?
+              Ready to Deepen Your Gut Health Knowledge?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Download your free guide now and discover the truth about the hidden parasite crisis affecting millions. Learn Dr. Sebi's proven 2-phase protocol that breaks biofilms and eliminates parasites naturally. No strings attached - just life-changing information.
+              Download your free guide now and explore different perspectives on the hidden parasite crisis and gut health. Learn about Dr. Sebi&apos;s two-phase cleansing approach and how it may support your body&apos;s natural detoxification processes. No strings attached — just educational information to help you make more informed choices.
             </p>
             
             <Button 
@@ -296,9 +296,9 @@ export default function HiddenParasiteCrisisPage() {
 
             {/* Additional value proposition */}
             <div className="mt-12 bg-white border-2 border-primary/10 rounded-2xl p-8">
-              <h3 className="text-xl font-semibold mb-4">Why We're Exposing the Parasite Crisis for Free</h3>
+              <h3 className="text-xl font-semibold mb-4">Why We&apos;re Sharing This Gut Health Guide for Free</h3>
               <p className="text-muted-foreground leading-relaxed">
-                The hidden parasite crisis is affecting millions who don't even know they're infected. This guide represents decades of Dr. Sebi's research into natural parasite elimination, and we're sharing it freely because too many people are suffering needlessly. Once you understand how parasites are secretly stealing your health, you'll see why exposing this truth is more important than profit.
+                Many people struggle with unexplained symptoms and have never been taught how gut health can influence the way they feel. This guide brings together decades of Dr. Sebi&apos;s perspective on internal cleansing and natural wellness, and we&apos;re sharing it freely because education is the first step toward advocacy. Once you understand these viewpoints, you&apos;ll be better equipped to decide what feels right for your own healing journey.
               </p>
             </div>
           </div>

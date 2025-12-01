@@ -29,10 +29,10 @@ export default function HiddenParasiteCTA({ className = "", variant = 'default' 
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="text-xl font-bold text-red-900 mb-2">
-                  🚨 Stop Parasites From Stealing Your Health
+                  🚨 Stop Ignoring Your Gut Health
                 </h3>
                 <p className="text-red-700 mb-4">
-                  Get our free guide: "The Hidden Parasite Crisis" - Dr. Sebi's complete 2-phase elimination protocol.
+                  Get our free guide: "The Hidden Parasite Crisis" – an educational look at hidden gut imbalances and Dr. Sebi&apos;s two-phase internal cleansing approach.
                 </p>
                 <Link href="/hidden-parasite-crisis">
                   <Button className="bg-red-600 hover:bg-red-700 text-white">
@@ -56,7 +56,7 @@ export default function HiddenParasiteCTA({ className = "", variant = 'default' 
           <span className="font-semibold text-red-900">Free Resource Alert</span>
         </div>
         <p className="text-red-700 mb-3">
-          Want to learn more about identifying and eliminating parasites? Download our comprehensive guide for free.
+          Want to learn more about hidden gut imbalances and how to support your body&apos;s natural cleansing processes? Download our comprehensive guide for free.
         </p>
         <Link href="/hidden-parasite-crisis">
           <Button className="bg-red-600 hover:bg-red-700 text-white">
@@ -100,19 +100,19 @@ export default function HiddenParasiteCTA({ className = "", variant = 'default' 
                 </div>
                 
                 <h3 className="text-2xl lg:text-3xl font-bold text-red-900 mb-4 leading-tight">
-                  The Hidden Parasite Crisis: Dr. Sebi's Complete Elimination Guide
+                  The Hidden Parasite Crisis: Deep Gut Health Guide
                 </h3>
                 
                 <p className="text-red-700 text-lg mb-6 leading-relaxed">
-                  <strong>Millions suffer from unexplained symptoms without knowing the real cause: hidden parasite infections.</strong> Get Dr. Sebi's proven 2-phase protocol that breaks biofilms and eliminates parasites naturally.
+                  <strong>Millions suffer from unexplained fatigue, brain fog, and digestive issues.</strong> This guide explores how hidden gut imbalances are viewed in natural health circles and walks you through Dr. Sebi&apos;s gentle two-phase herbal approach to internal cleansing.
                 </p>
 
                 {/* Benefits */}
                 <div className="grid gap-3 mb-6">
                   {[
-                    "Identify the 7 hidden signs of parasite infection",
-                    "Learn Dr. Sebi's biofilm-breaking protocol", 
-                    "Get the complete 2-phase elimination system"
+                    "Recognize 7 often-overlooked signs your gut may be out of balance",
+                    "Understand how Dr. Sebi's methods view biofilms and gut health", 
+                    "Review a gentle, step-by-step two-phase internal cleansing framework"
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />

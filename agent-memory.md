@@ -1,7 +1,7 @@
 # Project Memory: Dr. Sebi Approved (Parasite Cleanse Landing)
 
-**Last Updated:** November 25, 2025 11:03 CST
-**Status:** Production Ready / Active Marketing Phase (Black Friday Sale) - Migrated to Brevo for Campaigns
+**Last Updated:** December 1, 2025 10:35 CST
+**Status:** Production Ready / Active Marketing Phase (Black Friday Sale) - FTC Compliance Audit in Progress
 **URL:** https://drsebiapproved.com
 **Tech Stack:** Next.js 14, Tailwind, Square (Payments), Brevo (Marketing Campaigns & Transactional), Zoho Mail (Deprecated/Fallback for Cold), Supabase (Campaign Database), Render (Hosting).
 
@@ -22,7 +22,40 @@ This project has transitioned from a simple landing page with external Shopify c
 
 ---
 
-## 🛠 System Implementation Status
+## � Project Structure
+
+```
+.
+├── content/                # MDX Content
+│   └── blog/               # Blog posts (MDX)
+├── docs/                   # Project Documentation
+│   ├── brevo/              # Email Marketing
+│   ├── square/             # Commerce & Payments
+│   └── zoho/               # Legacy Email System
+├── scripts/                # Automation Scripts
+│   ├── meta/               # Meta Ads Management
+│   └── tests/              # Verification Scripts
+├── src/
+│   ├── app/                # Next.js App Router
+│   │   ├── admin/          # Internal Tools (Campaign Manager)
+│   │   ├── api/            # Backend Endpoints
+│   │   ├── checkout/       # Square Checkout Flow
+│   │   ├── paracleanse/    # Product Page (Example)
+│   │   └── ...
+│   ├── components/         # UI Components
+│   │   ├── analytics/      # Pixels & Trackers
+│   │   └── ui/             # Design System (shadcn)
+│   ├── lib/                # Core Logic
+│   │   ├── supabase.ts     # Database Client
+│   │   ├── square.ts       # Payment SDK
+│   │   └── brevo-client.js # Email API
+│   └── hooks/              # React Hooks
+└── ...
+```
+
+---
+
+## �🛠 System Implementation Status
 
 ### 1. Payment & Commerce (Square)
 **Status:** ✅ **LIVE (Black Friday Mode)**
@@ -37,6 +70,7 @@ This project has transitioned from a simple landing page with external Shopify c
 - **Reference Docs:**
     - `docs/square/SQUARE_SETUP.md`
     - `BLACK_FRIDAY_REVERT_PLAN.md`
+    - `FTC_COMPLIANCE_AUDIT.md` (Local)
 
 ### 2. Marketing Automation & Campaigns (Brevo)
 **Status:** ✅ **LIVE (Primary Engine)**
@@ -70,6 +104,7 @@ This project has transitioned from a simple landing page with external Shopify c
     - Accurate revenue tracking (discounts & coupons included).
     - Bundle/Upsell tracking in checkout.
     - Agent access enabled via `docs/AGENT_GA4_ACCESS.md`.
+    - **Facebook Pixel:** Fixed double-firing issue (moved to `<head>`, removed `<noscript>`).
 - **Reference Docs:**
     - `docs/AGENT_GA4_ACCESS.md`
     - `docs/GA4_TRACKING_AUDIT.md`
@@ -150,6 +185,14 @@ This project has transitioned from a simple landing page with external Shopify c
 - **Capabilities:** Enabled programmatic campaign creation and performance monitoring.
 - **Tooling:** Added scripts for token exchange and account status checks.
 
+### Phase 10: Compliance & Tracking Fixes (Nov 25, 2025)
+- **Facebook Pixel Fix:** Resolved double-firing issue by moving initialization to `layout.tsx` head and creating a dedicated `FacebookPixelRouteTracker` for SPA navigation. Removed `<noscript>` tag to prevent duplicate counting.
+- **FTC Compliance Audit:**
+    - **Trigger:** Square flagged `/paracleanse` for unsubstantiated health claims.
+    - **Action:** Audited and updated content to remove disease claims (e.g., "Eliminates parasites" → "Internal Cleansing").
+    - **Social Proof:** Removed unverified "live cart" counters and "purchased in last 24h" widgets to comply with deceptive advertising regulations.
+    - **Status:** Changes applied locally to `src/app/paracleanse/page.tsx` (and others), pending push.
+
 ---
 
 ## 🔑 Critical Technical Notes for Agents
@@ -179,6 +222,11 @@ This project has transitioned from a simple landing page with external Shopify c
     - Use `.claude/skills/zoho-email-campaign/` for email operations.
     - Use `docs/AGENT_GA4_ACCESS.md` for instructions on querying Google Analytics data.
     - Use `.factory/skills/meta-ads/SKILL.md` for Meta Ads management.
+
+7.  **FTC Compliance Guidelines:**
+    - **CAN Say:** "Supports digestive wellness", "Traditional herbs", "Promotes intestinal health".
+    - **CAN'T Say:** "Eliminates parasites", "Cures disease", "Biofilm disruption".
+    - **NO:** Fake social proof counters or unverified testimonials.
 
 ---
 

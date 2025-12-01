@@ -56,16 +56,16 @@ export default function Home() {
                     </div>
                   </div>
                   <CardTitle className="text-xl mb-2">ParaCleanse Elite</CardTitle>
-                  <p className="text-primary font-medium">Two-Phase Parasite Cleansing System</p>
+                  <p className="text-primary font-medium">Two-Phase Internal Cleansing System</p>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    Dr. Sebi's complete parasite elimination system. Breaks down biofilms and eliminates parasites with our powerful two-phase protocol.
+                    Dr. Sebi's complete internal cleansing system. May help support digestive wellness with our powerful two-phase protocol using traditional wildcrafted herbs.
                   </p>
                   <div className="space-y-2 mb-6">
                     {[
-                      "Phase 1: Biofilm disruption",
-                      "Phase 2: Deep parasite elimination",
+                      "Phase 1: Gentle preparation & digestive support",
+                      "Phase 2: Deep cleansing & intestinal wellness",
                       "Complete 14-day protocol",
                       "Natural & powerful formula"
                     ].map((benefit, i) => (
@@ -125,7 +125,7 @@ export default function Home() {
                   </p>
                   <div className="space-y-2 mb-6">
                     {[
-                      "Blood purification & iron support",
+                      "Blood wellness & iron support",
                       "Brain & nervous system health",
                       "26 wildcrafted herbs",
                       "Made fresh in Honduras"
@@ -182,7 +182,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    Honduran wildcrafted Sea Moss with 92 essential minerals. Supports thyroid function, immune health, and digestive wellness.
+                    Honduran wildcrafted Sea Moss with 92 essential minerals. May help support thyroid function, immune health, and digestive wellness.
                   </p>
                   <div className="space-y-2 mb-6">
                     {[
@@ -243,11 +243,11 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    Dr. Sebi's powerful blend eliminates excess mucus and cleanses at the cellular level. Made with cascara, mullein root, and African bird pepper.
+                    Dr. Sebi's powerful blend may help reduce excess mucus naturally and support cleansing at the cellular level. Made with cascara, mullein root, and African bird pepper.
                   </p>
                   <div className="space-y-2 mb-6">
                     {[
-                      "Eliminates excess mucus naturally",
+                      "Helps reduce excess mucus naturally",
                       "Supports respiratory health",
                       "Cellular cleansing & detox",
                       "Handmade for potency"
@@ -292,21 +292,21 @@ export default function Home() {
 
                     <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4 leading-tight">
                       The Hidden
-                      <span className="text-red-600 block">Parasite Crisis</span>
+                      <span className="text-red-600 block">Gut Health Crisis</span>
                       <span className="text-primary block">Free Guide</span>
                     </h3>
 
                     <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                      <strong>Dr. Sebi's Complete Guide to Eliminate Silent Invaders.</strong> Why millions suffer from unexplained fatigue, brain fog, and digestive issues.
+                      <strong>Dr. Sebi&apos;s educational guide on hidden gut imbalances and internal cleansing.</strong> Explore why many people experience unexplained fatigue, brain fog, and digestive issues — and how a gentle two-phase herbal approach may support gut health.
                     </p>
 
                     {/* Benefits List */}
                     <div className="grid gap-3 mb-6 w-full">
                       {[
-                        "Identify the 7 hidden signs of parasite infection",
-                        "Learn why most parasite cleanses fail completely",
-                        "Discover Dr. Sebi's biofilm-breaking protocol",
-                        "Get the complete 2-phase elimination system"
+                        "Recognize 7 often-overlooked signs your gut may be out of balance",
+                        "Understand why many quick-fix cleanses don&apos;t deliver lasting results",
+                        "Learn how Dr. Sebi&apos;s traditional methods view biofilms and gut health",
+                        "Review a gentle, two-phase internal cleansing framework"
                       ].map((benefit, i) => (
                         <div key={i} className="flex items-start gap-3">
                           <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
@@ -348,7 +348,7 @@ export default function Home() {
                       <div className="relative bg-white rounded-2xl shadow-2xl p-6 transform hover:scale-105 transition-transform duration-300">
                         <Image
                           src="/3066a71b-75c7-4a5c-876a-3d7c080cde01.jpeg"
-                          alt="The Hidden Parasite Crisis - Free Guide"
+                          alt="The Hidden Gut Health Crisis - Free Guide"
                           width={300}
                           height={375}
                           className="w-[240px] h-auto object-contain rounded-lg shadow-lg"
@@ -534,7 +534,7 @@ export default function Home() {
                 Learn More About Natural Healing
               </h2>
               <p className="text-lg text-muted-foreground">
-                Discover insights about parasites, cleansing, and holistic wellness from our experts.
+                Discover insights about gut health, cleansing, and holistic wellness from our experts.
               </p>
             </div>
 
@@ -543,7 +543,7 @@ export default function Home() {
                 {
                   slug: "understanding-biofilms",
                   title: "Understanding Biofilms: The Hidden Shield of Parasites",
-                  excerpt: "Learn how biofilms protect parasites and why breaking them down is crucial for effective cleansing.",
+                  excerpt: "Learn how biofilms are thought to influence gut health and why many protocols focus on addressing them during cleansing.",
                   image: "/images/blog1.jpg",
                   category: "Education",
                   readTime: "5 min read",
@@ -570,7 +570,7 @@ export default function Home() {
                 {
                   slug: "two-phase-cleansing",
                   title: "The Science Behind Two-Phase Cleansing",
-                  excerpt: "Why a two-phase approach is more effective for eliminating parasites and restoring gut health.",
+                  excerpt: "Why a two-phase approach is often used in natural cleansing protocols to support gut balance and digestive wellness.",
                   image: "/images/blog4.jpg",
                   category: "Research",
                   readTime: "7 min read",
@@ -588,7 +588,7 @@ export default function Home() {
                 {
                   slug: "gut-brain-connection",
                   title: "The Gut-Brain Connection: Why Parasites Affect Your Mind",
-                  excerpt: "Understanding how parasites impact mental clarity and emotional well-being.",
+                  excerpt: "Understanding how gut health may impact mental clarity and emotional well-being.",
                   image: "/images/blog6.jpg",
                   category: "Research",
                   readTime: "6 min read",

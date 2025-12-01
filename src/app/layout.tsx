@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NODE_ENV === 'production' ? 'https://drsebiapproved.com' : 'http://localhost:3000'),
   title: "Dr. Sebi Approved | Authentic Natural Healing Products & Supplements",
   description: "Shop authentic Dr. Sebi products: Maya 26-Herb Formula, Honduran Sea Moss, ParaCleanse Elite, and Mucus Cleanser. Wildcrafted herbs, proven results, 100% natural healing solutions.",
-  keywords: "Dr. Sebi products, Maya formula, Sea Moss capsules, parasite cleanse, mucus cleanser, natural healing, wildcrafted herbs, alkaline diet, iron supplements, holistic wellness",
+  keywords: "Dr. Sebi products, Maya formula, Sea Moss capsules, internal cleanse, mucus cleanser, natural healing, wildcrafted herbs, alkaline diet, iron supplements, holistic wellness",
   manifest: '/manifest.json',
   icons: {
     icon: [

@@ -49,7 +49,7 @@ export default function MucusCleanserPage() {
               </h1>
 
               <p className="text-xl text-muted-foreground mb-8 max-w-[700px] mx-auto leading-relaxed">
-                <strong>Eliminate excess mucus and cleanse at the cellular level.</strong> Dr. Sebi's powerful blend of cascara, mullein root, and African bird pepper supports respiratory health and natural detoxification.
+                <strong>Support healthy mucus balance and cleanse at the cellular level.</strong> Dr. Sebi&apos;s powerful blend of cascara, mullein root, and African bird pepper supports respiratory health and natural detoxification.
               </p>
 
               {/* Dr. Sebi Quote Section */}
@@ -67,7 +67,7 @@ export default function MucusCleanserPage() {
                   <blockquote className="text-xl md:text-2xl font-medium text-foreground mb-6 italic relative">
                     <span className="absolute -top-4 -left-4 text-4xl text-cyan-500/30">"</span>
                     <span className="relative z-10">
-                      Mucus is the cause of every disease. Eliminate the mucus and you eliminate the disease.
+                      Mucus is the cause of every disease. Support the body in clearing excess mucus and you support its natural healing processes.
                     </span>
                     <span className="absolute -bottom-4 -right-4 text-4xl text-cyan-500/30">"</span>
                   </blockquote>
@@ -130,7 +130,7 @@ export default function MucusCleanserPage() {
                 {/* Key Benefits */}
                 <div className="grid gap-4 mb-8 w-full max-w-[540px]">
                   {[
-                    "Eliminates excess mucus naturally",
+                    "Supports healthy mucus levels naturally",
                     "Supports respiratory and breathing health", 
                     "Cleanses and rebuilds at cellular level",
                     "Made with authentic Dr. Sebi herbs"
@@ -192,7 +192,7 @@ export default function MucusCleanserPage() {
                 Powerful Natural Ingredients
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Each herb in Dr. Sebi's Mucus Cleanser formula has been carefully selected for its specific properties in eliminating mucus and supporting cellular health.
+                Each herb in Dr. Sebi&apos;s Mucus Cleanser formula has been carefully selected for its traditional use in supporting mucus balance and cellular health.
               </p>
             </div>
 
