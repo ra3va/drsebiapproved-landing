@@ -20,7 +20,7 @@ function getTemplateForStage(stage: number, customerName: string | null, custome
   const firstName = customerName?.split(' ')[0] || 'Friend';
 
   // Light HTML styling - spam-safe inline CSS only
-  // Black Friday Sale: BLACKFRIDAY30 = 30% off, ends Nov 30
+  // Black Friday Sale: BLACKFRIDAY30 = 30% off, ends Dec 5
   switch (stage) {
     case 1: // Black Friday Announcement
       const stage1Html = `
@@ -61,7 +61,7 @@ function getTemplateForStage(stage: number, customerName: string | null, custome
     <a href="https://drsebiapproved.com/go/paracleanse" style="color: #2563eb;">https://drsebiapproved.com/go/paracleanse</a>
   </p>
   
-  <p style="margin: 0 0 20px 0;">Sale ends November 30th.</p>
+  <p style="margin: 0 0 20px 0;">Sale ends December 5th.</p>
   
   <p style="margin: 0 0 8px 0;">- The Dr. Sebi Approved Team</p>
   
@@ -87,7 +87,7 @@ If you've been thinking about trying ParaCleanse or restocking your Sea Moss, no
 
 Shop here: https://drsebiapproved.com/go/paracleanse
 
-Sale ends November 30th.
+Sale ends December 5th.
 
 - Dr. Sebi Approved Team
 
@@ -104,7 +104,7 @@ ${firstName},
 
 Last call - Black Friday ends tomorrow.
 
-After November 30th, prices go back to normal.
+After December 5th, prices go back to normal.
 
 Use BLACKFRIDAY30 for 30% off: https://drsebiapproved.com/go/paracleanse
 

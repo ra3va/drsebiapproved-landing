@@ -34,7 +34,7 @@ export default function BlackFridayHero() {
               <div className="relative bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 text-black px-6 py-3 rounded-full font-bold text-sm md:text-base uppercase tracking-wider shadow-2xl">
                 <div className="flex items-center gap-2">
                   <Zap className="w-5 h-5 fill-black" />
-                  <span>Nov 25-29 Only</span>
+                  <span>EXTENDED: Ends Dec 5th</span>
                   <Zap className="w-5 h-5 fill-black" />
                 </div>
               </div>

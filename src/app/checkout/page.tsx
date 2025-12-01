@@ -96,7 +96,7 @@ function CheckoutContent() {
   // Black Friday countdown timer
   useEffect(() => {
     const currentYear = new Date().getFullYear()
-    const saleEnd = new Date(`November 30, ${currentYear} 00:00:00 PST`)
+    const saleEnd = new Date(`December 5, ${currentYear} 23:59:59 PST`)
 
     const calculateTimeLeft = () => {
       const difference = saleEnd.getTime() - new Date().getTime()

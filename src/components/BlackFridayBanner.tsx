@@ -26,12 +26,12 @@ export default function BlackFridayBanner() {
     // PREVIEW MODE: Set to true to always show banner for testing
     const PREVIEW_MODE = true;
 
-    // Black Friday sale: Nov 25 00:00 PST → Nov 30 00:00 PST (Saturday 12 AM)
+    // Black Friday sale: Nov 25 00:00 PST → Dec 5 23:59:59 PST
     const now = new Date();
     const currentYear = now.getFullYear();
 
     const saleStart = new Date(`November 25, ${currentYear} 00:00:00 PST`);
-    const saleEnd = new Date(`November 30, ${currentYear} 00:00:00 PST`);
+    const saleEnd = new Date(`December 5, ${currentYear} 23:59:59 PST`);
 
     // Check if we're in the Black Friday window OR preview mode is on
     if (PREVIEW_MODE || (now >= saleStart && now <= saleEnd)) {
@@ -91,7 +91,7 @@ export default function BlackFridayBanner() {
             </motion.div>
             <div className="text-center md:text-left">
               <div className="text-yellow-400 font-bold text-sm md:text-base tracking-wider">
-                BLACK FRIDAY SALE
+                BLACK FRIDAY SALE EXTENDED
               </div>
               <div className="text-white text-xs md:text-sm font-medium">
                 30% OFF SITEWIDE | CODE: <span className="text-yellow-400 font-bold">BLACKFRIDAY30</span>
