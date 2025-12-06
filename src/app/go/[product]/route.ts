@@ -22,12 +22,11 @@ export async function GET(
     return NextResponse.redirect(`${BASE_URL}/`);
   }
 
-  // Build UTM params for GA4
+  // Build UTM params for GA4 (evergreen email tracking)
   const utmParams = new URLSearchParams({
-    coupon: 'BLACKFRIDAY30',
     utm_source: 'zoho',
     utm_medium: 'email',
-    utm_campaign: 'blackfriday2025',
+    utm_campaign: 'email-product-redirect',
   });
 
   return NextResponse.redirect(`${BASE_URL}${destination}?${utmParams}`);

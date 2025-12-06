@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script'
-import BlackFridayBanner from '@/components/BlackFridayBanner'
 import FacebookPixelRouteTracker from '@/components/analytics/FacebookPixelRouteTracker'
 
 
@@ -116,7 +115,6 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <FacebookPixelRouteTracker />
-        <BlackFridayBanner />
         {children}
       </body>
     </html>

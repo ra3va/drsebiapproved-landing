@@ -2,17 +2,20 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { CheckCircle, Star, ShoppingCart, Gift, Users, TrendingUp, Award, ShieldCheck, Download, Zap } from 'lucide-react'
+import { CheckCircle, Star, ShoppingCart, Gift, Users, Award, ShieldCheck, Download } from 'lucide-react'
 import Image from "next/image"
 import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
 import * as fpixel from '@/lib/fpixel'
 
-export default function SeaMossBlackFridayPDP() {
+export default function SeaMossPage() {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [inCartCount, setInCartCount] = useState(0);
   const [recentPurchases, setRecentPurchases] = useState(0);
+
+  // Product pricing
+  const price = 39.99;
 
   // Simulate realistic dynamic numbers
   useEffect(() => {
@@ -20,13 +23,12 @@ export default function SeaMossBlackFridayPDP() {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'view_item', {
         currency: 'USD',
-        value: salePrice,
+        value: price,
         items: [{
-          item_id: 'sea-moss-bf',
-          item_name: 'Sea Moss Capsules - Black Friday',
+          item_id: 'sea-moss-capsules',
+          item_name: 'Sea Moss Capsules',
           item_category: 'Mineral Support',
-          price: salePrice,
-          discount: originalPrice - salePrice,
+          price,
           item_brand: 'Dr. Sebi Approved'
         }]
       });
@@ -34,11 +36,11 @@ export default function SeaMossBlackFridayPDP() {
 
     // Track ViewContent on Facebook Pixel
     fpixel.event('ViewContent', {
-      content_ids: ['sea-moss-bf'],
+      content_ids: ['sea-moss-capsules'],
       content_type: 'product',
-      content_name: 'Sea Moss Capsules - Black Friday',
+      content_name: 'Sea Moss Capsules',
       content_category: 'Mineral Support',
-      value: salePrice,
+      value: price,
       currency: 'USD'
     });
 
@@ -47,12 +49,6 @@ export default function SeaMossBlackFridayPDP() {
     setRecentPurchases(0);
   }, []);
 
-  // Product pricing
-  const originalPrice = 39.99;
-  const salePrice = 27.99;
-  const discount = Math.round(((originalPrice - salePrice) / originalPrice) * 100);
-  const savings = originalPrice - salePrice;
-
   const handleAddToCart = () => {
     setIsLoading(true);
 
@@ -60,12 +56,12 @@ export default function SeaMossBlackFridayPDP() {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'add_to_cart', {
         currency: 'USD',
-        value: salePrice * quantity,
+        value: price * quantity,
         items: [{
-          item_id: 'sea-moss-bf',
-          item_name: 'Sea Moss Capsules - Black Friday',
+          item_id: 'sea-moss-capsules',
+          item_name: 'Sea Moss Capsules',
           item_category: 'Mineral Support',
-          price: salePrice,
+          price,
           quantity: quantity
         }]
       });
@@ -73,29 +69,28 @@ export default function SeaMossBlackFridayPDP() {
       // Track begin_checkout
       window.gtag('event', 'begin_checkout', {
         currency: 'USD',
-        value: salePrice * quantity,
+        value: price * quantity,
         items: [{
-          item_id: 'sea-moss-bf',
-          item_name: 'Sea Moss Capsules - Black Friday',
+          item_id: 'sea-moss-capsules',
+          item_name: 'Sea Moss Capsules',
           item_category: 'Mineral Support',
-          price: salePrice,
+          price,
           quantity: quantity
-        }],
-        coupon: 'BLACKFRIDAY30'
+        }]
       });
     }
 
     // Track AddToCart on Facebook Pixel
     fpixel.event('AddToCart', {
-      content_ids: ['sea-moss-bf'],
+      content_ids: ['sea-moss-capsules'],
       content_type: 'product',
-      content_name: 'Sea Moss Capsules - Black Friday',
-      value: salePrice * quantity,
+      content_name: 'Sea Moss Capsules',
+      value: price * quantity,
       currency: 'USD'
     });
 
     // Redirect to checkout
-    window.location.href = `/checkout?product=seamoss&quantity=${quantity}&coupon=BLACKFRIDAY30`;
+    window.location.href = `/checkout?product=seamoss&quantity=${quantity}`;
   };
 
   const formatNumber = (num: number) => {
@@ -110,17 +105,6 @@ export default function SeaMossBlackFridayPDP() {
       <Header />
 
       <main className="flex-1">
-        {/* Black Friday Sticky Banner - Compact */}
-        <div className="sticky top-[72px] z-40 bg-gradient-to-r from-black via-gray-900 to-black border-b-2 border-yellow-400/30 py-2">
-          <div className="container mx-auto px-4 flex items-center justify-center gap-3 text-xs sm:text-sm">
-            <Zap className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-            <span className="text-white font-bold">BLACK FRIDAY:</span>
-            <span className="text-yellow-400 font-bold">30% OFF</span>
-            <span className="text-gray-400">|</span>
-            <span className="text-gray-300">Code: <span className="text-yellow-400 font-mono">BLACKFRIDAY30</span></span>
-          </div>
-        </div>
-
         {/* Product Detail Section */}
         <section className="w-full py-8 md:py-12">
           <div className="container px-4 md:px-6 max-w-[1200px] mx-auto">
@@ -130,11 +114,6 @@ export default function SeaMossBlackFridayPDP() {
               <div className="flex flex-col">
                 {/* Product Image */}
                 <div className="relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 mb-6">
-                  {/* Black Friday Badge */}
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
-                    BLACK FRIDAY
-                  </div>
-
                   <Image
                     src="/seamoss.png"
                     alt="Dr. Sebi's Honduran Sea Moss Capsules"
@@ -197,16 +176,10 @@ export default function SeaMossBlackFridayPDP() {
                 {/* Pricing */}
                 <div className="mb-6 p-6 bg-gradient-to-br from-yellow-50 to-yellow-100/50 rounded-2xl border-2 border-yellow-400/30">
                   <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-4xl font-bold text-foreground">${salePrice}</span>
-                    <span className="text-2xl text-muted-foreground line-through">${originalPrice}</span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="bg-yellow-400 text-black text-sm font-bold px-3 py-1 rounded-full">
-                      SAVE {discount}% | ${savings.toFixed(2)} OFF
-                    </div>
+                    <span className="text-4xl font-bold text-foreground">${price}</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Use code: <span className="text-yellow-700 font-mono font-bold">BLACKFRIDAY30</span> at checkout
+                    Mineral-rich daily support with 92 of the 102 essential minerals your body needs.
                   </p>
                 </div>
 
@@ -231,7 +204,7 @@ export default function SeaMossBlackFridayPDP() {
                         </div>
                         <span className="font-semibold">Buy 1</span>
                       </div>
-                      <span className="font-bold text-lg">${salePrice}</span>
+                      <span className="font-bold text-lg">${price}</span>
                     </button>
 
                     {/* Buy 2 Get 1 Free */}
@@ -253,11 +226,7 @@ export default function SeaMossBlackFridayPDP() {
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
-                        <span className="font-bold text-lg">${(salePrice * 2).toFixed(2)}</span>
-                        <span className="text-xs text-muted-foreground line-through">${(originalPrice * 2).toFixed(2)}</span>
-                      </div>
-                      <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                        -{discount}%
+                        <span className="font-bold text-lg">${(price * 2).toFixed(2)}</span>
                       </div>
                     </button>
                   </div>
@@ -431,10 +400,10 @@ export default function SeaMossBlackFridayPDP() {
         <section className="w-full py-12 bg-gradient-to-br from-black via-gray-900 to-black">
           <div className="container px-4 md:px-6 max-w-[800px] mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Don't Miss This Black Friday Deal
+              Nourish Your Body with Sea Moss
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              30% off ends November 29th. Stock is limited.
+              Support thyroid, immune, and digestive wellness with Dr. Sebi&apos;s mineral-rich Sea Moss Capsules.
             </p>
             <Button
               onClick={handleAddToCart}
@@ -442,7 +411,7 @@ export default function SeaMossBlackFridayPDP() {
               className="bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold text-lg px-12 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              Get 30% Off Now
+              Add Sea Moss to Cart
             </Button>
           </div>
         </section>

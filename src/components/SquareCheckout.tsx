@@ -1219,16 +1219,16 @@ export default function SquareCheckout({
               </div>
             </div>
 
-            {/* Black Friday Savings Banner - Step 3 Only */}
+            {/* Savings Banner - Step 3 Only */}
             {currentStep === 3 && discount > 0 && (
               <div className="bg-gradient-to-r from-yellow-50 to-white border-2 border-yellow-500 rounded-lg p-4 mb-4">
                 <div className="flex items-center gap-3">
                   <div className="text-2xl">🎉</div>
                   <div className="flex-1">
-                    <p className="font-bold text-gray-900">Black Friday Savings Applied</p>
+                    <p className="font-bold text-gray-900">Discount Applied</p>
                     <p className="text-sm text-gray-600">
-                      You're saving <span className="text-yellow-700 font-bold">${(discount / 100).toFixed(2)}</span> with code
-                      <span className="font-mono text-yellow-700 font-bold ml-1">BLACKFRIDAY30</span>
+                      You&apos;re saving <span className="text-yellow-700 font-bold">${(discount / 100).toFixed(2)}</span> with code
+                      <span className="font-mono text-yellow-700 font-bold ml-1">{couponCode.toUpperCase()}</span>
                     </p>
                   </div>
                 </div>

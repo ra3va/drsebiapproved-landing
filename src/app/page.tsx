@@ -7,7 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/Header"
 import ProblemNavigation from "@/components/ProblemNavigation"
-import BlackFridayHero from "@/components/BlackFridayHero";
+import OriginalHero from "@/components/OriginalHero";
 
 export default function Home() {
   return (
@@ -15,8 +15,8 @@ export default function Home() {
       <Header />
 
       <main className="flex-1">
-        {/* Black Friday Hero Section */}
-        <BlackFridayHero />
+        {/* Hero Section */}
+        <OriginalHero />
 
         {/* Problem-Based Navigation Section */}
         <ProblemNavigation />
@@ -36,10 +36,6 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
               {/* ParaCleanse Elite */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
-                {/* Black Friday Badge */}
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
-                  BLACK FRIDAY
-                </div>
                 <div className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   BESTSELLER
                 </div>
@@ -77,14 +73,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-full">
-                      <div className="flex items-baseline gap-2 mb-1">
-                        <p className="text-2xl font-bold text-foreground">$59.99</p>
-                        <p className="text-lg text-muted-foreground line-through">$85.70</p>
-                      </div>
-                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
-                        SAVE 30% | $25.71 OFF
-                      </div>
-                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
+                      <p className="text-2xl font-bold text-foreground">$59.99</p>
+                      <p className="text-sm text-muted-foreground">Complete 2-phase system</p>
                     </div>
                   </div>
                   <Link href="/paracleanse">
@@ -97,10 +87,6 @@ export default function Home() {
 
               {/* Maya Formula */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
-                {/* Black Friday Badge */}
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
-                  BLACK FRIDAY
-                </div>
                 <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   DR. SEBI'S GREATEST
                 </div>
@@ -138,14 +124,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-full">
-                      <div className="flex items-baseline gap-2 mb-1">
-                        <p className="text-2xl font-bold text-foreground">$41.99</p>
-                        <p className="text-lg text-muted-foreground line-through">$59.99</p>
-                      </div>
-                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
-                        SAVE 30% | $18 OFF
-                      </div>
-                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
+                      <p className="text-2xl font-bold text-foreground">$44.99</p>
+                      <p className="text-sm text-muted-foreground">26 Herb Iron-Rich Formula</p>
                     </div>
                   </div>
                   <Link href="/maya">
@@ -158,10 +138,6 @@ export default function Home() {
 
               {/* Sea Moss */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
-                {/* Black Friday Badge */}
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
-                  BLACK FRIDAY
-                </div>
                 <div className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   92 MINERALS
                 </div>
@@ -199,14 +175,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-full">
-                      <div className="flex items-baseline gap-2 mb-1">
-                        <p className="text-2xl font-bold text-foreground">$27.99</p>
-                        <p className="text-lg text-muted-foreground line-through">$39.99</p>
-                      </div>
-                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
-                        SAVE 30% | $12 OFF
-                      </div>
-                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
+                      <p className="text-2xl font-bold text-foreground">$31.99</p>
+                      <p className="text-sm text-muted-foreground">Mineral-rich daily support</p>
                     </div>
                   </div>
                   <Link href="/seamoss">
@@ -219,10 +189,6 @@ export default function Home() {
 
               {/* Mucus Cleanser */}
               <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 group">
-                {/* Black Friday Badge */}
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-wide">
-                  BLACK FRIDAY
-                </div>
                 <div className="absolute top-4 right-4 bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   RESPIRATORY SUPPORT
                 </div>
@@ -260,14 +226,8 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-full">
-                      <div className="flex items-baseline gap-2 mb-1">
-                        <p className="text-2xl font-bold text-foreground">$27.99</p>
-                        <p className="text-lg text-muted-foreground line-through">$39.99</p>
-                      </div>
-                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-xs font-semibold px-2 py-1 rounded inline-block mb-2">
-                        SAVE 30% | $12 OFF
-                      </div>
-                      <p className="text-xs text-muted-foreground">Use code: BLACKFRIDAY30</p>
+                      <p className="text-2xl font-bold text-foreground">$39.99</p>
+                      <p className="text-sm text-muted-foreground">Respiratory & cellular support</p>
                     </div>
                   </div>
                   <Link href="/mucus-cleanser">
@@ -287,7 +247,7 @@ export default function Home() {
                   <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                     <div className="inline-flex items-center rounded-lg bg-yellow-500/20 px-4 py-2 text-sm text-yellow-700 mb-4 font-bold border border-yellow-500/30">
                       <Download className="w-4 h-4 mr-2" />
-                      <span>BLACK FRIDAY BONUS - FREE</span>
+                      <span>Free Gut Health Guide</span>
                     </div>
 
                     <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4 leading-tight">
@@ -638,7 +598,7 @@ export default function Home() {
         <section id="order" className="w-full py-24 bg-gradient-to-b from-accent/20 to-white">
           <div className="container px-4 md:px-6">
             <div className="max-w-3xl mx-auto text-center">
-              <span className="text-yellow-600 font-bold">BLACK FRIDAY SALE</span>
+              <span className="text-primary font-bold">DR. SEBI APPROVED</span>
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
                 Transform Your Health Today
               </h2>
