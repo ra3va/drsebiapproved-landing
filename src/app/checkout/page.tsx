@@ -64,6 +64,20 @@ const PRODUCTS = {
       'Cellular Cleansing Support',
       '30 Capsules'
     ]
+  },
+  'male-warrior': {
+    id: 'male-warrior',
+    name: 'Male Warrior',
+    price: 4999,  // $49.99 regular
+    variationId: 'G2HIOD6PCMSMJL3MEXK43F75',
+    image: '/male-warrior.png',
+    description: 'Natural Vitality Supplement for Men',
+    features: [
+      'Supports Sexual Stamina',
+      'Improves Sperm Quality',
+      'Erectile Strengthening',
+      '30 Capsules'
+    ]
   }
 }
 

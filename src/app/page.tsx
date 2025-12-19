@@ -237,6 +237,57 @@ export default function Home() {
                   </Link>
                 </CardContent>
               </Card>
+
+              {/* Male Warrior */}
+              <Card className="relative overflow-hidden border-2 hover:border-red-500 transition-all duration-300 group">
+                <div className="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  MEN'S VITALITY
+                </div>
+                <CardHeader className="text-center">
+                  <div className="w-full h-48 flex items-center justify-center mb-4 bg-gradient-to-br from-red-500/5 to-black/5 rounded-lg">
+                    <div className="relative">
+                      <Image
+                        src="/male-warrior.png"
+                        alt="Male Warrior Natural Vitality Supplement"
+                        width={200}
+                        height={200}
+                        className="w-32 h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl mb-2">Male Warrior</CardTitle>
+                  <p className="text-red-600 font-medium">Natural Vitality for Men</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Premium blend of 7 powerful herbs to support healthy male function, stamina, and natural vitality. 30 Capsules.
+                  </p>
+                  <div className="space-y-2 mb-6">
+                    {[
+                      "Supports sexual stamina & performance",
+                      "Improves sperm quality",
+                      "Balances testosterone levels",
+                      "100% organic ingredients"
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-red-600 flex-shrink-0" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-full">
+                      <p className="text-2xl font-bold text-foreground">$49.99</p>
+                      <p className="text-sm text-muted-foreground">30 Capsules</p>
+                    </div>
+                  </div>
+                  <Link href="/male-warrior">
+                    <Button className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-bold shadow-lg shadow-red-500/20">
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Hidden Parasite Crisis Free Guide Section */}
@@ -690,6 +741,11 @@ export default function Home() {
                 <li>
                   <Link className="text-sm text-gray-400 hover:text-yellow-400 transition-colors" href="/mucus-cleanser">
                     Mucus Cleanser
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-sm text-gray-400 hover:text-red-400 transition-colors" href="/male-warrior">
+                    Male Warrior
                   </Link>
                 </li>
                 <li>
