@@ -995,7 +995,7 @@ export default function SquareCheckout({
                       id: 'maya',
                       name: 'Maya Formula',
                       price: 5999,  // $59.99 regular
-                      variationId: 'TWJMT4CUFNFNQKG3S5EQRPLO',
+                      variationId: 'WFI2H4ZXI336SDCXE4QEB6KC',
                       image: '/maya.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
@@ -1013,7 +1013,7 @@ export default function SquareCheckout({
                       id: 'seamoss',
                       name: 'Sea Moss Capsules',
                       price: 3999,  // $39.99 regular
-                      variationId: 'YGDG42LYJKWH75NNW6HPWP5M',
+                      variationId: 'M7NWV5DW5LNFHPKKPSDWKHW4',
                       image: '/seamoss.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"
@@ -1031,7 +1031,7 @@ export default function SquareCheckout({
                       id: 'mucus-cleanser',
                       name: 'Mucus Cleanser',
                       price: 3999,  // $39.99 regular
-                      variationId: '6JARPI34BXU27SS36ZFSEJQP',
+                      variationId: 'FNDFIAJACJWMHZFVBJ5PMLCX',
                       image: '/mucus.png'
                     })}
                     className="w-full flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors text-left"

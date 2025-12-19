@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Square discount IDs
 const SQUARE_DISCOUNTS: Record<string, string> = {
-  'TEST99': 'PAAUNOPINBLM2RDQFOEQAJNJ',  // 99% off for testing
-  'STOPMUCUS': 'KYF4T674JG7Y7HMEMLZY56BF',  // 37.5% off for win-back campaign
-  'BLACKFRIDAY30': 'OKH4J6DXBYA7GRKK237LHRX5'  // 30% off Black Friday sale
+  'TEST99': 'AKH3T3IMGQL2GV3LGLT4OVRE',  // 99% off for testing
+  'STOPMUCUS': 'CL3Y3JHK6GZXZBSXOCKNMSMN',  // 37.5% off for win-back campaign
+  'BLACKFRIDAY30': 'UEBD6WLF4ND5NOQUCJA4KDJZ'  // 30% off Black Friday sale
 }
 
 export async function POST(request: NextRequest) {
